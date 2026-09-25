@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#154360">
 <title>GMDSS 英语听力与会话 · 互动讲评</title>
 <style>
 /* === 配色(混合方案) === */
@@ -275,6 +276,202 @@ h1{font-size:22px;color:var(--primary);letter-spacing:1px}
   opacity:0;transition:opacity 0.3s;
 }
 #status.show{opacity:1}
+
+/* ===========================================
+   📱 移动端响应式优化 (≤768px)
+   =========================================== */
+@media (max-width: 768px) {
+  /* ----- 顶部 Header ----- */
+  header {
+    padding: 8px 12px 0;
+  }
+  .h-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  h1 {
+    font-size: 15px !important;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .h-meta { display: none; }
+  .zoom-ctl button {
+    padding: 2px 8px;
+    font-size: 13px;
+  }
+  #zoomVal {
+    font-size: 12px;
+    min-width: 36px;
+  }
+
+  /* ----- Tabs 横向滚动 ----- */
+  #tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-top: 6px;
+    gap: 4px;
+    flex-wrap: nowrap !important;
+  }
+  #tabs::-webkit-scrollbar { display: none; }
+  #tabs button {
+    padding: 6px 14px;
+    font-size: 13px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  #tabs .tab-count {
+    font-size: 10px;
+    padding: 1px 5px;
+  }
+
+  /* ----- 提示条：默认折叠，可展开 ----- */
+  #hint {
+    padding: 4px 12px;
+    font-size: 11px;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #hintText { display: none; }
+  #hint.expanded #hintText { display: inline; }
+  #hintToggle {
+    display: inline-block !important;
+    background: #fff8e1;
+    border: 1px solid #e6c96b;
+    color: #7a5b00;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* ----- 主内容紧凑 ----- */
+  #main { padding: 10px 12px; }
+  .tab-pane > div:first-child { font-size: 12px !important; }
+
+  /* ----- 卡片 ----- */
+  .card {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
+  .card-num {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+  .card-title { font-size: 14px; margin-bottom: 6px; }
+  .card-text { font-size: 14px; line-height: 1.7; }
+
+  /* ----- 音频按钮 ----- */
+  .audio-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .audio-btn .ic { font-size: 13px; }
+
+  /* ----- 答案区 ----- */
+  .ans-toggle { font-size: 13px; padding: 6px; }
+  .ans-body { padding: 10px 12px; margin-top: 8px; }
+  .ans-body .card-text { font-size: 13.5px; line-height: 1.7; }
+
+  /* ----- 码语网格：单列 ----- */
+  .cy-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+  .cy-item { padding: 8px 10px; gap: 8px; }
+  .cy-sym { flex: 0 0 36px; height: 36px; font-size: 17px; }
+  .cy-word { font-size: 13.5px; }
+  .cy-pron { font-size: 11px; }
+
+  /* ----- 答案总览 ----- */
+  .ov-section { margin-bottom: 18px; }
+  .ov-section h2 { font-size: 15px; padding-left: 8px; }
+  .ov-q {
+    flex-direction: column;
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .ov-q .ov-num { flex: 0 0 auto; font-size: 13px; }
+  .ov-q .ov-q-text { font-size: 13px; line-height: 1.5; }
+  .ov-q .ov-q-ans { font-size: 12.5px; flex: 1; }
+
+  /* ----- 信号题套号按钮区 ----- */
+  #main div[style*="padding:12px;background:var(--bg-card)"] {
+    padding: 8px !important;
+    gap: 6px !important;
+  }
+  #set-btns .set-btn {
+    padding: 3px 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* ----- 信号题主网格：4 列 → 2 列 ----- */
+  #main div[style*="grid-template-columns:repeat(4,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .sig-group { padding: 6px 8px !important; }
+  .sig-input { font-size: 14px !important; padding: 3px 0 !important; }
+
+  /* ----- 全局音频控制条 ----- */
+  #audio-ctrl {
+    bottom: 8px !important;
+    right: 8px !important;
+    left: 8px !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 16px) !important;
+    padding: 6px 10px !important;
+    font-size: 12px;
+    border-radius: 8px !important;
+  }
+  .ctrl-label {
+    max-width: calc(100vw - 200px) !important;
+    font-size: 11px;
+  }
+  .ctrl-bar-wrap { height: 3px; }
+  .ctrl-btns button {
+    width: 28px;
+    height: 26px;
+    font-size: 13px;
+  }
+
+  /* ----- tooltip 浮窗 ----- */
+  #tooltip { font-size: 13px; max-width: 240px; padding: 6px 10px; }
+
+  /* ----- 状态栏 ----- */
+  #status { font-size: 12px; padding: 5px 12px; }
+
+  /* ----- 可点击区域 ----- */
+  button, .audio-btn, .btn-mini, #tabs button, #hintToggle {
+    -webkit-tap-highlight-color: rgba(21,67,96,0.2);
+  }
+}
+
+/* ===== 更小屏幕（≤480px） ===== */
+@media (max-width: 480px) {
+  header { padding: 6px 10px 0; }
+  h1 { font-size: 14px !important; }
+  #tabs button { padding: 5px 10px; font-size: 12px; }
+  .zoom-ctl button { padding: 2px 6px; font-size: 12px; }
+  #zoomVal { font-size: 11px; min-width: 30px; }
+  .card { padding: 8px 10px; }
+  .card-title { font-size: 13.5px; }
+  .card-text { font-size: 13.5px; }
+}
+
+/* ===== 默认：折叠按钮隐藏（桌面端） ===== */
+#hintToggle { display: none; }
 </style>
 </head>
 <body>
@@ -301,10 +498,13 @@ h1{font-size:22px;color:var(--primary);letter-spacing:1px}
 
 <div id="hint">
   <b>操作提示:</b>
-  <b>信号题</b>:选套号 → 听整套 / 听本组 → 在 5 个框里逐个填写 → 自动跳格 →
-  点击"显示答案"自动校对(绿=正确,黄=错误并显示答案) ·
-  <b>其他题型</b>:点击单词查看中文释义 ·
-  <b>▶ 听</b> 播放 TTS · <b>A−/A+</b> 调整字号
+  <span id="hintText">
+    <b>信号题</b>:选套号 → 听整套 / 听本组 → 在 5 个框里逐个填写 → 自动跳格 →
+    点击"显示答案"自动校对(绿=正确,黄=错误并显示答案) ·
+    <b>其他题型</b>:点击单词查看中文释义 ·
+    <b>▶ 听</b> 播放 TTS · <b>A−/A+</b> 调整字号
+  </span>
+  <button id="hintToggle" type="button">展开 ▼</button>
 </div>
 
 <main id="main">
@@ -898,6 +1098,18 @@ function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
 }
+
+// ==================== 移动端：提示条折叠切换 ====================
+(function setupMobileHint() {
+  const hint = document.getElementById('hint');
+  const btn = document.getElementById('hintToggle');
+  if (!hint || !btn) return;
+  btn.addEventListener('click', () => {
+    const expanded = hint.classList.toggle('expanded');
+    btn.textContent = expanded ? '收起 ▲' : '展开 ▼';
+  });
+  // 切 tab 时如果面板已展开，保持展开状态（用户已主动查看）
+})();
 </script>
 </body>
 </html>

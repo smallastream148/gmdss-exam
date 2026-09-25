@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="GMDSS（全球海上遇险与安全系统）英语题库 · 827 道题 · 18 个知识点 · 覆盖 GMDSS 概述、公约规则、船舶函电、设备说明。提供题目翻译、教师备注、虚拟列表、导出导入功能。">
 <meta name="keywords" content="GMDSS,题库,英语,海事,GMDSS题库,船舶通信,INMARSAT,DSC,EPIRB,SART,NAVTEX,SOLAS,无线电,航海,船员考试,海员">
 <meta name="author" content="GMDSS 学习平台">
@@ -191,6 +191,214 @@ mark{background:#fff8e1;color:#7a5b00;padding:0 2px;border-radius:2px}
   #right{padding:12px 14px}
 }
 
+/* ===========================================
+   📱 移动端响应式优化 (≤768px)
+   =========================================== */
+@media (max-width: 768px) {
+  /* ----- 顶部 Header ----- */
+  header {
+    padding: 8px 12px !important;
+    gap: 8px;
+  }
+  header h1 {
+    font-size: 15px !important;
+    letter-spacing: 0.5px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  header h1 .badge {
+    font-size: 10px !important;
+    padding: 2px 6px;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+
+  /* ----- flex 排序：h1[1]  按钮[2]  控件[3] 换行 ----- */
+  header h1 { order: 1; flex: 1; min-width: 0; }
+  #btnNavToggle {
+    display: inline-flex !important;
+    align-items: center;
+    order: 2;
+    flex-shrink: 0;
+    padding: 3px 9px !important;
+    font-size: 12px !important;
+  }
+  header .ctrl { order: 3; width: 100%; }
+
+  /* ----- 控件区：换行 + 减少 min-width ----- */
+  header .ctrl {
+    width: 100%;
+    gap: 6px;
+  }
+  .search-box {
+    min-width: 0 !important;
+    flex: 1;
+    padding: 3px 6px;
+  }
+  .search-box input { font-size: 13px !important; padding: 3px 4px; }
+
+  /* ----- 隐藏次要控件 ----- */
+  #btnExport, #btnImport { display: none !important; }
+  .btn {
+    padding: 4px 9px !important;
+    font-size: 12px !important;
+  }
+
+  /* ----- 缩放控件 ----- */
+  .zoom-ctl button {
+    padding: 2px 7px !important;
+    font-size: 13px !important;
+  }
+  .zoom-ctl .zv { font-size: 11px !important; min-width: 32px !important; }
+
+  /* ----- 📂 导航切换按钮（仅移动端显示） ----- */
+  #btnNavToggle { display: inline-block !important; }
+
+  /* ----- Tabs ----- */
+  #tabs {
+    padding: 0 12px !important;
+    gap: 4px;
+  }
+  #tabs button {
+    padding: 7px 12px !important;
+    font-size: 13px !important;
+  }
+  #tabs .cnt {
+    font-size: 10px !important;
+    padding: 0 5px !important;
+  }
+
+  /* ----- 左侧：默认折叠为抽屉 ----- */
+  main { position: relative !important; }
+  #left {
+    position: absolute !important;
+    left: 0; top: 0;
+    height: 100%;
+    z-index: 50;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.2);
+    max-width: 85vw !important;
+  }
+  #left.hidden-nav {
+    width: 0 !important;
+  }
+  /* 抽屉打开时遮罩 */
+  body.nav-open::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 40;
+  }
+
+  /* ----- 主内容紧凑 ----- */
+  main { flex: 1; min-height: 0; }
+  #right {
+    padding: 10px 12px 80px !important;
+  }
+
+  /* ----- 章节横幅 ----- */
+  .ch-banner {
+    padding: 12px 14px !important;
+    border-radius: 6px !important;
+    margin-bottom: 10px !important;
+  }
+  .ch-banner h2 { font-size: 16px !important; }
+  .ch-banner .desc { font-size: 12.5px !important; line-height: 1.5 !important; }
+  .ch-banner .stats { gap: 8px !important; font-size: 12px !important; }
+  .ch-banner .stats span { padding: 2px 7px !important; }
+
+  /* ----- 题目卡片 ----- */
+  .q-card {
+    padding: 10px 12px !important;
+    margin-bottom: 8px !important;
+    border-radius: 6px !important;
+  }
+  .q-no { font-size: 11px !important; padding: 1px 6px !important; }
+  .q-no .q-seq { font-size: 10px !important; padding: 1px 5px !important; }
+  .q-card .q-stem { font-size: 14px !important; line-height: 1.6 !important; }
+  .q-opt {
+    padding: 5px 10px !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    margin: 2px 0 !important;
+  }
+  .q-opt .ol { min-width: 18px !important; }
+
+  /* ----- 题干/选项翻译 ----- */
+  .stem-cn {
+    font-size: 12.5px !important;
+    padding: 5px 8px !important;
+    margin: 4px 0 6px !important;
+  }
+  .opt-cn { font-size: 11.5px !important; }
+
+  /* ----- 题卡按钮 ----- */
+  .q-actions { gap: 4px !important; margin-top: 8px !important; padding-top: 6px !important; }
+  .q-actions .ans-bar { font-size: 13px !important; padding: 3px 8px !important; }
+  .q-actions .ans-bar b { font-size: 14px !important; }
+  .q-actions .act-btn { padding: 3px 9px !important; font-size: 11.5px !important; }
+
+  .q-notes { padding: 8px !important; margin-top: 8px !important; }
+  .q-notes textarea { font-size: 12px !important; min-height: 40px !important; }
+
+  .q-tag { font-size: 10px !important; padding: 0 5px !important; }
+
+  /* ----- 左侧菜单 ----- */
+  #left .left-head { padding: 6px 10px !important; }
+  #left .left-head .t { font-size: 12.5px !important; }
+  #left .left-head .btn-mini { padding: 2px 7px !important; font-size: 11px !important; }
+  #kpTree .ch-h { padding: 5px 12px !important; font-size: 12.5px !important; }
+  #kpTree .kp { padding: 5px 12px 5px 28px !important; font-size: 12px !important; }
+  #kpTree .ch-all { padding: 5px 12px 5px 20px !important; font-size: 12.5px !important; }
+
+  /* ----- 回到顶部 ----- */
+  #backTop {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 17px !important;
+  }
+
+  /* ----- 空状态 ----- */
+  .empty { padding: 50px 16px !important; }
+  .empty h3 { font-size: 16px !important; }
+  .empty p { font-size: 13px !important; }
+
+  /* ----- 导入对话框 ----- */
+  #impDialog { width: 92vw !important; }
+  #impDialog .id-head { padding: 10px 12px !important; }
+  #impDialog .id-head .t { font-size: 14px !important; }
+  #impDialog .id-body { padding: 10px 12px !important; font-size: 12.5px !important; }
+
+  /* ----- 可点击区域 ----- */
+  button, .btn, .btn-mini, #tabs button, .q-opt, .q-tag, #left .ch-h {
+    -webkit-tap-highlight-color: rgba(43,47,54,0.2);
+  }
+}
+
+/* ===== 更小屏幕（≤480px） ===== */
+@media (max-width: 480px) {
+  header { padding: 6px 10px !important; }
+  header h1 { font-size: 13px !important; }
+  .btn { padding: 3px 7px !important; font-size: 11px !important; }
+  .zoom-ctl button { padding: 1px 5px !important; font-size: 12px !important; }
+  .zoom-ctl .zv { min-width: 28px !important; font-size: 10px !important; }
+  #tabs button { padding: 6px 10px !important; font-size: 12px !important; }
+  #right { padding: 8px 10px 80px !important; }
+  .ch-banner { padding: 10px 12px !important; }
+  .ch-banner h2 { font-size: 15px !important; }
+  .q-card { padding: 8px 10px !important; }
+  .q-card .q-stem { font-size: 13.5px !important; }
+  .q-opt { font-size: 12.5px !important; padding: 4px 8px !important; }
+}
+
+/* ===== 📂 导航切换按钮：默认隐藏（桌面端） ===== */
+#btnNavToggle { display: none; }
+
 /* 单词高亮 */
 .word{cursor:pointer;border-radius:2px;padding:0 1px}
 .word:hover{outline:1px dashed #b6c5d8}
@@ -208,6 +416,7 @@ mark{background:#fff8e1;color:#7a5b00;padding:0 2px;border-radius:2px}
 
 <header>
   <h1>📚 GMDSS 英语阅读 <span class="badge">827 题 · 18 知识点</span></h1>
+  <button class="btn" id="btnNavToggle" title="显示题目导航">📂 导航</button>
   <div class="ctrl">
     <div class="search-box">
       <span class="icon">🔍</span>
@@ -1015,6 +1224,66 @@ document.addEventListener("keydown", function(e){
 /* ============ 初始化 ============ */
 renderKpTree();
 renderQuestions();
+
+/* ============ 📱 移动端：导航抽屉切换 ============ */
+(function setupNavToggle(){
+  var btnToggle = document.getElementById('btnNavToggle');
+  var left = document.getElementById('left');
+  if (!btnToggle || !left) return;
+
+  function autoCollapse() {
+    if (window.innerWidth <= 768) {
+      left.classList.add('hidden-nav');
+      document.body.classList.remove('nav-open');
+      btnToggle.textContent = '📂 导航';
+    } else {
+      left.classList.remove('hidden-nav');
+      document.body.classList.remove('nav-open');
+    }
+  }
+  autoCollapse();
+  var _resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(autoCollapse, 150);
+  });
+
+  btnToggle.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.innerWidth > 768) return;
+    if (left.classList.contains('hidden-nav')) {
+      left.classList.remove('hidden-nav');
+      document.body.classList.add('nav-open');
+      btnToggle.textContent = '✕ 关闭';
+    } else {
+      left.classList.add('hidden-nav');
+      document.body.classList.remove('nav-open');
+      btnToggle.textContent = '📂 导航';
+    }
+  });
+
+  // 遮罩点击关闭（点击 #right 或其他区域）
+  document.body.addEventListener('click', function(e){
+    if (!document.body.classList.contains('nav-open')) return;
+    if (!left.contains(e.target) && e.target !== btnToggle && !btnToggle.contains(e.target)) {
+      left.classList.add('hidden-nav');
+      document.body.classList.remove('nav-open');
+      btnToggle.textContent = '📂 导航';
+    }
+  });
+
+  // 点击左侧导航项后自动收起（仅移动端）
+  left.addEventListener('click', function(e){
+    if (window.innerWidth <= 768) {
+      if (e.target.closest('.kp') || e.target.closest('.ch-all')) {
+        left.classList.add('hidden-nav');
+        document.body.classList.remove('nav-open');
+        btnToggle.textContent = '📂 导航';
+      }
+    }
+  });
+})();
 
 }catch(e){
   
