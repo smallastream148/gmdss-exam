@@ -1,0 +1,268 @@
+[
+  {
+    "sym": "A",
+    "word": "Alpha",
+    "pron": "AL-fah",
+    "category": "letter",
+    "audio": "audio/codeyu/A-Alpha.mp3"
+  },
+  {
+    "sym": "B",
+    "word": "Bravo",
+    "pron": "BRAH-voh",
+    "category": "letter",
+    "audio": "audio/codeyu/B-Bravo.mp3"
+  },
+  {
+    "sym": "C",
+    "word": "Charlie",
+    "pron": "CHAR-lee",
+    "category": "letter",
+    "audio": "audio/codeyu/C-Charlie.mp3"
+  },
+  {
+    "sym": "D",
+    "word": "Delta",
+    "pron": "DELL-tah",
+    "category": "letter",
+    "audio": "audio/codeyu/D-Delta.mp3"
+  },
+  {
+    "sym": "E",
+    "word": "Echo",
+    "pron": "ECK-oh",
+    "category": "letter",
+    "audio": "audio/codeyu/E-Echo.mp3"
+  },
+  {
+    "sym": "F",
+    "word": "Foxtrot",
+    "pron": "FOKS-trot",
+    "category": "letter",
+    "audio": "audio/codeyu/F-Foxtrot.mp3"
+  },
+  {
+    "sym": "G",
+    "word": "Golf",
+    "pron": "GOLF",
+    "category": "letter",
+    "audio": "audio/codeyu/G-Golf.mp3"
+  },
+  {
+    "sym": "H",
+    "word": "Hotel",
+    "pron": "ho-TELL",
+    "category": "letter",
+    "audio": "audio/codeyu/H-Hotel.mp3"
+  },
+  {
+    "sym": "I",
+    "word": "India",
+    "pron": "IN-dee-ah",
+    "category": "letter",
+    "audio": "audio/codeyu/I-India.mp3"
+  },
+  {
+    "sym": "J",
+    "word": "Juliett",
+    "pron": "JEW-lee-ett",
+    "category": "letter",
+    "audio": "audio/codeyu/J-Juliett.mp3"
+  },
+  {
+    "sym": "K",
+    "word": "Kilo",
+    "pron": "KEY-loh",
+    "category": "letter",
+    "audio": "audio/codeyu/K-Kilo.mp3"
+  },
+  {
+    "sym": "L",
+    "word": "Lima",
+    "pron": "LEE-mah",
+    "category": "letter",
+    "audio": "audio/codeyu/L-Lima.mp3"
+  },
+  {
+    "sym": "M",
+    "word": "Mike",
+    "pron": "MIKE",
+    "category": "letter",
+    "audio": "audio/codeyu/M-Mike.mp3"
+  },
+  {
+    "sym": "N",
+    "word": "November",
+    "pron": "no-VEM-ber",
+    "category": "letter",
+    "audio": "audio/codeyu/N-November.mp3"
+  },
+  {
+    "sym": "O",
+    "word": "Oscar",
+    "pron": "OSS-cah",
+    "category": "letter",
+    "audio": "audio/codeyu/O-Oscar.mp3"
+  },
+  {
+    "sym": "P",
+    "word": "Papa",
+    "pron": "pah-PAH",
+    "category": "letter",
+    "audio": "audio/codeyu/P-Papa.mp3"
+  },
+  {
+    "sym": "Q",
+    "word": "Quebec",
+    "pron": "keh-BECK",
+    "category": "letter",
+    "audio": "audio/codeyu/Q-Quebec.mp3"
+  },
+  {
+    "sym": "R",
+    "word": "Romeo",
+    "pron": "ROW-me-oh",
+    "category": "letter",
+    "audio": "audio/codeyu/R-Romeo.mp3"
+  },
+  {
+    "sym": "S",
+    "word": "Sierra",
+    "pron": "see-AIR-ah",
+    "category": "letter",
+    "audio": "audio/codeyu/S-Sierra.mp3"
+  },
+  {
+    "sym": "T",
+    "word": "Tango",
+    "pron": "TANG-go",
+    "category": "letter",
+    "audio": "audio/codeyu/T-Tango.mp3"
+  },
+  {
+    "sym": "U",
+    "word": "Uniform",
+    "pron": "YOU-nee-form",
+    "category": "letter",
+    "audio": "audio/codeyu/U-Uniform.mp3"
+  },
+  {
+    "sym": "V",
+    "word": "Victor",
+    "pron": "VIK-tah",
+    "category": "letter",
+    "audio": "audio/codeyu/V-Victor.mp3"
+  },
+  {
+    "sym": "W",
+    "word": "Whisky",
+    "pron": "WISS-key",
+    "category": "letter",
+    "audio": "audio/codeyu/W-Whisky.mp3"
+  },
+  {
+    "sym": "X",
+    "word": "X-ray",
+    "pron": "ECKS-ray",
+    "category": "letter",
+    "audio": "audio/codeyu/X-X-ray.mp3"
+  },
+  {
+    "sym": "Y",
+    "word": "Yankee",
+    "pron": "YANG-key",
+    "category": "letter",
+    "audio": "audio/codeyu/Y-Yankee.mp3"
+  },
+  {
+    "sym": "Z",
+    "word": "Zulu",
+    "pron": "ZOO-loo",
+    "category": "letter",
+    "audio": "audio/codeyu/Z-Zulu.mp3"
+  },
+  {
+    "sym": "0",
+    "word": "Nadazero",
+    "pron": "nah-dah-ZAY-roh",
+    "category": "number",
+    "audio": "audio/codeyu/0-Nadazero.mp3"
+  },
+  {
+    "sym": "1",
+    "word": "Unaone",
+    "pron": "oo-nah-WUN",
+    "category": "number",
+    "audio": "audio/codeyu/1-Unaone.mp3"
+  },
+  {
+    "sym": "2",
+    "word": "Bissotwo",
+    "pron": "BISS-oh-TOO",
+    "category": "number",
+    "audio": "audio/codeyu/2-Bissotwo.mp3"
+  },
+  {
+    "sym": "3",
+    "word": "Terrathree",
+    "pron": "tair-rah-THREE",
+    "category": "number",
+    "audio": "audio/codeyu/3-Terrathree.mp3"
+  },
+  {
+    "sym": "4",
+    "word": "Kartefour",
+    "pron": "kar-tay-FOUR",
+    "category": "number",
+    "audio": "audio/codeyu/4-Kartefour.mp3"
+  },
+  {
+    "sym": "5",
+    "word": "Pantafive",
+    "pron": "pan-tah-FIVE",
+    "category": "number",
+    "audio": "audio/codeyu/5-Pantafive.mp3"
+  },
+  {
+    "sym": "6",
+    "word": "Soxisix",
+    "pron": "SOCK-see-SIX",
+    "category": "number",
+    "audio": "audio/codeyu/6-Soxisix.mp3"
+  },
+  {
+    "sym": "7",
+    "word": "Setteseven",
+    "pron": "set-tay-SEV-en",
+    "category": "number",
+    "audio": "audio/codeyu/7-Setteseven.mp3"
+  },
+  {
+    "sym": "8",
+    "word": "Oktoeight",
+    "pron": "ok-toh-AIT",
+    "category": "number",
+    "audio": "audio/codeyu/8-Oktoeight.mp3"
+  },
+  {
+    "sym": "9",
+    "word": "Novenine",
+    "pron": "no-veh-NINE",
+    "category": "number",
+    "audio": "audio/codeyu/9-Novenine.mp3"
+  },
+  {
+    "sym": ".",
+    "word": "Decimal",
+    "pron": "DEC-ee-mal",
+    "category": "special",
+    "audio": "audio/codeyu/Decimal-Decimal.mp3"
+  },
+  {
+    "sym": "·",
+    "word": "Stop",
+    "pron": "STOP",
+    "category": "special",
+    "audio": "audio/codeyu/Stop-Stop.mp3"
+  }
+]

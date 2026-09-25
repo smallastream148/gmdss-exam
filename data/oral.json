@@ -1,0 +1,374 @@
+[
+  {
+    "id": 1,
+    "category": "oral",
+    "question": "Send a MAYDAY message according to the given information. Ship's name: SOUTH PACIFIC. Call sign: NOPE. Distress position: 22°04′N, 127°08′W. Nature of distress: Aground on the bow. Assistance required: Tug assistance.",
+    "answer": "MAYDAY MAYDAY MAYDAY, This is South Pacific South Pacific South Pacific, call sign November Oscar Papa Echo November Oscar Papa Echo November Oscar Papa Echo. My position is 22°04′N, 127°08′W. I am aground on the bow. I require tug assistance. Over.",
+    "audio_q": "audio/oral_q/01.mp3",
+    "audio_a": "audio/oral_a/01.mp3"
+  },
+  {
+    "id": 2,
+    "category": "oral",
+    "question": "Give an example of a MAYDAY call.",
+    "answer": "MAYDAY MAYDAY MAYDAY, This is MV TAI SHAN TAI SHAN TAI SHAN, call sign Bravo Oscar Sierra Yankee, Bravo Oscar Sierra Kilo, Bravo Oscar Sierra Kilo. I am aground. My position is 12°12′N, 123°12′E. I require tug assistance. OVER.",
+    "audio_q": "audio/oral_q/02.mp3",
+    "audio_a": "audio/oral_a/02.mp3"
+  },
+  {
+    "id": 3,
+    "category": "oral",
+    "question": "TAO YUAN HAI (call sign: BSJX) is in collision with a fishing boat at 30°04′N, 120°20′E and sinking. Please send a distress alert.\nA) The distress signal MAYDAY, which is read for three times.\nB) This is + the name of the vessel in distress, which is read for three times.\nC) The call sign and other identification.\nD) The nature of distress.",
+    "answer": "MAYDAY MAYDAY MAYDAY. This is motor vessel TAO YUAN HAI TAO YUAN HAI TAO YUAN HAI, call sign Bravo Sierra Juliett X-ray Bravo Sierra Juliett X-ray Bravo Sierra Juliett X-ray. MAYDAY TAO YUAN HAI. I have collided with a fishing boat. My position is three zero degrees, zero four minutes north. One two zero degrees, two zero minutes east. I am sinking. I require tug assistance. Over.",
+    "audio_q": "audio/oral_q/03.mp3",
+    "audio_a": "audio/oral_a/03.mp3"
+  },
+  {
+    "id": 4,
+    "category": "oral",
+    "question": "TAOYUANHAI (call sign: BSJX) sends a distress alert. YUQIANG (call sign: BQRS) acknowledges the receipt of the distress alert.\nThe distress signal MAYDAY.\nThe name followed by the call sign of the station sending the distress message and the station acknowledging receipt.",
+    "answer": "MAYDAY MAYDAY MAYDAY. This is MV TAOYUANHAI TAOYUANHAI TAOYUANHAI, call sign Bravo Sierra Juliett X-ray. I am on fire. My position is 12°12′N, 123°12′E. I require firefighting assistance. OVER.\nMV TAOYUANHAI, This is MV YUQIANG YUQIANG YUQIANG. Received MAYDAY. I am coming to your assistance. ETA at your position is one hour. Over.",
+    "audio_q": "audio/oral_q/04.mp3",
+    "audio_a": "audio/oral_a/04.mp3"
+  },
+  {
+    "id": 5,
+    "category": "oral",
+    "question": "MINGHUA (call sign: BJWK) is in distress. YUQIANG (call sign: BBGD) sends rescue information: position at 1430 GMT is 36°04′N, 120°05′E; speed is 18 knots; ETA is 1530 GMT. MINGHUA affirms it.",
+    "answer": "MAYDAY MAYDAY MAYDAY, This is MV MINGHUA MINGHUA MINGHUA, call sign Bravo Juliett Whiskey Kilo Bravo Juliett Whiskey Kilo Bravo Juliett Whiskey Kilo. I am aground, position is 35°05′N, 123°23′E. I require immediate assistance. Over.\nMV MINGHUA, This is MV YUQIANG YUQIANG YUQIANG. I am coming to your assistance. My position is 36°04′N, 120°05′E; speed is 18 knots; ETA at your position is 1530 GMT. Over.",
+    "audio_q": "audio/oral_q/05.mp3",
+    "audio_a": "audio/oral_a/05.mp3"
+  },
+  {
+    "id": 6,
+    "category": "oral",
+    "question": "YINHE (call sign: BOLR) is on fire, has dangerous cargo on board at 36°N, 120°20′E, and sends a distress alert at 1400 GMT. YUQIANG (call sign: BQRS) relays the distress call to all stations at 1415 GMT.",
+    "answer": "MAYDAY MAYDAY MAYDAY, This is YINHE YINHE YINHE, call sign Bravo Oscar Lima Romeo Bravo Oscar Lima Romeo Bravo Oscar Lima Romeo. I am on fire, my position is 36°N, 120°05′E, I have dangerous cargo on board. Over.\nMAYDAY RELAY MAYDAY RELAY MAYDAY RELAY, This is YUQIANG. Following received from YINHE MAYDAY YINHE, call sign Bravo Oscar Lima Romeo, time 1415 GMT, MAYDAY YINHE Bravo Oscar Lima Romeo fire in position 36°04′N, 120°05′E, having dangerous cargo on board. MAYDAY RELAY YUQIANG. OVER.",
+    "audio_q": "audio/oral_q/06.mp3",
+    "audio_a": "audio/oral_a/06.mp3"
+  },
+  {
+    "id": 7,
+    "question": "Send a PAN-PAN message according to the given information. Ship's name: Snow White; Call sign ALMI; Distress position: 22°04′N, 127°08′W; Nature of distress: breakdown of main engine; Assistance required: tug assistance.",
+    "answer": "PANPAN PANPAN PANPAN, This is Snow White Snow White Snow White, call sign Alpha Lima Mike India Alpha Lima Mike India Alpha Lima Mike India. My position is 22°04′N, 127°08′W. My main engine is broken down. I require tug assistance. Over.",
+    "audio_a": "audio/oral_a/07.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 8,
+    "question": "YUYING (call sign: YUYG)'s main engine is broken down severely. SHANGHAI RADIO will send a tug for her. They are going on the urgency traffic. The tug will be made fast on port bow.",
+    "answer": "PANPAN PANPAN PANPAN, This is MV YUYING YUYING YUYING, call sign Yankee Uniform Yankee Golf. My main engine is broken down severely. My position is 22°04′N, 127°08′E. I require tug assistance. Over.\nMV YUYING, This is SHANGHAI RADIO, PANPAN received. A tug is coming to your assistance. Please get towing line ready. The tug will be made fast on your port bow. Keep watch on channel 16. Over.\nPANPAN SHANGHAI RADIO, This is MV YUYING. I will keep watch on channel 16. Out.",
+    "audio_a": "audio/oral_a/08.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 9,
+    "question": "YUQING (call sign: YOBK) has a man ill and is ready for helicopter. She will identify herself by directing signal lamp at helicopter. They are going on the urgency traffic.",
+    "answer": "PANPAN PANPAN PANPAN, This is MV YUQING YUQING YUQING, call sign Yankee Oscar Bravo Kilo Yankee Oscar Bravo Kilo Yankee Oscar Bravo Kilo. I have a man seriously ill. I require a helicopter to transfer. My position is 22°04′N, 127°08′E. Over.\nMV YUQING, This is Helicopter. I am coming to your assistance. Please show signal lamp for identification. Over.\nHelicopter, This is MV YUQING. Roger. I will identify myself by directing signal lamp. Landing party is ready to receive you. You may land on fore deck. Out.",
+    "audio_a": "audio/oral_a/09.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 10,
+    "question": "HUATONGHAI (call sign: HTOG) has a man overboard at 38°24′N, 118°05′E, requiring all stations to keep a sharp lookout. Please make an urgency call.",
+    "answer": "PANPAN PANPAN PANPAN, This is MV HUATONGHAI HUATONGHAI HUATONGHAI, call sign Hotel Tango Oscar Golf Hotel Tango Oscar Golf Hotel Tango Oscar Golf. All stations. I have a man overboard. My position is 38°24′N, 118°05′E. Please keep a sharp lookout. Over.",
+    "audio_a": "audio/oral_a/10.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 11,
+    "question": "If you are the operator onboard a chemical tanker named 'Iceland Poppy', you have seen a mine in position 47°25′N, 45°21′W drifting at speed 0.5 knot, direction 090°. Please warn vessels in your vicinity.",
+    "answer": "SECURITE SECURITE SECURITE, This is Poppy Poppy Poppy. Attention all ships. Navigational warning: There is a floating mine in position 47°25′N, 45°21′W. My speed is 0.5 knot, direction 090°. It is dangerous to navigation. Vessels in my vicinity please navigate with caution and keep clear of it. Over.",
+    "audio_q": "audio/oral_q/11.mp3",
+    "audio_a": "audio/oral_a/11.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 12,
+    "question": "If you are the operator onboard a cargo ship named COTON TREE, your vessel is disabled at position 17°25′N, 35°21′W. Please warn vessels in your vicinity to keep clear. (Drifting speed: 2 knots, direction: 090°)",
+    "answer": "SECURITE SECURITE SECURITE, Attention all ships. This is MV COTON TREE COTON TREE COTON TREE. Navigational warning: I am disabled. My position is 17°25′N, 35°21′W. Drifting speed is 2 knots, direction is 090°. Vessels in vicinity navigate with caution and keep clear of me. Out.",
+    "audio_q": "audio/oral_q/12.mp3",
+    "audio_a": "audio/oral_a/12.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 13,
+    "question": "DONGTINGHU (call sign: BXYZ) is one mile south of buoy No.10. Her main engine is broken down and is anchoring in the northbound traffic lane. Requests ships keep clear. Please make a safety call to all ships.",
+    "answer": "SECURITE SECURITE SECURITE, All ships. This is MV DONGTINGHU DONGTINGHU DONGTINGHU. My call sign is Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu. My main engine is broken down. My position is one mile south of buoy No.10. I am anchoring in the northbound traffic lane. Vessels in vicinity please navigate with caution and keep clear of me. Over.",
+    "audio_q": "audio/oral_q/13.mp3",
+    "audio_a": "audio/oral_a/13.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 14,
+    "question": "There is floating ice in position 47°00′N, 50°00′W. It is dangerous to navigation. BANKS RADIO advises YUQIANG (call sign: YUQI) to keep clear. YUQIANG will do as advised. Please make a safety communication.",
+    "answer": "SECURITE SECURITE SECURITE, This is BANKS RADIO BANKS RADIO BANKS RADIO. Navigational warning: There is floating ice in position 47°00′N, 50°00′W. It is dangerous to navigation. Vessels in vicinity navigate with caution and keep clear of it. Over.\nBANKS RADIO, This is MV YUQIANG, YUQI Yankee Uniform Quebec India. Navigational warning is received. I will follow your advice. Thank you. Out.",
+    "audio_q": "audio/oral_q/14.mp3",
+    "audio_a": "audio/oral_a/14.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 15,
+    "question": "Please describe the procedures of sending distress by using Inmarsat-C Terminals.",
+    "answer": "Firstly, turn on Inmarsat-C power. Secondly, log into the right ocean region. Thirdly, edit distress message and save it. Fourthly, select distress, LES, distress message. Fifthly, send it and wait for RCC response.",
+    "audio_q": "audio/oral_q/15.mp3",
+    "audio_a": "audio/oral_a/15.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 16,
+    "question": "Please describe the alerting procedure in voice in the Inmarsat-F system.",
+    "answer": "Firstly, turn on Inmarsat-F power. Secondly, select ocean region and wait for ready. Thirdly, select nearest CES. Fourthly, press distress button, wait for RCC response. Fifthly, end of communication.",
+    "audio_q": "audio/oral_q/16.mp3",
+    "audio_a": "audio/oral_a/16.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 17,
+    "question": "Please describe the main operational procedures when you call a coast radio station for a telephone link.",
+    "answer": "First, look for the coast station detail. Second, turn on VHF or MF or HF, set RT mode, input RT channel and tune. Third, if the coast station is free, I will contact the coast station by RT. Fourth, end of communication.",
+    "audio_q": "audio/oral_q/17.mp3",
+    "audio_a": "audio/oral_a/17.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 18,
+    "question": "Please describe the main operational procedure and cautions should be taken when you call a coast radio station telephone link.",
+    "answer": "First, I should know the position of the ship. Then choose the appropriate working band. If I use VHF, I will use G3E mode. If I use MF or HF, I will use J3E mode.",
+    "audio_q": "audio/oral_q/18.mp3",
+    "audio_a": "audio/oral_a/18.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 19,
+    "question": "If you are the operator onboard a bulk vessel, anchoring at position 26°45′S, 104°17′W. Please describe the procedures of calling Dalian Pilot Station. (Call-and-reply channel: 16, working channel: 4. Ship's name: Sunflower)",
+    "answer": "I will use VHF channel 16 to contact Dalian Pilot Station, and report my ship's name, call sign, LOA, draft, air draft, position, speed, course and kind of assistance.",
+    "audio_q": "audio/oral_q/19.mp3",
+    "audio_a": "audio/oral_a/19.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 20,
+    "question": "If you are the operator onboard a bulk vessel which is aground at 1645 UTC at position 26°45′S, 104°17′W (in sea area A1). Please describe the alerting procedures in the terrestrial system. (Ship's name: YUFENG)",
+    "answer": "First, turn on VHF, use DSC menu. Second, select call-grounding. Third, input time 1645 UTC and position 26°45′S, 104°17′W. Fourth, press the distress button, then use radiotelephone on Channel 16.",
+    "audio_q": "audio/oral_q/20.mp3",
+    "audio_a": "audio/oral_a/20.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 21,
+    "question": "Describe the procedures of pilotage: a) the general procedures for pilot request; b) the preparations for pilot; c) the general rules for piloting.",
+    "answer": "I will contact the pilot station by VHF. Rig the pilot ladder, hoist flag G. During pilotage, the master and the watch officer must follow the pilot. The master and pilot shall exchange information and the watch officer shall cooperate closely with the pilot.",
+    "audio_q": "audio/oral_q/21.mp3",
+    "audio_a": "audio/oral_a/21.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 22,
+    "question": "Describe the procedures before leaving a port: a) preparations from the bridge; b) preparations from the engine; c) preparations from the deck.",
+    "answer": "Bridge: give orders to heave up anchor and let go mooring. Engine: stand by engine. Deck: get ready for heaving up anchor and letting go mooring lines.",
+    "audio_q": "audio/oral_q/22.mp3",
+    "audio_a": "audio/oral_a/22.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 23,
+    "question": "As an officer on duty, how do you keep watch while the ship is at anchor?",
+    "answer": "As an officer on duty, I should determine and plot the ship's position on the chart. Check the ship is remaining securely at anchor. The duty officer shall notify master as soon as possible in case of dragging. Finally, the accident shall be kept in the logbook.",
+    "audio_q": "audio/oral_q/23.mp3",
+    "audio_a": "audio/oral_a/23.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 24,
+    "question": "Describe the proper way of using VHF.",
+    "answer": "When you operate VHF, you should choose a correct channel and use the transmitting power as low as possible. If you want to speak, you should push the button. If you want to listen, you should release the button.",
+    "audio_q": "audio/oral_q/24.mp3",
+    "audio_a": "audio/oral_a/24.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 25,
+    "question": "Please describe the method to protect distress and safety frequency.",
+    "answer": "Try not to use the distress and safety frequency as much as possible. Low priority communication should be avoided on distress and safety frequency. Other than routine message can only be sent on distress frequency with approval.",
+    "audio_q": "audio/oral_q/25.mp3",
+    "audio_a": "audio/oral_a/25.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 26,
+    "question": "Please describe the situation that vessels must relay distress alert.",
+    "answer": "It is to alert the ships in the vicinity of distress ship. Other ships receive the distress alert but no coast station acknowledge. We must relay to the coast station.",
+    "audio_q": "audio/oral_q/26.mp3",
+    "audio_a": "audio/oral_a/26.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 27,
+    "question": "Please describe the inspection requirements for VHF (including two-way VHF), MF/HF installation DSC.",
+    "answer": "Check the batteries, check the AC power, check self-test: VHF MF and HF once a day, check call test: VHF MF and HF test call once a week.",
+    "audio_q": "audio/oral_q/27.mp3",
+    "audio_a": "audio/oral_a/27.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 28,
+    "question": "Please briefly describe the inspection items for operation performance in PSC. (Or: please describe the inspection and requirements for documents in PSC.)",
+    "answer": "First, check the certificates. Second, check the equipment: working frequency on two-way VHF, SART, EPIRB and NAVTEX battery, location, mounting. Third, check the energy and antenna (main and reserve).",
+    "audio_q": "audio/oral_q/28.mp3",
+    "audio_a": "audio/oral_a/28.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 29,
+    "question": "Please describe the main operational procedures and cautions should be taken when you call a coast radio station in radio telephony service.",
+    "answer": "Please refer to question 20 for the answer.",
+    "audio_q": "audio/oral_q/29.mp3",
+    "audio_a": "audio/oral_a/29.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 30,
+    "question": "Describe how to coordinate with the give-way vessel by VHF in crossing situation. Stand-on vessel MV GATE, course 030 degrees, speed 15 knots. Give-way vessel MV STAR, course 170 degrees, 18 knots, pass port to port. How to change VHF channel? How to identify the calling vessel? How to coordinate the passing actions in crossing situation?",
+    "answer": "I will contact the give-way vessel by VHF channel one three. Report my course and speed. Advise give-way vessel to reduce or slow down speed, change course, and pass port to port.",
+    "audio_q": "audio/oral_q/30.mp3",
+    "audio_a": "audio/oral_a/30.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 31,
+    "question": "Describe the actions you will take when you, an operator onboard, receive an alert at sea.",
+    "answer": "First, I will report to the master. Second, set the distress communication frequency according to the DSC alert frequency. Third, take part in distress communication. Fourth, record the distress communication in logbook.",
+    "audio_q": "audio/oral_q/31.mp3",
+    "audio_a": "audio/oral_a/31.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 32,
+    "question": "You receive a distress relay for a vessel within your vicinity. What actions would you take?",
+    "answer": "I should use radiotelephone to acknowledge the distress relay on the same band. Then contact the relay station, and prepare to assist under the master's order.",
+    "audio_q": "audio/oral_q/32.mp3",
+    "audio_a": "audio/oral_a/32.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 33,
+    "question": "If you are the operator onboard a general cargo ship named Fenghuangshan, sailing in sea area A1, you received a DSC alert on channel 70. What will you do with the alert? (Ship's name: Tulip, MMSI: 4631123456, position: 38°21′N, 138°43′E, nature of distress: collision)",
+    "answer": "I will wait for acknowledge from coast station, then keep watch on channel 16. If no coast station acknowledge, I will report to the master and acknowledge the distress alert on VHF channel 16.",
+    "audio_q": "audio/oral_q/33.mp3",
+    "audio_a": "audio/oral_a/33.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 34,
+    "question": "If you are the operator onboard a chemical tanker named Mudanjiang, sailing in A2, you received a DSC alert on 2187.5 kHz. What will you do with the alert? (Ship's name: Jiayuguan, MMSI: 412123456, position: 22°45′N, 114°17′E, nature: explosion)",
+    "answer": "I will wait for acknowledge from coast station. If no coast station acknowledge, I will report to the master, then set MF or HF mode, radiotelephone, keep watch on 2182 kHz.",
+    "audio_q": "audio/oral_q/34.mp3",
+    "audio_a": "audio/oral_a/34.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 35,
+    "question": "If you are the operator onboard a container vessel, you find another vessel is on fire. Describe the actions you take in the terrestrial systems.",
+    "answer": "First, I will wait for acknowledge from coast station. If no coast station acknowledge, relay the distress alert. Second, watch on VHF channel 16, use VHF to contact the distress vessel. Third, report to the master and prepare to assist under the master's order.",
+    "audio_q": "audio/oral_q/35.mp3",
+    "audio_a": "audio/oral_a/35.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 36,
+    "question": "If you are the operator onboard a chemical tanker named Iceland POPPY, you are on fire and the abandon-ship order is given by the captain. Please introduce your task and explain its ingredients in that case.",
+    "answer": "First, send distress alert by SES or DSC. Second, board the lifeboat with logbook, EPIRB, SART, two-way VHF and turn them on. Third, wait for RCC search and rescue.",
+    "audio_q": "audio/oral_q/36.mp3",
+    "audio_a": "audio/oral_a/36.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 37,
+    "question": "Please describe what is urgency communication, the means used to transmit urgency communication, and the cautions should be taken when urgency communication is transmitted by operators at sea. What is safety communication?",
+    "answer": "Urgency communication means very urgent message. It includes medical advice, assistance and so on. It can only transmit under the master's order. Urgency signal is pan-pan. Safety communication means messages about safety of navigation.",
+    "audio_q": "audio/oral_q/37.mp3",
+    "audio_a": "audio/oral_a/37.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 38,
+    "question": "What is a distress alert?",
+    "answer": "A distress alert is the rapid and successful reporting of a distress incident to RCC.",
+    "audio_q": "audio/oral_q/38.mp3",
+    "audio_a": "audio/oral_a/38.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 39,
+    "question": "Describe watch keeping arrangements in SOLAS Chapter IV of 1988 amendment.",
+    "answer": "SOLAS ship should watch keeping: VHF DSC on channel 70; MF DSC on 2187.5 kHz; MF and HF DSC on 2187.5 kHz, 8414.5 kHz and one of 6312 kHz, 12577 kHz, 16804.5 kHz; Inmarsat SES should receive shore-to-ship distress alert.",
+    "audio_q": "audio/oral_q/39.mp3",
+    "audio_a": "audio/oral_a/39.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 40,
+    "question": "Please introduce GMDSS in English. 1) The history of GMDSS. 2) Main function of GMDSS. 3) The combination of GMDSS.",
+    "answer": "The GMDSS was made mandatory on 1st Feb. 1999. The main functions are Distress alerting, SAR communication, On-scene communication and so on.",
+    "audio_q": "audio/oral_q/40.mp3",
+    "audio_a": "audio/oral_a/40.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 41,
+    "question": "What information is in a DSC distress alert?",
+    "answer": "Category, MMSI of the ship in distress, Nature of distress, Position of distress, The valid time of the position in UTC, Method of subsequent communication.",
+    "audio_q": "audio/oral_q/41.mp3",
+    "audio_a": "audio/oral_a/41.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 42,
+    "question": "NAVTEX is used for receiving what type of information?",
+    "answer": "Maritime Safety Information, such as: navigational warnings, meteorological warnings, ice reports, SAR information, pilot service messages and so on.",
+    "audio_q": "audio/oral_q/42.mp3",
+    "audio_a": "audio/oral_a/42.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 43,
+    "question": "What daily, weekly and monthly checks should you perform about GMDSS?",
+    "answer": "Daily: DSC self-test. Weekly: VHF, MF and HF test call. Monthly: SART test, EPIRB test.",
+    "audio_q": "audio/oral_q/43.mp3",
+    "audio_a": "audio/oral_a/43.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 44,
+    "question": "You see a buoy adrift from mooring. What call would you make?",
+    "answer": "Safety call.",
+    "audio_q": "audio/oral_q/44.mp3",
+    "audio_a": "audio/oral_a/44.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 45,
+    "question": "Give an example of a radiotelephone Safety call.",
+    "answer": "Please refer to question 13 for the answer.",
+    "audio_q": "audio/oral_q/45.mp3",
+    "audio_a": "audio/oral_a/45.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 46,
+    "question": "What information is sent in an Inmarsat-C distress alert?",
+    "answer": "Please refer to question 43 for the answer.",
+    "audio_q": "audio/oral_q/46.mp3",
+    "audio_a": "audio/oral_a/46.mp3",
+    "category": "oral"
+  },
+  {
+    "id": 47,
+    "question": "Explain the following: 2182 kHz, 156.8 MHz, 406 MHz, 9 GHz.",
+    "answer": "Two one eight two kHz: MF radiotelephony distress call. One five six point eight MHz: VHF radiotelephony distress call. Four zero six MHz: EPIRB alerting. Nine GHz: SART locating.",
+    "audio_q": "audio/oral_q/47.mp3",
+    "audio_a": "audio/oral_a/47.mp3",
+    "category": "oral"
+  }
+]

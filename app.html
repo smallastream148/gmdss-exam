@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GMDSS 英语听力与会话 · 互动讲评</title>
+<style>
+/* === 配色(混合方案) === */
+:root{
+  --bg-page:#f0f1f3;
+  --bg-card:#ffffff;
+  --bg-cream:#F5F1E8;
+  --text:#1f2328;
+  --text-2:#57606a;
+  --text-mute:#7f8c8d;
+  --primary:#154360;
+  --primary-2:#3a5a7a;
+  --accent:#D4AF37;
+  --border:#c9ced4;
+  --divider:#e1e4e8;
+  --quote-bg:#f6f8fa;
+  --quote-border:#8a95a1;
+  --mark-bg:#fff8e1;
+  --mark-text:#7a5b00;
+  --good:#27AE60;
+  --warn:#c05621;
+  --danger:#b02a2a;
+}
+
+/* === 基础 === */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:"Microsoft YaHei","Inter",Arial,sans-serif;
+  background:var(--bg-page);color:var(--text);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+/* === 顶部 === */
+header{
+  background:var(--bg-card);
+  border-bottom:2px solid var(--primary);
+  padding:10px 18px 0;
+  flex-shrink:0;
+}
+.h-row{display:flex;align-items:center;justify-content:space-between}
+h1{font-size:22px;color:var(--primary);letter-spacing:1px}
+.h-meta{font-size:14px;color:var(--text-2);margin-right:12px}
+.zoom-ctl{display:flex;align-items:center;gap:4px}
+.zoom-ctl button{
+  border:1px solid var(--border);background:var(--bg-page);
+  border-radius:5px;cursor:pointer;font-size:15px;
+  padding:3px 11px;color:var(--text);font-weight:700;
+}
+.zoom-ctl button:hover{background:var(--divider)}
+.zoom-ctl button:active{background:var(--primary);color:#fff;border-color:var(--primary)}
+#zoomVal{
+  font-size:13px;color:var(--text-2);
+  min-width:44px;text-align:center;cursor:pointer;
+}
+#zoomVal:hover{color:var(--accent);font-weight:700}
+
+/* === 标签栏 === */
+#tabs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+#tabs button{
+  border:1px solid var(--border);background:var(--bg-page);
+  color:var(--text);padding:7px 18px;font-size:15px;
+  cursor:pointer;border-radius:6px 6px 0 0;
+  font-weight:500;
+}
+#tabs button:hover{background:var(--bg-cream)}
+#tabs button.active{
+  background:var(--primary);color:#fff;
+  border-color:var(--primary);font-weight:700;
+}
+#tabs .tab-count{
+  display:inline-block;background:var(--accent);
+  color:#fff;font-size:11px;font-weight:700;
+  padding:1px 6px;border-radius:8px;margin-left:4px;
+}
+#tabs button.active .tab-count{background:#fff;color:var(--primary)}
+
+/* === 操作提示 === */
+#hint{
+  background:var(--mark-bg);border-bottom:1px solid var(--divider);
+  padding:5px 18px;font-size:12px;color:var(--mark-text);
+  flex-shrink:0;
+}
+#hint b{color:var(--warn)}
+
+/* === 主内容 === */
+#main{flex:1;overflow-y:auto;padding:18px;background:var(--bg-page)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* === 卡片 === */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 18px;
+  margin-bottom:12px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.03);
+}
+.card-num{
+  display:inline-block;font-size:13px;font-weight:700;
+  color:#fff;background:var(--primary);
+  border-radius:4px;padding:2px 10px;margin-bottom:6px;
+}
+.card-title{
+  font-size:16px;font-weight:700;
+  color:var(--primary);
+  margin-bottom:8px;
+}
+.card-text{
+  font-size:15px;line-height:1.85;color:var(--text);
+  white-space:pre-wrap;
+}
+.card-text .speakable{cursor:pointer;border-bottom:1px dotted var(--border)}
+.card-text .speakable:hover{background:var(--mark-bg)}
+
+/* === 音频按钮 === */
+.audio-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--primary);color:#fff;
+  border:none;border-radius:5px;
+  padding:5px 12px;font-size:13px;cursor:pointer;
+  margin-right:6px;
+}
+.audio-btn:hover{background:var(--primary-2)}
+.audio-btn.playing{background:var(--accent);color:var(--primary)}
+.audio-btn .ic{font-size:14px}
+
+/* === 答案区 === */
+.ans-toggle{
+  display:block;text-align:center;font-size:14px;font-weight:700;
+  color:var(--primary);background:var(--bg-cream);
+  border:1px dashed var(--accent);border-radius:6px;
+  padding:8px;margin-top:10px;cursor:pointer;
+}
+.ans-toggle:hover{background:var(--bg-page)}
+.ans-toggle.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ans-body{
+  display:none;
+  margin-top:10px;padding:12px 14px;
+  background:var(--quote-bg);
+  border-left:4px solid var(--accent);
+  border-radius:0 6px 6px 0;
+}
+.ans-body.on{display:block}
+.ans-body .card-text{font-size:14.5px;line-height:1.85;color:var(--text)}
+
+/* === 码语卡片(网格) === */
+.cy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cy-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--bg-cream);
+  border:1px solid var(--divider);border-radius:6px;
+}
+.cy-sym{
+  flex:0 0 40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--primary);color:var(--accent);
+  border-radius:6px;font-weight:900;font-size:20px;
+  font-family:"Cambria","Times New Roman",serif;
+}
+.cy-info{flex:1;min-width:0}
+.cy-word{font-size:15px;font-weight:700;color:var(--primary)}
+.cy-pron{font-size:12px;color:var(--text-2);font-style:italic}
+
+/* === 答案总览 === */
+.ov-section{margin-bottom:24px}
+.ov-section h2{
+  font-size:18px;color:var(--primary);
+  border-left:4px solid var(--accent);
+  padding-left:10px;margin-bottom:12px;
+}
+.ov-q{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:6px;padding:8px 12px;margin-bottom:6px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.ov-q .ov-num{
+  flex:0 0 36px;font-weight:700;color:var(--primary);font-size:14px;
+}
+.ov-q .ov-q-text{flex:1;font-size:14px;color:var(--text);line-height:1.6}
+.ov-q .ov-q-ans{
+  flex:2;font-size:13.5px;color:var(--text);
+  background:var(--quote-bg);padding:6px 10px;
+  border-radius:4px;border-left:3px solid var(--accent);
+}
+
+/* === 划词翻译浮窗 === */
+#tooltip{
+  position:fixed;z-index:999;
+  background:var(--bg-card);border:2px solid var(--primary);
+  border-radius:6px;padding:8px 12px;
+  font-size:14px;color:var(--text);
+  box-shadow:0 4px 12px rgba(0,0,0,0.18);
+  max-width:300px;
+  display:none;
+}
+#tooltip.show{display:block}
+#tooltip .tt-word{
+  font-weight:700;color:var(--primary);
+  border-bottom:2px solid var(--accent);
+  margin-bottom:4px;
+}
+#tooltip .tt-trans{
+  color:var(--text);line-height:1.5;
+}
+#tooltip .tt-empty{
+  color:var(--text-mute);font-style:italic;
+}
+
+/* === 全局音频控制条 === */
+#audio-ctrl{
+  position:fixed;bottom:14px;right:14px;z-index:998;
+  background:var(--bg-card);
+  border:1px solid var(--primary);
+  border-radius:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+  padding:8px 12px;
+  display:flex;flex-direction:column;gap:6px;
+  min-width:280px;
+  font-size:13px;
+}
+.ctrl-row{
+  display:flex;justify-content:space-between;align-items:center;
+  color:var(--text);
+}
+.ctrl-label{
+  font-weight:700;color:var(--primary);
+  font-size:12px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:180px;
+}
+.ctrl-time{
+  color:var(--text-2);font-size:11px;
+  font-family:monospace;
+}
+.ctrl-bar-wrap{
+  height:4px;background:var(--divider);border-radius:2px;
+  overflow:hidden;
+}
+.ctrl-bar{
+  height:100%;background:var(--accent);
+  width:0;transition:width 0.2s;
+}
+.ctrl-btns{
+  display:flex;gap:6px;justify-content:center;
+}
+.ctrl-btns button{
+  border:1px solid var(--border);
+  background:var(--bg-page);
+  color:var(--text);
+  border-radius:6px;
+  font-size:14px;
+  width:32px;height:28px;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;
+}
+.ctrl-btns button:hover{background:var(--divider)}
+.ctrl-btns button.playing{background:var(--accent);color:var(--primary);border-color:var(--accent)}
+.ctrl-btns button.paused{background:var(--mark-bg);color:var(--mark-text);border-color:var(--accent)}
+
+/* === 状态栏 === */
+#status{
+  position:fixed;bottom:8px;left:50%;transform:translateX(-50%);
+  background:var(--primary);color:#fff;
+  padding:6px 14px;border-radius:20px;
+  font-size:13px;z-index:1000;
+  opacity:0;transition:opacity 0.3s;
+}
+#status.show{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-row">
+    <h1>GMDSS 英语听力与会话 · 互动讲评</h1>
+    <div style="display:flex;align-items:center">
+      <span class="h-meta">GMDSS 通用操作员</span>
+      <div class="zoom-ctl">
+        <button id="zoomOut" title="缩小字体">A−</button>
+        <span id="zoomVal" title="点击恢复 100%">100%</span>
+        <button id="zoomIn" title="放大字体">A+</button>
+      </div>
+    </div>
+  </div>
+  <nav id="tabs">
+    <button data-tab="signal" class="active">信号题 <span class="tab-count" id="count-signal">0</span></button>
+    <button data-tab="codeyu">码语发音 <span class="tab-count" id="count-codeyu">0</span></button>
+    <button data-tab="oral">口述题 <span class="tab-count" id="count-oral">0</span></button>
+    <button data-tab="qa">简答题 <span class="tab-count" id="count-qa">0</span></button>
+  </nav>
+</header>
+
+<div id="hint">
+  <b>操作提示:</b>
+  <b>信号题</b>:选套号 → 听整套 / 听本组 → 在 5 个框里逐个填写 → 自动跳格 →
+  点击"显示答案"自动校对(绿=正确,黄=错误并显示答案) ·
+  <b>其他题型</b>:点击单词查看中文释义 ·
+  <b>▶ 听</b> 播放 TTS · <b>A−/A+</b> 调整字号
+</div>
+
+<main id="main">
+  <div id="tab-signal" class="tab-pane active"></div>
+  <div id="tab-codeyu" class="tab-pane"></div>
+  <div id="tab-oral" class="tab-pane"></div>
+  <div id="tab-qa" class="tab-pane"></div>
+  
+</main>
+
+<div id="tooltip">
+  <div class="tt-word"></div>
+  <div class="tt-trans"></div>
+</div>
+<div id="status"></div>
+
+<!-- 全局音频控制条(右下角浮动) -->
+<div id="audio-ctrl" style="display:none">
+  <div class="ctrl-row">
+    <span id="ctrl-label" class="ctrl-label"></span>
+    <span id="ctrl-time" class="ctrl-time">0s / 0s</span>
+  </div>
+  <div class="ctrl-bar-wrap"><div id="ctrl-bar" class="ctrl-bar"></div></div>
+  <div class="ctrl-btns">
+    <button id="ctrl-pp" title="暂停/继续">⏸</button>
+    <button id="ctrl-stop" title="停止">■</button>
+    <button id="ctrl-restart" title="重播">↺</button>
+  </div>
+</div>
+
+<script>
+// ==================== 全局状态 ====================
+const STATE = {
+  zoom: 100,
+  data: { codeyu: [], oral: [], qa: [], dict: {} },
+  audio: null,
+  currentTab: 'codeyu',
+};
+
+// ==================== 数据加载 ====================
+function loadData() {
+  // 数据已内联,无需 fetch
+  STATE.data = __DATA__;
+  const d = __DATA__;
+  console.log('数据加载完成:', {
+    codeyu: d.codeyu.length, oral: d.oral.length, qa: d.qa.length,
+    dict: Object.keys(d.dict).length
+  });
+}
+
+// ==================== 渲染 ====================
+function renderCodeyu() {
+  const el = document.getElementById('tab-codeyu');
+  const items = STATE.data.codeyu;
+  let html = '<div style="margin-bottom:12px;color:var(--text-2);font-size:13px">点击 ▶ 听发音 · 点击单词看翻译</div>';
+  html += '<div class="cy-grid">';
+  for (const item of items) {
+    html += `
+      <div class="cy-item">
+        <div class="cy-sym">${escapeHtml(item.sym)}</div>
+        <div class="cy-info">
+          <div class="cy-word">${escapeHtml(item.word)}
+            <button class="audio-btn" data-audio="${item.audio}">
+              <span class="ic">▶</span> 听
+            </button>
+          </div>
+          <div class="cy-pron">${escapeHtml(item.pron)}</div>
+        </div>
+      </div>
+    `;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function renderSignal() {
+  const el = document.getElementById('tab-signal');
+  const sets = STATE.data.signal;
+  // 当前选中的套号
+  if (STATE.signalSet === undefined) STATE.signalSet = 1;
+  const setNum = STATE.signalSet;
+  const cur = sets.find(s => s.set === setNum) || sets[0];
+  const totalGroups = cur.groups.length;  // 20
+  const fullAudio = `reference/2.码语/code/${setNum}/pic1.mp3`;
+  const dir = String(setNum).padStart(2, '0');
+
+  // 顶部控制
+  let html = `
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:12px;background:var(--bg-card);border-radius:8px;border:1px solid var(--border)">
+      <span style="font-weight:700;color:var(--primary);font-size:15px">选套:</span>
+      <div id="set-btns" style="display:flex;gap:4px;flex-wrap:wrap">
+  `;
+  for (const s of sets) {
+    const active = s.set === setNum ? 'background:var(--primary);color:#fff;border-color:var(--primary)' : 'background:var(--bg-page);color:var(--text);border-color:var(--border)';
+    html += `<button class="set-btn" data-set="${s.set}" style="padding:4px 12px;border:1px solid;border-radius:5px;cursor:pointer;font-weight:700;font-size:13px;${active}">第 ${s.set} 套</button>`;
+  }
+  html += `
+      </div>
+      <span style="flex:1"></span>
+      <button class="audio-btn" data-audio="${fullAudio}" title="播放整套 20 组">
+        <span class="ic">▶</span> 整套
+      </button>
+      <button id="reveal-ans" style="background:var(--accent);color:var(--primary);border:none;border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer">显示答案</button>
+      <button id="reset-ans" style="background:var(--bg-page);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer">重置</button>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+  `;
+  for (let i = 0; i < totalGroups; i++) {
+    const groupAudio = `audio/signal/set${dir}/g${String(i+1).padStart(2,'0')}.mp3`;
+    html += `
+      <div class="sig-group" data-group="${i+1}" style="background:var(--bg-cream);border:1px solid var(--divider);border-radius:6px;padding:8px 10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:12px;font-weight:700;color:var(--primary)">第 ${String(i+1).padStart(2,'0')} 组</span>
+          <button class="audio-btn" data-audio="${groupAudio}" title="听本组" style="padding:2px 8px;font-size:11px">
+            <span class="ic">▶</span> 本组
+          </button>
+        </div>
+        <div style="display:flex;gap:3px">
+          <input type="text" class="sig-input" data-pos="${i+1}" maxlength="1" style="width:100%;text-align:center;text-transform:uppercase;font-family:monospace;font-size:16px;font-weight:700;color:var(--primary);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:4px 0;outline:none" />
+          <input type="text" class="sig-input" data-pos="${i+1}" maxlength="1" style="width:100%;text-align:center;text-transform:uppercase;font-family:monospace;font-size:16px;font-weight:700;color:var(--primary);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:4px 0;outline:none" />
+          <input type="text" class="sig-input" data-pos="${i+1}" maxlength="1" style="width:100%;text-align:center;text-transform:uppercase;font-family:monospace;font-size:16px;font-weight:700;color:var(--primary);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:4px 0;outline:none" />
+          <input type="text" class="sig-input" data-pos="${i+1}" maxlength="1" style="width:100%;text-align:center;text-transform:uppercase;font-family:monospace;font-size:16px;font-weight:700;color:var(--primary);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:4px 0;outline:none" />
+          <input type="text" class="sig-input" data-pos="${i+1}" maxlength="1" style="width:100%;text-align:center;text-transform:uppercase;font-family:monospace;font-size:16px;font-weight:700;color:var(--primary);background:#fff;border:1.5px solid var(--border);border-radius:4px;padding:4px 0;outline:none" />
+        </div>
+      </div>
+    `;
+  }
+  html += `
+      </div>
+    </div>
+    <div id="signal-status" style="margin-top:14px;text-align:center;color:var(--text-2);font-size:14px">已答 0 / ${totalGroups} 组</div>
+  `;
+  el.innerHTML = html;
+}
+
+function renderOral() {
+  const el = document.getElementById('tab-oral');
+  const items = STATE.data.oral;
+  let html = '';
+  for (const item of items) {
+    html += `
+      <div class="card">
+        <div class="card-num">口述题 ${String(item.id).padStart(2, '0')}</div>
+        <div class="card-title">
+          <button class="audio-btn" data-audio="${item.audio_a}">
+            <span class="ic">▶</span> 听答案
+          </button>
+        </div>
+        <div class="card-text speakable">${escapeHtml(item.question)}</div>
+        <div class="ans-toggle" data-toggle>显示参考答案 ▼</div>
+        <div class="ans-body" data-body>
+          <div class="card-text speakable">${escapeHtml(item.answer)}</div>
+        </div>
+      </div>
+    `;
+  }
+  el.innerHTML = html;
+}
+
+function renderQA() {
+  const el = document.getElementById('tab-qa');
+  const items = STATE.data.qa;
+  let html = '';
+  for (const item of items) {
+    html += `
+      <div class="card">
+        <div class="card-num">问答题 ${String(item.id).padStart(2, '0')}</div>
+        <div class="card-title">
+          <button class="audio-btn" data-audio="${item.audio_q}">
+            <span class="ic">▶</span> 听题
+          </button>
+          <button class="audio-btn" data-audio="${item.audio_a}">
+            <span class="ic">▶</span> 听答案
+          </button>
+        </div>
+        <div class="ans-toggle" data-toggle>显示参考答案 ▼</div>
+        <div class="ans-body" data-body>
+          <div class="card-text speakable">${escapeHtml(item.question)}</div>
+          <div class="card-text" style="margin-top:8px;font-weight:700;color:var(--primary)">→ ${escapeHtml(item.answer)}</div>
+        </div>
+      </div>
+    `;
+  }
+  el.innerHTML = html;
+}
+
+
+
+function renderAll() {
+  renderSignal();
+  renderCodeyu();
+  renderOral();
+  renderQA();
+}
+
+// ==================== 工具 ====================
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function setZoom(z) {
+  // 缩放范围:50% ~ 400%(原 80-160 太小,改为更大)
+  STATE.zoom = Math.max(50, Math.min(400, z));
+  document.getElementById('zoomVal').textContent = STATE.zoom + '%';
+  document.getElementById('main').style.zoom = (STATE.zoom / 100).toFixed(2);
+  // 同步调整 base 字体(zoom 在某些浏览器有兼容问题)
+  document.documentElement.style.fontSize = (16 * STATE.zoom / 100) + 'px';
+}
+
+function revealSignalAnswers() {
+  const setNum = STATE.signalSet || 1;
+  const set = STATE.data.signal.find(s => s.set === setNum);
+  if (!set) return;
+  const inputs = document.querySelectorAll('.sig-input');
+  let correct = 0, wrong = 0;
+  set.groups.forEach((ans, gi) => {
+    const groupInputs = Array.from(inputs).filter(i => i.dataset.pos == (gi+1));
+    if (groupInputs.length === 0) return;
+    for (let ci = 0; ci < 5; ci++) {
+      const inp = groupInputs[ci];
+      if (!inp) continue;
+      const expected = (ans[ci] || '').toUpperCase();
+      const got = (inp.value || '').toUpperCase();
+      if (got === expected && got !== '') {
+        inp.style.background = '#e6f4ea';
+        inp.style.borderColor = '#27AE60';
+        inp.style.color = '#27AE60';
+        correct++;
+      } else {
+        inp.style.background = '#ffe9a8';
+        inp.style.borderColor = '#D4AF37';
+        inp.style.color = '#5c4300';
+        inp.value = expected; // 显示正确答案
+        wrong++;
+      }
+    }
+  });
+  // 更新状态
+  const status = document.getElementById('signal-status');
+  if (status) {
+    status.innerHTML = `已完成 · <span style="color:#27AE60;font-weight:700">正确 ${correct} 字</span> · <span style="color:#C0392B;font-weight:700">错误 ${wrong} 字</span> · 满 100 字`;
+  }
+}
+
+function updateSignalProgress() {
+  const inputs = document.querySelectorAll('.sig-input');
+  let filled = 0;
+  inputs.forEach(i => { if (i.value.trim()) filled++; });
+  const total = inputs.length;
+  const status = document.getElementById('signal-status');
+  if (status) status.textContent = `已答 ${filled} / ${total} 字符`;
+}
+
+function showStatus(msg, ms=2000) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), ms);
+}
+
+// ==================== 音频播放器(三态切换 + 全局控制) ====================
+const PLAYER = {
+  audio: null,
+  currentBtn: null,
+  currentPath: null,
+  currentLabel: '',
+
+  // 播放/暂停切换(同文件点击循环)
+  toggle(path, btn, label) {
+    if (!path) return;
+    // 同文件,正在播 → 暂停
+    if (this.audio && this.currentPath === path && !this.audio.paused) {
+      this.audio.pause();
+      this._setBtn(btn, 'paused');
+      this._showCtrl(true);
+      return;
+    }
+    // 同文件,已暂停 → 继续
+    if (this.audio && this.currentPath === path && this.audio.paused) {
+      this.audio.play().catch(e => console.error(e));
+      this._setBtn(btn, 'playing');
+      this._showCtrl(true);
+      return;
+    }
+    // 不同文件,或首次播放 → 重置旧按钮 + 开始新文件
+    this._resetCurrentBtn();
+    this._newPlay(path, btn, label);
+  },
+
+  // 全新播放
+  _newPlay(path, btn, label) {
+    this.audio = new Audio(path);
+    this.currentBtn = btn;
+    this.currentPath = path;
+    this.currentLabel = label || '';
+    this.audio.play().catch(e => {
+      console.error('播放失败:', path, e);
+      showStatus('播放失败: ' + path);
+    });
+    this._setBtn(btn, 'playing');
+    this._showCtrl(true);
+    this._updateCtrl();
+    this.audio.onended = () => {
+      this._setBtn(btn, 'idle');
+      this._showCtrl(false);
+    };
+    this.audio.ontimeupdate = () => this._updateCtrl();
+  },
+
+  pause() {
+    if (this.audio && !this.audio.paused) {
+      this.audio.pause();
+      this._setBtn(this.currentBtn, 'paused');
+      this._showCtrl(true);
+    }
+  },
+
+  resume() {
+    if (this.audio && this.audio.paused) {
+      this.audio.play().catch(e => console.error(e));
+      this._setBtn(this.currentBtn, 'playing');
+      this._showCtrl(true);
+    }
+  },
+
+  stop() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this._setBtn(this.currentBtn, 'idle');
+      this._showCtrl(false);
+    }
+  },
+
+  restart() {
+    if (this.audio) {
+      this.audio.currentTime = 0;
+      this.audio.play().catch(e => console.error(e));
+      this._setBtn(this.currentBtn, 'playing');
+      this._showCtrl(true);
+    }
+  },
+
+  _setBtn(btn, state) {
+    if (!btn) return;
+    const ic = btn.querySelector('.ic');
+    if (state === 'playing') {
+      if (ic) ic.textContent = '⏸';
+      btn.classList.add('playing');
+      btn.classList.remove('paused');
+    } else if (state === 'paused') {
+      if (ic) ic.textContent = '▶';
+      btn.classList.add('paused');
+      btn.classList.remove('playing');
+    } else {
+      if (ic) ic.textContent = '▶';
+      btn.classList.remove('playing', 'paused');
+    }
+  },
+
+  _resetCurrentBtn() {
+    if (this.currentBtn) this._setBtn(this.currentBtn, 'idle');
+  },
+
+  _showCtrl(show) {
+    const c = document.getElementById('audio-ctrl');
+    if (c) c.style.display = show ? 'flex' : 'none';
+  },
+
+  _updateCtrl() {
+    if (!this.audio) return;
+    const labelEl = document.getElementById('ctrl-label');
+    const barEl = document.getElementById('ctrl-bar');
+    const timeEl = document.getElementById('ctrl-time');
+    if (labelEl) labelEl.textContent = this.currentLabel;
+    if (timeEl) {
+      const cur = Math.floor(this.audio.currentTime || 0);
+      const dur = Math.floor(this.audio.duration || 0);
+      timeEl.textContent = `${cur}s / ${dur}s`;
+    }
+    if (barEl && this.audio.duration) {
+      const pct = (this.audio.currentTime / this.audio.duration) * 100;
+      barEl.style.width = pct + '%';
+    }
+  },
+};
+
+// 兼容旧调用
+function playAudio(audioPath) {
+  PLAYER.toggle(audioPath, null, audioPath);
+}
+
+// ==================== 划词翻译 ====================
+function lookupDict(word) {
+  const key = word.toLowerCase().replace(/[^a-z\s]/g, '').trim();
+  if (!key) return null;
+  // 尝试多种匹配
+  const candidates = [
+    key,
+    key.replace(/\s+/g, ' '),
+    key.replace(/s$/, ''),  // 去复数
+  ];
+  for (const c of candidates) {
+    if (STATE.data.dict[c] !== undefined) {
+      return STATE.data.dict[c] || null;  // 空字符串表示"无翻译需要"
+    }
+  }
+  // 单词级 fallback(取第一个词)
+  const firstWord = key.split(/\s+/)[0];
+  if (firstWord && STATE.data.dict[firstWord] !== undefined) {
+    return STATE.data.dict[firstWord] || null;
+  }
+  return null;
+}
+
+function showTooltip(target, word) {
+  const trans = lookupDict(word);
+  const tt = document.getElementById('tooltip');
+  const rect = target.getBoundingClientRect();
+  tt.querySelector('.tt-word').textContent = word;
+  const transEl = tt.querySelector('.tt-trans');
+  if (trans) {
+    transEl.textContent = trans;
+    transEl.className = 'tt-trans';
+  } else {
+    transEl.textContent = '(词典中暂无此词)';
+    transEl.className = 'tt-empty';
+  }
+  // 定位
+  const ttRect = tt.getBoundingClientRect();
+  let left = rect.left;
+  let top = rect.bottom + 6;
+  // 防溢出
+  if (left + ttRect.width > window.innerWidth - 10) {
+    left = window.innerWidth - ttRect.width - 10;
+  }
+  if (top + ttRect.height > window.innerHeight - 10) {
+    top = rect.top - ttRect.height - 6;
+  }
+  tt.style.left = left + 'px';
+  tt.style.top = top + 'px';
+  tt.classList.add('show');
+  // 3秒后消失
+  clearTimeout(tt._timer);
+  tt._timer = setTimeout(() => tt.classList.remove('show'), 4000);
+}
+
+// ==================== 事件绑定 ====================
+function bindEvents() {
+  // 标签切换
+  document.getElementById('tabs').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-tab]');
+    if (!btn) return;
+    document.querySelectorAll('#tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    STATE.currentTab = btn.dataset.tab;
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + STATE.currentTab).classList.add('active');
+    document.getElementById('main').scrollTo(0, 0);
+  });
+
+  // 音频按钮(事件委托)
+  document.getElementById('main').addEventListener('click', e => {
+    const audioBtn = e.target.closest('.audio-btn');
+    if (audioBtn) {
+      e.stopPropagation();
+      const path = audioBtn.dataset.audio;
+      const label = audioBtn.textContent.replace(/[\s▶⏸]/g, '').trim();
+      PLAYER.toggle(path, audioBtn, label);
+      return;
+    }
+    // 答案展开/收起
+    const toggle = e.target.closest('[data-toggle]');
+    if (toggle) {
+      const body = toggle.nextElementSibling;
+      const on = body.classList.toggle('on');
+      toggle.classList.toggle('on', on);
+      toggle.textContent = on ? '收起参考答案 ▲' : '显示参考答案 ▼';
+      return;
+    }
+    // 信号题:套号切换
+    const setBtn = e.target.closest('.set-btn');
+    if (setBtn) {
+      STATE.signalSet = parseInt(setBtn.dataset.set);
+      renderSignal();
+      return;
+    }
+    // 信号题:显示答案
+    if (e.target.id === 'reveal-ans') {
+      revealSignalAnswers();
+      return;
+    }
+    // 信号题:重置
+    if (e.target.id === 'reset-ans') {
+      document.querySelectorAll('.sig-input').forEach(inp => {
+        inp.value = '';
+        inp.style.background = '#fff';
+        inp.style.borderColor = 'var(--border)';
+        inp.style.color = 'var(--primary)';
+      });
+      const st = document.getElementById('signal-status');
+      if (st) st.textContent = '已重置';
+      return;
+    }
+    // 划词翻译(只在 .speakable 内的文本节点上触发)
+    if (e.target.classList && e.target.classList.contains('speakable')) {
+      // 选择当前点击位置的单词
+      const sel = window.getSelection();
+      const txt = sel ? sel.toString().trim() : '';
+      const word = txt || e.target.textContent.trim().split(/\s+/)[0];
+      if (word) showTooltip(e.target, word);
+    }
+  });
+
+  // 缩放
+  document.getElementById('zoomIn').addEventListener('click', () => setZoom(STATE.zoom + 20));
+  document.getElementById('zoomOut').addEventListener('click', () => setZoom(STATE.zoom - 20));
+  document.getElementById('zoomVal').addEventListener('click', () => setZoom(100));
+
+  // 信号题:input 实时更新进度
+  document.getElementById('main').addEventListener('input', e => {
+    if (e.target.classList && e.target.classList.contains('sig-input')) {
+      // 自动跳到下一个空位(同组)
+      const pos = e.target.dataset.pos;
+      const groupInputs = Array.from(document.querySelectorAll(`.sig-input[data-pos="${pos}"]`));
+      const idx = groupInputs.indexOf(e.target);
+      if (idx >= 0 && idx < groupInputs.length - 1 && e.target.value) {
+        groupInputs[idx + 1].focus();
+      }
+      // 全部大写
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9.]/g, '');
+      updateSignalProgress();
+    }
+  });
+
+  // 点击空白关闭 tooltip
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.speakable') && !e.target.closest('#tooltip')) {
+      document.getElementById('tooltip').classList.remove('show');
+    }
+  });
+
+  // 全局控制条按钮
+  document.getElementById('ctrl-pp').addEventListener('click', () => {
+    const p = PLAYER;
+    if (!p.audio) return;
+    if (p.audio.paused) p.resume();
+    else p.pause();
+  });
+  document.getElementById('ctrl-stop').addEventListener('click', () => PLAYER.stop());
+  document.getElementById('ctrl-restart').addEventListener('click', () => PLAYER.restart());
+  // 进度条点击跳转
+  document.querySelector('.ctrl-bar-wrap').addEventListener('click', (e) => {
+    if (!PLAYER.audio || !PLAYER.audio.duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    PLAYER.audio.currentTime = ratio * PLAYER.audio.duration;
+    PLAYER._updateCtrl();
+  });
+}
+
+// 内联数据(避免 file:// CORS 问题)
+const __DATA__ = {"codeyu":[{"sym":"A","word":"Alpha","pron":"AL-fah","category":"letter","audio":"audio/codeyu/A-Alpha.mp3"},{"sym":"B","word":"Bravo","pron":"BRAH-voh","category":"letter","audio":"audio/codeyu/B-Bravo.mp3"},{"sym":"C","word":"Charlie","pron":"CHAR-lee","category":"letter","audio":"audio/codeyu/C-Charlie.mp3"},{"sym":"D","word":"Delta","pron":"DELL-tah","category":"letter","audio":"audio/codeyu/D-Delta.mp3"},{"sym":"E","word":"Echo","pron":"ECK-oh","category":"letter","audio":"audio/codeyu/E-Echo.mp3"},{"sym":"F","word":"Foxtrot","pron":"FOKS-trot","category":"letter","audio":"audio/codeyu/F-Foxtrot.mp3"},{"sym":"G","word":"Golf","pron":"GOLF","category":"letter","audio":"audio/codeyu/G-Golf.mp3"},{"sym":"H","word":"Hotel","pron":"ho-TELL","category":"letter","audio":"audio/codeyu/H-Hotel.mp3"},{"sym":"I","word":"India","pron":"IN-dee-ah","category":"letter","audio":"audio/codeyu/I-India.mp3"},{"sym":"J","word":"Juliett","pron":"JEW-lee-ett","category":"letter","audio":"audio/codeyu/J-Juliett.mp3"},{"sym":"K","word":"Kilo","pron":"KEY-loh","category":"letter","audio":"audio/codeyu/K-Kilo.mp3"},{"sym":"L","word":"Lima","pron":"LEE-mah","category":"letter","audio":"audio/codeyu/L-Lima.mp3"},{"sym":"M","word":"Mike","pron":"MIKE","category":"letter","audio":"audio/codeyu/M-Mike.mp3"},{"sym":"N","word":"November","pron":"no-VEM-ber","category":"letter","audio":"audio/codeyu/N-November.mp3"},{"sym":"O","word":"Oscar","pron":"OSS-cah","category":"letter","audio":"audio/codeyu/O-Oscar.mp3"},{"sym":"P","word":"Papa","pron":"pah-PAH","category":"letter","audio":"audio/codeyu/P-Papa.mp3"},{"sym":"Q","word":"Quebec","pron":"keh-BECK","category":"letter","audio":"audio/codeyu/Q-Quebec.mp3"},{"sym":"R","word":"Romeo","pron":"ROW-me-oh","category":"letter","audio":"audio/codeyu/R-Romeo.mp3"},{"sym":"S","word":"Sierra","pron":"see-AIR-ah","category":"letter","audio":"audio/codeyu/S-Sierra.mp3"},{"sym":"T","word":"Tango","pron":"TANG-go","category":"letter","audio":"audio/codeyu/T-Tango.mp3"},{"sym":"U","word":"Uniform","pron":"YOU-nee-form","category":"letter","audio":"audio/codeyu/U-Uniform.mp3"},{"sym":"V","word":"Victor","pron":"VIK-tah","category":"letter","audio":"audio/codeyu/V-Victor.mp3"},{"sym":"W","word":"Whisky","pron":"WISS-key","category":"letter","audio":"audio/codeyu/W-Whisky.mp3"},{"sym":"X","word":"X-ray","pron":"ECKS-ray","category":"letter","audio":"audio/codeyu/X-X-ray.mp3"},{"sym":"Y","word":"Yankee","pron":"YANG-key","category":"letter","audio":"audio/codeyu/Y-Yankee.mp3"},{"sym":"Z","word":"Zulu","pron":"ZOO-loo","category":"letter","audio":"audio/codeyu/Z-Zulu.mp3"},{"sym":"0","word":"Nadazero","pron":"nah-dah-ZAY-roh","category":"number","audio":"audio/codeyu/0-Nadazero.mp3"},{"sym":"1","word":"Unaone","pron":"oo-nah-WUN","category":"number","audio":"audio/codeyu/1-Unaone.mp3"},{"sym":"2","word":"Bissotwo","pron":"BISS-oh-TOO","category":"number","audio":"audio/codeyu/2-Bissotwo.mp3"},{"sym":"3","word":"Terrathree","pron":"tair-rah-THREE","category":"number","audio":"audio/codeyu/3-Terrathree.mp3"},{"sym":"4","word":"Kartefour","pron":"kar-tay-FOUR","category":"number","audio":"audio/codeyu/4-Kartefour.mp3"},{"sym":"5","word":"Pantafive","pron":"pan-tah-FIVE","category":"number","audio":"audio/codeyu/5-Pantafive.mp3"},{"sym":"6","word":"Soxisix","pron":"SOCK-see-SIX","category":"number","audio":"audio/codeyu/6-Soxisix.mp3"},{"sym":"7","word":"Setteseven","pron":"set-tay-SEV-en","category":"number","audio":"audio/codeyu/7-Setteseven.mp3"},{"sym":"8","word":"Oktoeight","pron":"ok-toh-AIT","category":"number","audio":"audio/codeyu/8-Oktoeight.mp3"},{"sym":"9","word":"Novenine","pron":"no-veh-NINE","category":"number","audio":"audio/codeyu/9-Novenine.mp3"},{"sym":".","word":"Decimal","pron":"DEC-ee-mal","category":"special","audio":"audio/codeyu/Decimal-Decimal.mp3"},{"sym":"·","word":"Stop","pron":"STOP","category":"special","audio":"audio/codeyu/Stop-Stop.mp3"}],"oral":[{"id":1,"category":"oral","question":"Send a MAYDAY message according to the given information. Ship's name: SOUTH PACIFIC. Call sign: NOPE. Distress position: 22°04′N, 127°08′W. Nature of distress: Aground on the bow. Assistance required: Tug assistance.","answer":"MAYDAY MAYDAY MAYDAY, This is South Pacific South Pacific South Pacific, call sign November Oscar Papa Echo November Oscar Papa Echo November Oscar Papa Echo. My position is 22°04′N, 127°08′W. I am aground on the bow. I require tug assistance. Over.","audio_q":"audio/oral_q/01.mp3","audio_a":"audio/oral_a/01.mp3"},{"id":2,"category":"oral","question":"Give an example of a MAYDAY call.","answer":"MAYDAY MAYDAY MAYDAY, This is MV TAI SHAN TAI SHAN TAI SHAN, call sign Bravo Oscar Sierra Yankee, Bravo Oscar Sierra Kilo, Bravo Oscar Sierra Kilo. I am aground. My position is 12°12′N, 123°12′E. I require tug assistance. OVER.","audio_q":"audio/oral_q/02.mp3","audio_a":"audio/oral_a/02.mp3"},{"id":3,"category":"oral","question":"TAO YUAN HAI (call sign: BSJX) is in collision with a fishing boat at 30°04′N, 120°20′E and sinking. Please send a distress alert.\nA) The distress signal MAYDAY, which is read for three times.\nB) This is + the name of the vessel in distress, which is read for three times.\nC) The call sign and other identification.\nD) The nature of distress.","answer":"MAYDAY MAYDAY MAYDAY. This is motor vessel TAO YUAN HAI TAO YUAN HAI TAO YUAN HAI, call sign Bravo Sierra Juliett X-ray Bravo Sierra Juliett X-ray Bravo Sierra Juliett X-ray. MAYDAY TAO YUAN HAI. I have collided with a fishing boat. My position is three zero degrees, zero four minutes north. One two zero degrees, two zero minutes east. I am sinking. I require tug assistance. Over.","audio_q":"audio/oral_q/03.mp3","audio_a":"audio/oral_a/03.mp3"},{"id":4,"category":"oral","question":"TAOYUANHAI (call sign: BSJX) sends a distress alert. YUQIANG (call sign: BQRS) acknowledges the receipt of the distress alert.\nThe distress signal MAYDAY.\nThe name followed by the call sign of the station sending the distress message and the station acknowledging receipt.","answer":"MAYDAY MAYDAY MAYDAY. This is MV TAOYUANHAI TAOYUANHAI TAOYUANHAI, call sign Bravo Sierra Juliett X-ray. I am on fire. My position is 12°12′N, 123°12′E. I require firefighting assistance. OVER.\nMV TAOYUANHAI, This is MV YUQIANG YUQIANG YUQIANG. Received MAYDAY. I am coming to your assistance. ETA at your position is one hour. Over.","audio_q":"audio/oral_q/04.mp3","audio_a":"audio/oral_a/04.mp3"},{"id":5,"category":"oral","question":"MINGHUA (call sign: BJWK) is in distress. YUQIANG (call sign: BBGD) sends rescue information: position at 1430 GMT is 36°04′N, 120°05′E; speed is 18 knots; ETA is 1530 GMT. MINGHUA affirms it.","answer":"MAYDAY MAYDAY MAYDAY, This is MV MINGHUA MINGHUA MINGHUA, call sign Bravo Juliett Whiskey Kilo Bravo Juliett Whiskey Kilo Bravo Juliett Whiskey Kilo. I am aground, position is 35°05′N, 123°23′E. I require immediate assistance. Over.\nMV MINGHUA, This is MV YUQIANG YUQIANG YUQIANG. I am coming to your assistance. My position is 36°04′N, 120°05′E; speed is 18 knots; ETA at your position is 1530 GMT. Over.","audio_q":"audio/oral_q/05.mp3","audio_a":"audio/oral_a/05.mp3"},{"id":6,"category":"oral","question":"YINHE (call sign: BOLR) is on fire, has dangerous cargo on board at 36°N, 120°20′E, and sends a distress alert at 1400 GMT. YUQIANG (call sign: BQRS) relays the distress call to all stations at 1415 GMT.","answer":"MAYDAY MAYDAY MAYDAY, This is YINHE YINHE YINHE, call sign Bravo Oscar Lima Romeo Bravo Oscar Lima Romeo Bravo Oscar Lima Romeo. I am on fire, my position is 36°N, 120°05′E, I have dangerous cargo on board. Over.\nMAYDAY RELAY MAYDAY RELAY MAYDAY RELAY, This is YUQIANG. Following received from YINHE MAYDAY YINHE, call sign Bravo Oscar Lima Romeo, time 1415 GMT, MAYDAY YINHE Bravo Oscar Lima Romeo fire in position 36°04′N, 120°05′E, having dangerous cargo on board. MAYDAY RELAY YUQIANG. OVER.","audio_q":"audio/oral_q/06.mp3","audio_a":"audio/oral_a/06.mp3"},{"id":7,"question":"Send a PAN-PAN message according to the given information. Ship's name: Snow White; Call sign ALMI; Distress position: 22°04′N, 127°08′W; Nature of distress: breakdown of main engine; Assistance required: tug assistance.","answer":"PANPAN PANPAN PANPAN, This is Snow White Snow White Snow White, call sign Alpha Lima Mike India Alpha Lima Mike India Alpha Lima Mike India. My position is 22°04′N, 127°08′W. My main engine is broken down. I require tug assistance. Over.","audio_a":"audio/oral_a/07.mp3","category":"oral"},{"id":8,"question":"YUYING (call sign: YUYG)'s main engine is broken down severely. SHANGHAI RADIO will send a tug for her. They are going on the urgency traffic. The tug will be made fast on port bow.","answer":"PANPAN PANPAN PANPAN, This is MV YUYING YUYING YUYING, call sign Yankee Uniform Yankee Golf. My main engine is broken down severely. My position is 22°04′N, 127°08′E. I require tug assistance. Over.\nMV YUYING, This is SHANGHAI RADIO, PANPAN received. A tug is coming to your assistance. Please get towing line ready. The tug will be made fast on your port bow. Keep watch on channel 16. Over.\nPANPAN SHANGHAI RADIO, This is MV YUYING. I will keep watch on channel 16. Out.","audio_a":"audio/oral_a/08.mp3","category":"oral"},{"id":9,"question":"YUQING (call sign: YOBK) has a man ill and is ready for helicopter. She will identify herself by directing signal lamp at helicopter. They are going on the urgency traffic.","answer":"PANPAN PANPAN PANPAN, This is MV YUQING YUQING YUQING, call sign Yankee Oscar Bravo Kilo Yankee Oscar Bravo Kilo Yankee Oscar Bravo Kilo. I have a man seriously ill. I require a helicopter to transfer. My position is 22°04′N, 127°08′E. Over.\nMV YUQING, This is Helicopter. I am coming to your assistance. Please show signal lamp for identification. Over.\nHelicopter, This is MV YUQING. Roger. I will identify myself by directing signal lamp. Landing party is ready to receive you. You may land on fore deck. Out.","audio_a":"audio/oral_a/09.mp3","category":"oral"},{"id":10,"question":"HUATONGHAI (call sign: HTOG) has a man overboard at 38°24′N, 118°05′E, requiring all stations to keep a sharp lookout. Please make an urgency call.","answer":"PANPAN PANPAN PANPAN, This is MV HUATONGHAI HUATONGHAI HUATONGHAI, call sign Hotel Tango Oscar Golf Hotel Tango Oscar Golf Hotel Tango Oscar Golf. All stations. I have a man overboard. My position is 38°24′N, 118°05′E. Please keep a sharp lookout. Over.","audio_a":"audio/oral_a/10.mp3","category":"oral"},{"id":11,"question":"If you are the operator onboard a chemical tanker named 'Iceland Poppy', you have seen a mine in position 47°25′N, 45°21′W drifting at speed 0.5 knot, direction 090°. Please warn vessels in your vicinity.","answer":"SECURITE SECURITE SECURITE, This is Poppy Poppy Poppy. Attention all ships. Navigational warning: There is a floating mine in position 47°25′N, 45°21′W. My speed is 0.5 knot, direction 090°. It is dangerous to navigation. Vessels in my vicinity please navigate with caution and keep clear of it. Over.","audio_q":"audio/oral_q/11.mp3","audio_a":"audio/oral_a/11.mp3","category":"oral"},{"id":12,"question":"If you are the operator onboard a cargo ship named COTON TREE, your vessel is disabled at position 17°25′N, 35°21′W. Please warn vessels in your vicinity to keep clear. (Drifting speed: 2 knots, direction: 090°)","answer":"SECURITE SECURITE SECURITE, Attention all ships. This is MV COTON TREE COTON TREE COTON TREE. Navigational warning: I am disabled. My position is 17°25′N, 35°21′W. Drifting speed is 2 knots, direction is 090°. Vessels in vicinity navigate with caution and keep clear of me. Out.","audio_q":"audio/oral_q/12.mp3","audio_a":"audio/oral_a/12.mp3","category":"oral"},{"id":13,"question":"DONGTINGHU (call sign: BXYZ) is one mile south of buoy No.10. Her main engine is broken down and is anchoring in the northbound traffic lane. Requests ships keep clear. Please make a safety call to all ships.","answer":"SECURITE SECURITE SECURITE, All ships. This is MV DONGTINGHU DONGTINGHU DONGTINGHU. My call sign is Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu. My main engine is broken down. My position is one mile south of buoy No.10. I am anchoring in the northbound traffic lane. Vessels in vicinity please navigate with caution and keep clear of me. Over.","audio_q":"audio/oral_q/13.mp3","audio_a":"audio/oral_a/13.mp3","category":"oral"},{"id":14,"question":"There is floating ice in position 47°00′N, 50°00′W. It is dangerous to navigation. BANKS RADIO advises YUQIANG (call sign: YUQI) to keep clear. YUQIANG will do as advised. Please make a safety communication.","answer":"SECURITE SECURITE SECURITE, This is BANKS RADIO BANKS RADIO BANKS RADIO. Navigational warning: There is floating ice in position 47°00′N, 50°00′W. It is dangerous to navigation. Vessels in vicinity navigate with caution and keep clear of it. Over.\nBANKS RADIO, This is MV YUQIANG, YUQI Yankee Uniform Quebec India. Navigational warning is received. I will follow your advice. Thank you. Out.","audio_q":"audio/oral_q/14.mp3","audio_a":"audio/oral_a/14.mp3","category":"oral"},{"id":15,"question":"Please describe the procedures of sending distress by using Inmarsat-C Terminals.","answer":"Firstly, turn on Inmarsat-C power. Secondly, log into the right ocean region. Thirdly, edit distress message and save it. Fourthly, select distress, LES, distress message. Fifthly, send it and wait for RCC response.","audio_q":"audio/oral_q/15.mp3","audio_a":"audio/oral_a/15.mp3","category":"oral"},{"id":16,"question":"Please describe the alerting procedure in voice in the Inmarsat-F system.","answer":"Firstly, turn on Inmarsat-F power. Secondly, select ocean region and wait for ready. Thirdly, select nearest CES. Fourthly, press distress button, wait for RCC response. Fifthly, end of communication.","audio_q":"audio/oral_q/16.mp3","audio_a":"audio/oral_a/16.mp3","category":"oral"},{"id":17,"question":"Please describe the main operational procedures when you call a coast radio station for a telephone link.","answer":"First, look for the coast station detail. Second, turn on VHF or MF or HF, set RT mode, input RT channel and tune. Third, if the coast station is free, I will contact the coast station by RT. Fourth, end of communication.","audio_q":"audio/oral_q/17.mp3","audio_a":"audio/oral_a/17.mp3","category":"oral"},{"id":18,"question":"Please describe the main operational procedure and cautions should be taken when you call a coast radio station telephone link.","answer":"First, I should know the position of the ship. Then choose the appropriate working band. If I use VHF, I will use G3E mode. If I use MF or HF, I will use J3E mode.","audio_q":"audio/oral_q/18.mp3","audio_a":"audio/oral_a/18.mp3","category":"oral"},{"id":19,"question":"If you are the operator onboard a bulk vessel, anchoring at position 26°45′S, 104°17′W. Please describe the procedures of calling Dalian Pilot Station. (Call-and-reply channel: 16, working channel: 4. Ship's name: Sunflower)","answer":"I will use VHF channel 16 to contact Dalian Pilot Station, and report my ship's name, call sign, LOA, draft, air draft, position, speed, course and kind of assistance.","audio_q":"audio/oral_q/19.mp3","audio_a":"audio/oral_a/19.mp3","category":"oral"},{"id":20,"question":"If you are the operator onboard a bulk vessel which is aground at 1645 UTC at position 26°45′S, 104°17′W (in sea area A1). Please describe the alerting procedures in the terrestrial system. (Ship's name: YUFENG)","answer":"First, turn on VHF, use DSC menu. Second, select call-grounding. Third, input time 1645 UTC and position 26°45′S, 104°17′W. Fourth, press the distress button, then use radiotelephone on Channel 16.","audio_q":"audio/oral_q/20.mp3","audio_a":"audio/oral_a/20.mp3","category":"oral"},{"id":21,"question":"Describe the procedures of pilotage: a) the general procedures for pilot request; b) the preparations for pilot; c) the general rules for piloting.","answer":"I will contact the pilot station by VHF. Rig the pilot ladder, hoist flag G. During pilotage, the master and the watch officer must follow the pilot. The master and pilot shall exchange information and the watch officer shall cooperate closely with the pilot.","audio_q":"audio/oral_q/21.mp3","audio_a":"audio/oral_a/21.mp3","category":"oral"},{"id":22,"question":"Describe the procedures before leaving a port: a) preparations from the bridge; b) preparations from the engine; c) preparations from the deck.","answer":"Bridge: give orders to heave up anchor and let go mooring. Engine: stand by engine. Deck: get ready for heaving up anchor and letting go mooring lines.","audio_q":"audio/oral_q/22.mp3","audio_a":"audio/oral_a/22.mp3","category":"oral"},{"id":23,"question":"As an officer on duty, how do you keep watch while the ship is at anchor?","answer":"As an officer on duty, I should determine and plot the ship's position on the chart. Check the ship is remaining securely at anchor. The duty officer shall notify master as soon as possible in case of dragging. Finally, the accident shall be kept in the logbook.","audio_q":"audio/oral_q/23.mp3","audio_a":"audio/oral_a/23.mp3","category":"oral"},{"id":24,"question":"Describe the proper way of using VHF.","answer":"When you operate VHF, you should choose a correct channel and use the transmitting power as low as possible. If you want to speak, you should push the button. If you want to listen, you should release the button.","audio_q":"audio/oral_q/24.mp3","audio_a":"audio/oral_a/24.mp3","category":"oral"},{"id":25,"question":"Please describe the method to protect distress and safety frequency.","answer":"Try not to use the distress and safety frequency as much as possible. Low priority communication should be avoided on distress and safety frequency. Other than routine message can only be sent on distress frequency with approval.","audio_q":"audio/oral_q/25.mp3","audio_a":"audio/oral_a/25.mp3","category":"oral"},{"id":26,"question":"Please describe the situation that vessels must relay distress alert.","answer":"It is to alert the ships in the vicinity of distress ship. Other ships receive the distress alert but no coast station acknowledge. We must relay to the coast station.","audio_q":"audio/oral_q/26.mp3","audio_a":"audio/oral_a/26.mp3","category":"oral"},{"id":27,"question":"Please describe the inspection requirements for VHF (including two-way VHF), MF/HF installation DSC.","answer":"Check the batteries, check the AC power, check self-test: VHF MF and HF once a day, check call test: VHF MF and HF test call once a week.","audio_q":"audio/oral_q/27.mp3","audio_a":"audio/oral_a/27.mp3","category":"oral"},{"id":28,"question":"Please briefly describe the inspection items for operation performance in PSC. (Or: please describe the inspection and requirements for documents in PSC.)","answer":"First, check the certificates. Second, check the equipment: working frequency on two-way VHF, SART, EPIRB and NAVTEX battery, location, mounting. Third, check the energy and antenna (main and reserve).","audio_q":"audio/oral_q/28.mp3","audio_a":"audio/oral_a/28.mp3","category":"oral"},{"id":29,"question":"Please describe the main operational procedures and cautions should be taken when you call a coast radio station in radio telephony service.","answer":"Please refer to question 20 for the answer.","audio_q":"audio/oral_q/29.mp3","audio_a":"audio/oral_a/29.mp3","category":"oral"},{"id":30,"question":"Describe how to coordinate with the give-way vessel by VHF in crossing situation. Stand-on vessel MV GATE, course 030 degrees, speed 15 knots. Give-way vessel MV STAR, course 170 degrees, 18 knots, pass port to port. How to change VHF channel? How to identify the calling vessel? How to coordinate the passing actions in crossing situation?","answer":"I will contact the give-way vessel by VHF channel one three. Report my course and speed. Advise give-way vessel to reduce or slow down speed, change course, and pass port to port.","audio_q":"audio/oral_q/30.mp3","audio_a":"audio/oral_a/30.mp3","category":"oral"},{"id":31,"question":"Describe the actions you will take when you, an operator onboard, receive an alert at sea.","answer":"First, I will report to the master. Second, set the distress communication frequency according to the DSC alert frequency. Third, take part in distress communication. Fourth, record the distress communication in logbook.","audio_q":"audio/oral_q/31.mp3","audio_a":"audio/oral_a/31.mp3","category":"oral"},{"id":32,"question":"You receive a distress relay for a vessel within your vicinity. What actions would you take?","answer":"I should use radiotelephone to acknowledge the distress relay on the same band. Then contact the relay station, and prepare to assist under the master's order.","audio_q":"audio/oral_q/32.mp3","audio_a":"audio/oral_a/32.mp3","category":"oral"},{"id":33,"question":"If you are the operator onboard a general cargo ship named Fenghuangshan, sailing in sea area A1, you received a DSC alert on channel 70. What will you do with the alert? (Ship's name: Tulip, MMSI: 4631123456, position: 38°21′N, 138°43′E, nature of distress: collision)","answer":"I will wait for acknowledge from coast station, then keep watch on channel 16. If no coast station acknowledge, I will report to the master and acknowledge the distress alert on VHF channel 16.","audio_q":"audio/oral_q/33.mp3","audio_a":"audio/oral_a/33.mp3","category":"oral"},{"id":34,"question":"If you are the operator onboard a chemical tanker named Mudanjiang, sailing in A2, you received a DSC alert on 2187.5 kHz. What will you do with the alert? (Ship's name: Jiayuguan, MMSI: 412123456, position: 22°45′N, 114°17′E, nature: explosion)","answer":"I will wait for acknowledge from coast station. If no coast station acknowledge, I will report to the master, then set MF or HF mode, radiotelephone, keep watch on 2182 kHz.","audio_q":"audio/oral_q/34.mp3","audio_a":"audio/oral_a/34.mp3","category":"oral"},{"id":35,"question":"If you are the operator onboard a container vessel, you find another vessel is on fire. Describe the actions you take in the terrestrial systems.","answer":"First, I will wait for acknowledge from coast station. If no coast station acknowledge, relay the distress alert. Second, watch on VHF channel 16, use VHF to contact the distress vessel. Third, report to the master and prepare to assist under the master's order.","audio_q":"audio/oral_q/35.mp3","audio_a":"audio/oral_a/35.mp3","category":"oral"},{"id":36,"question":"If you are the operator onboard a chemical tanker named Iceland POPPY, you are on fire and the abandon-ship order is given by the captain. Please introduce your task and explain its ingredients in that case.","answer":"First, send distress alert by SES or DSC. Second, board the lifeboat with logbook, EPIRB, SART, two-way VHF and turn them on. Third, wait for RCC search and rescue.","audio_q":"audio/oral_q/36.mp3","audio_a":"audio/oral_a/36.mp3","category":"oral"},{"id":37,"question":"Please describe what is urgency communication, the means used to transmit urgency communication, and the cautions should be taken when urgency communication is transmitted by operators at sea. What is safety communication?","answer":"Urgency communication means very urgent message. It includes medical advice, assistance and so on. It can only transmit under the master's order. Urgency signal is pan-pan. Safety communication means messages about safety of navigation.","audio_q":"audio/oral_q/37.mp3","audio_a":"audio/oral_a/37.mp3","category":"oral"},{"id":38,"question":"What is a distress alert?","answer":"A distress alert is the rapid and successful reporting of a distress incident to RCC.","audio_q":"audio/oral_q/38.mp3","audio_a":"audio/oral_a/38.mp3","category":"oral"},{"id":39,"question":"Describe watch keeping arrangements in SOLAS Chapter IV of 1988 amendment.","answer":"SOLAS ship should watch keeping: VHF DSC on channel 70; MF DSC on 2187.5 kHz; MF and HF DSC on 2187.5 kHz, 8414.5 kHz and one of 6312 kHz, 12577 kHz, 16804.5 kHz; Inmarsat SES should receive shore-to-ship distress alert.","audio_q":"audio/oral_q/39.mp3","audio_a":"audio/oral_a/39.mp3","category":"oral"},{"id":40,"question":"Please introduce GMDSS in English. 1) The history of GMDSS. 2) Main function of GMDSS. 3) The combination of GMDSS.","answer":"The GMDSS was made mandatory on 1st Feb. 1999. The main functions are Distress alerting, SAR communication, On-scene communication and so on.","audio_q":"audio/oral_q/40.mp3","audio_a":"audio/oral_a/40.mp3","category":"oral"},{"id":41,"question":"What information is in a DSC distress alert?","answer":"Category, MMSI of the ship in distress, Nature of distress, Position of distress, The valid time of the position in UTC, Method of subsequent communication.","audio_q":"audio/oral_q/41.mp3","audio_a":"audio/oral_a/41.mp3","category":"oral"},{"id":42,"question":"NAVTEX is used for receiving what type of information?","answer":"Maritime Safety Information, such as: navigational warnings, meteorological warnings, ice reports, SAR information, pilot service messages and so on.","audio_q":"audio/oral_q/42.mp3","audio_a":"audio/oral_a/42.mp3","category":"oral"},{"id":43,"question":"What daily, weekly and monthly checks should you perform about GMDSS?","answer":"Daily: DSC self-test. Weekly: VHF, MF and HF test call. Monthly: SART test, EPIRB test.","audio_q":"audio/oral_q/43.mp3","audio_a":"audio/oral_a/43.mp3","category":"oral"},{"id":44,"question":"You see a buoy adrift from mooring. What call would you make?","answer":"Safety call.","audio_q":"audio/oral_q/44.mp3","audio_a":"audio/oral_a/44.mp3","category":"oral"},{"id":45,"question":"Give an example of a radiotelephone Safety call.","answer":"Please refer to question 13 for the answer.","audio_q":"audio/oral_q/45.mp3","audio_a":"audio/oral_a/45.mp3","category":"oral"},{"id":46,"question":"What information is sent in an Inmarsat-C distress alert?","answer":"Please refer to question 43 for the answer.","audio_q":"audio/oral_q/46.mp3","audio_a":"audio/oral_a/46.mp3","category":"oral"},{"id":47,"question":"Explain the following: 2182 kHz, 156.8 MHz, 406 MHz, 9 GHz.","answer":"Two one eight two kHz: MF radiotelephony distress call. One five six point eight MHz: VHF radiotelephony distress call. Four zero six MHz: EPIRB alerting. Nine GHz: SART locating.","audio_q":"audio/oral_q/47.mp3","audio_a":"audio/oral_a/47.mp3","category":"oral"}],"qa":[{"id":1,"question":"What does RT stand for?","answer":"Radio Telephone.","category":"qa","audio_q":"audio/qa_q/01.mp3","audio_a":"audio/qa_a/01.mp3"},{"id":2,"question":"What does NCS stand for?","answer":"Network Coordination Station.","category":"qa","audio_q":"audio/qa_q/02.mp3","audio_a":"audio/qa_a/02.mp3"},{"id":3,"question":"What does VTS stand for?","answer":"Vessel Traffic Service.","category":"qa","audio_q":"audio/qa_q/03.mp3","audio_a":"audio/qa_a/03.mp3"},{"id":4,"question":"What does LES stand for?","answer":"Land Earth Station.","category":"qa","audio_q":"audio/qa_q/04.mp3","audio_a":"audio/qa_a/04.mp3"},{"id":5,"question":"What does HF stand for?","answer":"High Frequency.","category":"qa","audio_q":"audio/qa_q/05.mp3","audio_a":"audio/qa_a/05.mp3"},{"id":6,"question":"What does MMSI stand for?","answer":"Maritime Mobile Service Identification.","category":"qa","audio_q":"audio/qa_q/06.mp3","audio_a":"audio/qa_a/06.mp3"},{"id":7,"question":"What does IHO stand for?","answer":"International Hydrographic Organization.","category":"qa","audio_q":"audio/qa_q/07.mp3","audio_a":"audio/qa_a/07.mp3"},{"id":8,"question":"What does ETD stand for?","answer":"Estimated Time of Departure.","category":"qa","audio_q":"audio/qa_q/08.mp3","audio_a":"audio/qa_a/08.mp3"},{"id":9,"question":"What does ETA stand for?","answer":"Estimated Time of Arrival.","category":"qa","audio_q":"audio/qa_q/09.mp3","audio_a":"audio/qa_a/09.mp3"},{"id":10,"question":"What does SOLAS stand for?","answer":"Safety of Life at Sea.","category":"qa","audio_q":"audio/qa_q/10.mp3","audio_a":"audio/qa_a/10.mp3"},{"id":11,"question":"What does MRCC stand for and what's the function?","answer":"Maritime Rescue Coordination Center. Its function is promoting and coordinating search and rescue operations.","category":"qa","audio_q":"audio/qa_q/11.mp3","audio_a":"audio/qa_a/11.mp3"},{"id":12,"question":"What does \"STCW\" stand for?","answer":"Standards of Training, Certification and Watch-keeping for Seafarers.","category":"qa","audio_q":"audio/qa_q/12.mp3","audio_a":"audio/qa_a/12.mp3"},{"id":13,"question":"What does the GMDSS stand for?","answer":"Global Maritime Distress and Safety System.","category":"qa","audio_q":"audio/qa_q/13.mp3","audio_a":"audio/qa_a/13.mp3"},{"id":14,"question":"What does DSC stand for?","answer":"Digital Selective Calling.","category":"qa","audio_q":"audio/qa_q/14.mp3","audio_a":"audio/qa_a/14.mp3"},{"id":15,"question":"What does NBDP stand for?","answer":"Narrow-Band Direct-Printing.","category":"qa","audio_q":"audio/qa_q/15.mp3","audio_a":"audio/qa_a/15.mp3"},{"id":16,"question":"What do MSI stand for?","answer":"Maritime Safety Information.","category":"qa","audio_q":"audio/qa_q/16.mp3","audio_a":"audio/qa_a/16.mp3"},{"id":17,"question":"What does the AAIC stand for?","answer":"Accounting Authority Identification Code.","category":"qa","audio_q":"audio/qa_q/17.mp3","audio_a":"audio/qa_a/17.mp3"},{"id":18,"question":"What are the three GMDSS signal words?","answer":"MAYDAY for distress, PAN-PAN for urgency, and SECURITE for safety.","category":"qa","audio_q":"audio/qa_q/18.mp3","audio_a":"audio/qa_a/18.mp3"},{"id":19,"question":"How many times should the safety signal SECURITE be spoken when sending safety call?","answer":"Three times.","category":"qa","audio_q":"audio/qa_q/19.mp3","audio_a":"audio/qa_a/19.mp3"},{"id":20,"question":"How many times should the urgency signal PANPAN be spoken when sending urgency call?","answer":"Three times.","category":"qa","audio_q":"audio/qa_q/20.mp3","audio_a":"audio/qa_a/20.mp3"},{"id":21,"question":"How many times should the distress signal MAYDAY RELAY be spoken when relaying a distress alert?","answer":"Three times.","category":"qa","audio_q":"audio/qa_q/21.mp3","audio_a":"audio/qa_a/21.mp3"},{"id":22,"question":"Please spell your ship's name and call sign. (YUQING / BOXZ)","answer":"My ship's name is YuQing, call sign Bravo Oscar X-ray Zulu.","category":"qa","audio_q":"audio/qa_q/22.mp3","audio_a":"audio/qa_a/22.mp3"},{"id":23,"question":"What's your present speed and course?","answer":"My present speed is 16 knots, course is 123 degrees.","category":"qa","audio_q":"audio/qa_q/23.mp3","audio_a":"audio/qa_a/23.mp3"},{"id":24,"question":"Should a ship station in receipt of an urgency call address her acknowledgement to all other stations?","answer":"No, she should not.","category":"qa","audio_q":"audio/qa_q/24.mp3","audio_a":"audio/qa_a/24.mp3"},{"id":25,"question":"Shall an urgency communication have priority over all other communications except distress?","answer":"Yes.","category":"qa","audio_q":"audio/qa_q/25.mp3","audio_a":"audio/qa_a/25.mp3"},{"id":26,"question":"To whom should the acknowledgment of a DSC distress alert be sent?","answer":"All stations.","category":"qa","audio_q":"audio/qa_q/26.mp3","audio_a":"audio/qa_a/26.mp3"},{"id":27,"question":"To whom should an Inmarsat distress be sent, and what priority?","answer":"RCC, priority 3.","category":"qa","audio_q":"audio/qa_q/27.mp3","audio_a":"audio/qa_a/27.mp3"},{"id":28,"question":"How can a ship get in touch with a port before her arrival?","answer":"By VHF radiotelephone.","category":"qa","audio_q":"audio/qa_q/28.mp3","audio_a":"audio/qa_a/28.mp3"},{"id":29,"question":"What means is commonly used for bridge-to-bridge communication?","answer":"VHF radiotelephone.","category":"qa","audio_q":"audio/qa_q/29.mp3","audio_a":"audio/qa_a/29.mp3"},{"id":30,"question":"Can an RCC coordinating distress traffic impose silence on stations interfering?","answer":"Yes, the on-scene commander can impose radio silence.","category":"qa","audio_q":"audio/qa_q/30.mp3","audio_a":"audio/qa_a/30.mp3"},{"id":31,"question":"Which mode is normally used when carrying out safety communication by NBDP?","answer":"FEC mode.","category":"qa","audio_q":"audio/qa_q/31.mp3","audio_a":"audio/qa_a/31.mp3"},{"id":32,"question":"What signal is used for sending a safety call?","answer":"SECURITE.","category":"qa","audio_q":"audio/qa_q/32.mp3","audio_a":"audio/qa_a/32.mp3"},{"id":33,"question":"What is emergency signal prefixed by?","answer":"PAN-PAN.","category":"qa","audio_q":"audio/qa_q/33.mp3","audio_a":"audio/qa_a/33.mp3"},{"id":34,"question":"What should a distress signal be prefixed by for radiotelephony?","answer":"MAYDAY.","category":"qa","audio_q":"audio/qa_q/34.mp3","audio_a":"audio/qa_a/34.mp3"},{"id":35,"question":"When sending urgency message, what is prefixed to the message?","answer":"PAN-PAN.","category":"qa","audio_q":"audio/qa_q/35.mp3","audio_a":"audio/qa_a/35.mp3"},{"id":36,"question":"When sending distress message, what is prefixed to the message?","answer":"MAYDAY.","category":"qa","audio_q":"audio/qa_q/36.mp3","audio_a":"audio/qa_a/36.mp3"},{"id":37,"question":"What priority will be used when a person is ill onboard?","answer":"Urgency.","category":"qa","audio_q":"audio/qa_q/37.mp3","audio_a":"audio/qa_a/37.mp3"},{"id":38,"question":"What does SECURITE mean in marine communication?","answer":"SAY-CURE-EE-TAY means to announce safety message.","category":"qa","audio_q":"audio/qa_q/38.mp3","audio_a":"audio/qa_a/38.mp3"},{"id":39,"question":"What does fairway speed mean?","answer":"Fairway speed means safe speed for ships sailing in the fairway.","category":"qa","audio_q":"audio/qa_q/39.mp3","audio_a":"audio/qa_a/39.mp3"},{"id":40,"question":"What is NAVTEX?","answer":"NAVTEX is Navigation Telex.","category":"qa","audio_q":"audio/qa_q/40.mp3","audio_a":"audio/qa_a/40.mp3"},{"id":41,"question":"What does the term SEELONCE MAYDAY mean?","answer":"SEELONCE MAYDAY is imposed to keep radio silence.","category":"qa","audio_q":"audio/qa_q/41.mp3","audio_a":"audio/qa_a/41.mp3"},{"id":42,"question":"What does PAN-PAN mean in marine communication?","answer":"PAN-PAN means to announce urgency message.","category":"qa","audio_q":"audio/qa_q/42.mp3","audio_a":"audio/qa_a/42.mp3"},{"id":43,"question":"What does MAYDAY mean in marine communication?","answer":"MAYDAY means to announce distress message.","category":"qa","audio_q":"audio/qa_q/43.mp3","audio_a":"audio/qa_a/43.mp3"},{"id":44,"question":"What is a safety message?","answer":"A safety message concerns the safety of navigation or important meteorological warnings.","category":"qa","audio_q":"audio/qa_q/44.mp3","audio_a":"audio/qa_a/44.mp3"},{"id":45,"question":"What is urgency message?","answer":"Urgency message indicates that there is serious danger for the vessel, crew or passenger.","category":"qa","audio_q":"audio/qa_q/45.mp3","audio_a":"audio/qa_a/45.mp3"},{"id":46,"question":"What is distress message?","answer":"Distress message indicates a ship is in serious danger and needs immediate assistance.","category":"qa","audio_q":"audio/qa_q/46.mp3","audio_a":"audio/qa_a/46.mp3"},{"id":47,"question":"What is bridge-to-bridge communication?","answer":"Communication between ships.","category":"qa","audio_q":"audio/qa_q/47.mp3","audio_a":"audio/qa_a/47.mp3"},{"id":48,"question":"What is the approximate range of MF radio waves during the day time?","answer":"About 100 nautical miles.","category":"qa","audio_q":"audio/qa_q/48.mp3","audio_a":"audio/qa_a/48.mp3"},{"id":49,"question":"When a station is transmitting or intervening during distress alert, what should be done?","answer":"The station interfering with distress traffic will be imposed to keep radio silence.","category":"qa","audio_q":"audio/qa_q/49.mp3","audio_a":"audio/qa_a/49.mp3"},{"id":50,"question":"Relating to DSC facility, what is the period of self-test?","answer":"Once a day.","category":"qa","audio_q":"audio/qa_q/50.mp3","audio_a":"audio/qa_a/50.mp3"},{"id":51,"question":"Relating to the reserve of energy if it is not a battery, what is the period of test?","answer":"Once a day.","category":"qa","audio_q":"audio/qa_q/51.mp3","audio_a":"audio/qa_a/51.mp3"},{"id":52,"question":"What is battery test period?","answer":"Once a month.","category":"qa","audio_q":"audio/qa_q/52.mp3","audio_a":"audio/qa_a/52.mp3"},{"id":53,"question":"What should be contained in a MAYDAY message?","answer":"Ship's name, call sign, position, nature of distress, the assistance required, and other information useful for rescue.","category":"qa","audio_q":"audio/qa_q/53.mp3","audio_a":"audio/qa_a/53.mp3"},{"id":54,"question":"When your ship enters VTS area, what should be reported?","answer":"Ship's name, call sign, present position, draft, and maximum draft, speed and course.","category":"qa","audio_q":"audio/qa_q/54.mp3","audio_a":"audio/qa_a/54.mp3"},{"id":55,"question":"What is general cargo?","answer":"General cargo is one kind of dry cargo, including grain, coal, ore and so on.","category":"qa","audio_q":"audio/qa_q/55.mp3","audio_a":"audio/qa_a/55.mp3"},{"id":56,"question":"What is general cargo ship?","answer":"General cargo ship is a kind of dry cargo ship carrying general cargo.","category":"qa","audio_q":"audio/qa_q/56.mp3","audio_a":"audio/qa_a/56.mp3"},{"id":57,"question":"In accordance with SOLAS convention, what is the area outside sea areas A1, A2 and A3?","answer":"Sea area A4.","category":"qa","audio_q":"audio/qa_q/57.mp3","audio_a":"audio/qa_a/57.mp3"},{"id":58,"question":"Which means is often used to provide vessel position information to GMDSS equipment?","answer":"GPS.","category":"qa","audio_q":"audio/qa_q/58.mp3","audio_a":"audio/qa_a/58.mp3"},{"id":59,"question":"What equipment provides position information to the Inmarsat-C station?","answer":"GPS which is built-in with EGC receiver.","category":"qa","audio_q":"audio/qa_q/59.mp3","audio_a":"audio/qa_a/59.mp3"},{"id":60,"question":"In which sea areas is it out of question that you can obtain INMARSAT services?","answer":"In sea area A3.","category":"qa","audio_q":"audio/qa_q/60.mp3","audio_a":"audio/qa_a/60.mp3"},{"id":61,"question":"Which channel is designated for VHF DSC alerting?","answer":"Channel 70.","category":"qa","audio_q":"audio/qa_q/61.mp3","audio_a":"audio/qa_a/61.mp3"},{"id":62,"question":"Which frequency is designated to MF DSC distress frequency?","answer":"2187.5 kHz.","category":"qa","audio_q":"audio/qa_q/62.mp3","audio_a":"audio/qa_a/62.mp3"},{"id":63,"question":"What should be confirmed from the pilot station?","answer":"When and where the ship can meet the pilot. On which side should the pilot ladder be rigged.","category":"qa","audio_q":"audio/qa_q/63.mp3","audio_a":"audio/qa_a/63.mp3"},{"id":64,"question":"What kind of things should be reported to the pilot station?","answer":"Ship's name, call sign, draft, ETA and so on.","category":"qa","audio_q":"audio/qa_q/64.mp3","audio_a":"audio/qa_a/64.mp3"},{"id":65,"question":"What ship's particulars will pilot station ask for?","answer":"Ship's name, call sign, draft, ETA and so on.","category":"qa","audio_q":"audio/qa_q/65.mp3","audio_a":"audio/qa_a/65.mp3"},{"id":66,"question":"What ship's particulars will VTS usually ask for?","answer":"Ship's name, call sign, draft, ETA and so on.","category":"qa","audio_q":"audio/qa_q/66.mp3","audio_a":"audio/qa_a/66.mp3"},{"id":67,"question":"Whether EPIRB can be used for sending telex?","answer":"No, it cannot.","category":"qa","audio_q":"audio/qa_q/67.mp3","audio_a":"audio/qa_a/67.mp3"},{"id":68,"question":"Can EPIRB send voice messages?","answer":"No, EPIRB only transmits distress alert signals, not voice or telex.","category":"qa","audio_q":"audio/qa_q/68.mp3","audio_a":"audio/qa_a/68.mp3"},{"id":69,"question":"Coastal radio stations keep a constant watch on distress frequencies, what frequencies are they?","answer":"156.525 MHz, 2187.5, 4207.5, 6312, 8414.5, 12577, 16804.5 kHz.","category":"qa","audio_q":"audio/qa_q/69.mp3","audio_a":"audio/qa_a/69.mp3"},{"id":70,"question":"How to deal with false EPIRB distress alert?","answer":"Stop distress alert, contact RCC to cancel it.","category":"qa","audio_q":"audio/qa_q/70.mp3","audio_a":"audio/qa_a/70.mp3"},{"id":71,"question":"How to deal with false DSC distress alert?","answer":"Stop distress alert, contact RCC and cancel it.","category":"qa","audio_q":"audio/qa_q/71.mp3","audio_a":"audio/qa_a/71.mp3"},{"id":72,"question":"According to SOLAS, which radio equipment is not necessary for the ships sailing in sea area A2?","answer":"INMARSAT SES and HF equipment.","category":"qa","audio_q":"audio/qa_q/72.mp3","audio_a":"audio/qa_a/72.mp3"},{"id":73,"question":"What equipment shall be on ship in Sea Area A2?","answer":"VHF, MF, EGC receiver, EPIRB and SART.","category":"qa","audio_q":"audio/qa_q/73.mp3","audio_a":"audio/qa_a/73.mp3"},{"id":74,"question":"What should a master do before sailing?","answer":"Before sailing, master should check the sailing plan and the state of the ship, and inform chief engineer to get the engine stand-by.","category":"qa","audio_q":"audio/qa_q/74.mp3","audio_a":"audio/qa_a/74.mp3"},{"id":75,"question":"Which parties are those on-scene communications carried out between?","answer":"Between the distress ship and assisting units.","category":"qa","audio_q":"audio/qa_q/75.mp3","audio_a":"audio/qa_a/75.mp3"},{"id":76,"question":"What information is transmitted in DSC distress alert?","answer":"Ship's name, call sign, MMSI, position, nature of distress, the valid time of the position, and method of subsequent communication.","category":"qa","audio_q":"audio/qa_q/76.mp3","audio_a":"audio/qa_a/76.mp3"},{"id":77,"question":"Which messages cannot be refused?","answer":"Navigation warning, meteorological warning, search information.","category":"qa","audio_q":"audio/qa_q/77.mp3","audio_a":"audio/qa_a/77.mp3"},{"id":78,"question":"What is included in the distress message?","answer":"Ship's name, call sign, distress position, nature of distress, the assistance required, and other important information useful for the rescue operation.","category":"qa","audio_q":"audio/qa_q/78.mp3","audio_a":"audio/qa_a/78.mp3"},{"id":79,"question":"What's the coverage of VHF coast station in normal daytime?","answer":"About 20-30 nautical miles.","category":"qa","audio_q":"audio/qa_q/79.mp3","audio_a":"audio/qa_a/79.mp3"},{"id":80,"question":"What's the coverage of HF coast station in normal daytime?","answer":"HF coast station is worldwide. The wave of HF is not always stable.","category":"qa","audio_q":"audio/qa_q/80.mp3","audio_a":"audio/qa_a/80.mp3"},{"id":81,"question":"What is the approximate range of MF radio waves during the day time?","answer":"About 100-150 nautical miles.","category":"qa","audio_q":"audio/qa_q/81.mp3","audio_a":"audio/qa_a/81.mp3"},{"id":82,"question":"What is the purpose of AIS-SART?","answer":"Location.","category":"qa","audio_q":"audio/qa_q/82.mp3","audio_a":"audio/qa_a/82.mp3"},{"id":83,"question":"When a station is interfering with distress traffic, what action should be taken?","answer":"The interfering station should be imposed to keep radio silence.","category":"qa","audio_q":"audio/qa_q/83.mp3","audio_a":"audio/qa_a/83.mp3"},{"id":84,"question":"What does safety/safety signal indicate?","answer":"SECURITE. Announce safety message.","category":"qa","audio_q":"audio/qa_q/84.mp3","audio_a":"audio/qa_a/84.mp3"}],"dict":{"GMDSS":"全球海上遇险与安全系统","DSC":"数字选择性呼叫","NBDP":"窄带直接印字电报","EPIRB":"应急示位发射机","SART":"搜救雷达应答器","EGC":"增强群呼","MSI":"海上安全信息","VHF":"甚高频","MF":"中频","HF":"高频","INMARSAT":"国际海事卫星组织","AAIC":"账务机构识别码","SOLAS":"国际海上人命安全公约","STCW":"海员培训、发证和值班标准国际公约","MARPOL":"国际防止船舶造成污染公约","MRCC":"海上救援协调中心","RCC":"救援协调中心","LES":"地面地球站","MMSI":"海上移动业务识别码","MAYDAY":"遇险信号","PANPAN":"紧急信号","SECURITE":"安全信号","distress":"遇险","urgency":"紧急","safety":"安全","distress signal":"遇险信号","urgency signal":"紧急信号","safety signal":"安全信号","distress alert":"遇险报警","distress call":"遇险呼叫","distress message":"遇险信息","distress traffic":"遇险通信","call sign":"呼号","navigational warning":"航行警告","meteorological warning":"气象警告","safety message":"安全信息","crew":"船员","passenger":"乘客","vessel":"船舶","ship":"船","cargo":"货物","ship's name":"船名","general cargo":"杂货","general cargo ship":"杂货船","fishing boat":"渔船","bulk carrier":"散货船","chemical tanker":"化学品船","container ship":"集装箱船","tanker":"油轮","tug":"拖船","collision":"碰撞","fire":"火灾","grounding":"搁浅","sinking":"下沉","flooding":"进水","disabled":"失控","drifting":"漂流","breakdown":"故障","engine":"引擎/主机","main engine":"主机","steering gear":"舵机","anchor":"锚","pilot":"引航员","harbor":"港口","port":"左舷","towing line":"拖缆","rescue":"救援","assistance":"援助","convoy":"护航","firefighting":"消防","medical":"医疗","helicopter":"直升机","rescue boat":"救生艇","life boat":"救生艇","life-saving":"救生","over":"在...之上","out":"通话结束","this is":"这里是","I am":"我是","stand by":"守听","channel":"频道","silence":"静默","radio silence":"无线电静默","broadcast":"广播","acknowledge":"确认","confirm":"确认","repeat":"重复","relay":"转发","change to":"改频到","calling":"呼叫","come in":"请讲","go ahead":"请讲","acknowledge receipt":"确认收到","received":"已收到","position":"位置","bearing":"方位","distance":"距离","course":"航向","speed":"速度","knots":"节(船速单位)","nautical miles":"海里","latitude":"纬度","longitude":"经度","nautical":"海上的","approximately":"大约","coverage":"覆盖范围","range":"距离/范围","frequency":"频率","channel 16":"16 频道","port bow":"左舷船首","starboard":"右舷","stern":"船尾","bow":"船首","full speed":"全速","drifting speed":"漂流速度","ETA":"预计到达时间","ETD":"预计离开时间","UTC":"协调世界时","GMT":"格林尼治标准时间","IMO":"国际海事组织","PSC":"港口国监督/控制","MLC":"海事劳工公约","MOU":"谅解备忘录","identify":"识别","communicate":"通信","report":"报告","transmit":"发射","receive":"接收","operate":"操作","transmit alert":"发射报警","switch on":"打开","log in":"登录","select":"选择","press":"按下","switch on the power":"打开电源","navigate with caution":"谨慎航行","keep clear":"保持距离","comply":"遵守","international":"国际的","equipment":"设备","carried on":"携带","shall":"应当","the":"","a":"","an":"","and":"","or":"","but":"","in":"","on":"","at":"","to":"","for":"","of":"","with":"","by":"","from":"","this":"这","that":"那","is":"是","are":"是","was":"是","were":"是","be":"是","been":"是","have":"有","has":"有","had":"有","do":"做","does":"做","did":"做","will":"将","would":"将","should":"应该","can":"能","could":"能","may":"可以","might":"可能","must":"必须","i":"我","you":"你","he":"他","she":"她","it":"它","we":"我们","they":"他们","my":"我的","your":"你的","his":"他的","her":"她的","our":"我们的","their":"他们的","what":"什么","which":"哪个","who":"谁","when":"何时","where":"哪里","why":"为什么","how":"如何","how many":"多少","how much":"多少","yes":"是","no":"不","not":"不","all":"所有","any":"任何","some":"一些","many":"很多","much":"多","few":"少","more":"更多","most":"最多","other":"其他","such":"这样的","same":"相同","different":"不同","own":"自己的","send":"发送","give":"给","take":"拿","get":"得到","make":"做","use":"使用","find":"找到","know":"知道","see":"看","say":"说","tell":"告诉","call":"呼叫","ask":"问","show":"展示","hear":"听","let":"让","put":"放","mean":"意思是","meet":"见面","keep":"保持","help":"帮助","start":"开始","stop":"停止","end":"结束","begin":"开始","continue":"继续","include":"包括","require":"要求","stand":"站立","remain":"保持","follow":"跟随","hold":"握住","carry":"携带","pass":"通过","provide":"提供","inform":"通知","occur":"发生","indicate":"指示","cause":"导致","ensure":"确保","before":"之前","after":"之后","during":"在...期间","between":"在...之间","above":"在...之上","below":"在...之下","under":"在...之下","through":"通过","within":"在...之内","outside":"外部","around":"周围","along":"沿着","across":"穿过","toward":"朝向","exactly":"精确地","nearly":"几乎","always":"总是","usually":"通常","often":"经常","sometimes":"有时","never":"从不","rarely":"很少","seldom":"不常","occasionally":"偶尔","today":"今天","yesterday":"昨天","tomorrow":"明天","now":"现在","then":"然后","soon":"很快","later":"之后","early":"早","late":"晚","morning":"早晨","afternoon":"下午","evening":"傍晚","night":"夜晚","day":"天/白天","week":"周","month":"月","year":"年","good":"好","bad":"坏","large":"大","small":"小","long":"长","short":"短","high":"高","low":"低","fast":"快","slow":"慢","hot":"热","cold":"冷","new":"新","old":"旧","young":"年轻","first":"第一","last":"最后","next":"下一个","important":"重要","necessary":"必要","possible":"可能","available":"可用","ready":"准备好的","able":"能够","responsible":"负责"},"signal":[{"set":1,"groups":["LT135","G931E","PY280","QB28M","XZ2F6","S7NV3","KCY8W","MJI30","A024T","G8231","WR130","QL28M","KB26M","SNV73","KCWY8","M30JI","A204R","G8231","T0130","Z2150"]},{"set":2,"groups":["KB15M","SJV72","MCWY8","M30JH","25461","T2130","Z1250","V71M5","SJ2KB","MC0JW","Y8M3H","HZ476","25DRK","G2741","L8231","T2230","Z1520","BC751","FJ2PI","3C0JW"]},{"set":3,"groups":["Y8Z3H","DZ472","2D5KR","G5741","L7231","T1520","V71M5","SJ2KB","MC0JW","Y8M3H","HZ476","25DRK","G2741","T2230","Z1520","E.RMR","Y.OUP","D.MW3","2RM0N","LS6NO"]},{"set":4,"groups":["9.ONK","Y3OF4","F1NCB","HPU1Z","O8.9N","T3B2.","8XYST","WJKB4","A2B.Q","UVW1H","LJ9NM","3TMWO","P5B2.","6S7GF","8SWCP","ALPB5","LISD1","ZPVB5","TNDE7","ASRI1"]},{"set":5,"groups":["DVEX1","EJPLT","J8.9N","OPC7R","XAWP1","XF.W4","DA.W4","DMNC7","MV.D7","A1BMK","CDE2B","B2T3F","UMK.N","PD.B2","LZDT3","LM.B2","B2D.M","D.MB2","F47SN","7S.DN"]},{"set":6,"groups":["6S.DN",".DTN9","N90NL","N97SK","7S.K4","0N.K4",".DMK4",".DK41","K41N0","N90N.",".DMN9","L.MB2",".DKN9",".DSN9","S71UB","S61UB","O81UB","WERS7","0AER1","1B23C"]},{"set":7,"groups":["2CER5","3DZUI","4EGYQ","5FKLN","6GRW2","7HBA9","8IQVZ","9JYWQ","Q1L.0","W2JRY","R3TI1","D4AZV","AUCH6","71UCE","X5VMH","A6KUP","EFW3Q","ZPXB5","AH0PU","RSTJ."]},{"set":8,"groups":["2CER5","3DZUI","4EGYQ","5FKLN","6GRW2","7HBA9","8IQVZ","9JYWQ","Q1L.0","W2JRY","R3TI1","D4AZV","AUCH6","71UCE","X5VMH","A6KUP","EFW3Q","ZPXB5","AH0PU","RSTJ."]},{"set":9,"groups":["P2QO3","DS4L2","Q6WAY","VN9GH","SE.DT","BEG47","IS963","8.59M","O3Q9R","5S2V0","34GE8","NV.LB","NV.CP","3N8JH","HNC93","JU61P","9.28M","710E8","TZDH2","R9Q3O"]},{"set":10,"groups":["32564","A274R","L8231","68971","369JL","TNYA5","P2QO3","DSKL2","Q6WAY","VN9GH","A182D","KTW57","CIVN.","CY3KM","93571","W4MBA","SEALP","T9.8M","DSKL2","ZPXB5"]}]};
+
+// ==================== 启动 ====================
+(function init() {
+  bindEvents();
+  loadData();
+  renderAll();
+  // 填充 tab 数量(动态)
+  const d = STATE.data;
+  const sets = d.signal.reduce((sum, s) => sum + s.groups.length, 0);
+  setText('count-signal', sets);
+  setText('count-codeyu', d.codeyu.length);
+  setText('count-oral', d.oral.length);
+  setText('count-qa', d.qa.length);
+  const parts = [];
+  if (sets) parts.push(`${sets} 信号题`);
+  if (d.codeyu.length) parts.push(`${d.codeyu.length} 码语`);
+  if (d.oral.length) parts.push(`${d.oral.length} 口述题`);
+  if (d.qa.length) parts.push(`${d.qa.length} 简答`);
+  const text = parts.length ? '已加载 ' + parts.join(' + ') : '码语和信号题已加载,口述题和简答题待录入';
+  showStatus(`${text} · 词典 ${Object.keys(d.dict).length} 词`);
+})();
+
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+</script>
+</body>
+</html>
