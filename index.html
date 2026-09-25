@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#154360">
 <title>GMDSS · 整合讲评</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box }
@@ -35,6 +36,7 @@ header .meta b { color:#D4AF37; font-weight:700; opacity:1 }
 #tabs button.active {
   background:#f0f1f3; color:#154360; font-weight:700;
 }
+#tabs button small { display:block; font-size:11px; opacity:.8; font-weight:400; margin-top:2px }
 
 /* iframe 区 */
 #stage {
@@ -59,11 +61,173 @@ footer {
   border-bottom:1px solid #e6c96b;
 }
 #hint b { color:#c05621 }
+
+/* ===========================================
+   📱 移动端响应式优化 (≤768px)
+   =========================================== */
+@media (max-width: 768px) {
+
+  /* ----- 顶部 Header 紧凑化 ----- */
+  header {
+    padding: 8px 12px;
+    gap: 8px;
+    min-height: 44px;
+  }
+  header h1 {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  header .sub {
+    display: none;                  /* 隐藏英文副标题 */
+  }
+  header .meta {
+    display: none;                  /* 隐藏右上角统计信息（展开按钮代替） */
+  }
+
+  /* ----- 移动端标题栏右侧折叠菜单 ----- */
+  #menuToggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  #menuToggle:active { background: rgba(255,255,255,0.25); }
+
+  /* 弹出统计信息 */
+  #statsPanel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 8px;
+    right: 8px;
+    margin-top: 4px;
+    background: #1a5276;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    z-index: 100;
+  }
+  #statsPanel.show { display: block; }
+  #statsPanel .stat-row {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  #statsPanel .stat-item {
+    flex: 1;
+    padding: 4px;
+  }
+  #statsPanel .stat-item b {
+    display: block;
+    color: #D4AF37;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* ----- Tabs 横向滚动 + 单行紧凑 ----- */
+  #tabs {
+    padding: 0;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  #tabs::-webkit-scrollbar { display: none; }
+
+  #tabs button {
+    padding: 8px 14px;
+    font-size: 13px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  #tabs button small {
+    display: inline;
+    font-size: 11px;
+    margin: 0 0 0 6px;
+    padding: 1px 6px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    opacity: 1;
+  }
+  #tabs button.active small {
+    background: rgba(21,67,96,0.12);
+  }
+  /* 让 tab 内容水平排列:📚 题库 827题 */
+  #tabs button small::before { content: " · "; opacity: 0.6; }
+
+  /* ----- 隐藏提示条，可点击重新展开 ----- */
+  #hint {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+  #hint.collapsed { display: none; }
+  #hintToggle {
+    display: inline-block;
+    background: #fff8e1;
+    border: 1px solid #e6c96b;
+    color: #7a5b00;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  /* ----- Footer 紧凑 ----- */
+  footer {
+    padding: 4px 12px;
+    font-size: 10px;
+  }
+
+  /* ----- iframe 高度自适应 ----- */
+  #stage {
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ----- 提高可点击区域 ----- */
+  #tabs button, #menuToggle, #hintToggle {
+    -webkit-tap-highlight-color: rgba(212,175,55,0.3);
+  }
+}
+
+/* ===== 更小屏幕（手机竖屏，≤480px） ===== */
+@media (max-width: 480px) {
+  header { padding: 6px 10px; }
+  header h1 { font-size: 14px; }
+  #tabs button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+  #tabs button small { font-size: 10px; padding: 0 5px; }
+}
+
+/* ===== 隐藏移动端专属元素（默认桌面端不显示） ===== */
+#menuToggle, #statsPanel, #hintToggle { display: none; }
 </style>
 </head>
 <body>
 
-<header>
+<header style="position:relative">
   <div>
     <h1>GMDSS · 整合讲评</h1>
     <div class="sub">GMDSS Communication English · Integrated Training</div>
@@ -73,15 +237,27 @@ footer {
     <b>84</b> 问答题  ·  <b>47</b> 口述题<br>
     <b>200</b> 信号题  ·  <b>827</b> 知识题
   </div>
+  <button id="menuToggle" aria-label="统计信息">📊</button>
+  <div id="statsPanel">
+    <div class="stat-row">
+      <div class="stat-item"><b>84</b>问答题</div>
+      <div class="stat-item"><b>47</b>口述题</div>
+    </div>
+    <div class="stat-row" style="margin-top:6px">
+      <div class="stat-item"><b>200</b>信号题</div>
+      <div class="stat-item"><b>827</b>知识题</div>
+    </div>
+  </div>
 </header>
 
 <div id="tabs">
-  <button data-tab="kb" class="active">📚 知识题库<br><small>827 题</small></button>
-  <button data-tab="oral">🎙 听力与会话<br><small>47 口述 + 84 问答</small></button>
+  <button data-tab="kb" class="active">📚 知识题库<small>827题</small></button>
+  <button data-tab="oral">🎙 听力与会话<small>47+84</small></button>
 </div>
 
-<div id="hint">
-  <b>提示:</b>点上方 tab 切换内容。下方的页面各自有独立的播放/答题/朗读功能,可全屏使用。
+<div id="hint" class="collapsed">
+  <b>提示:</b>点上方 tab 切换内容。
+  <button id="hintToggle" onclick="document.getElementById('hint').classList.remove('collapsed');this.style.display='none'">展开</button>
 </div>
 
 <div id="stage">
@@ -99,14 +275,34 @@ const frames = {
   kb:   document.getElementById('frame-kb'),
   oral: document.getElementById('frame-oral'),
 };
+
 tabs.forEach(btn => {
   btn.addEventListener('click', () => {
     tabs.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     Object.values(frames).forEach(f => f.classList.remove('active'));
     frames[btn.dataset.tab].classList.add('active');
+    // 切换 tab 时自动收起移动端的提示条
+    const hint = document.getElementById('hint');
+    if (hint) hint.classList.add('collapsed');
   });
 });
+
+// 移动端：点击 📊 按钮切换统计信息面板
+const menuToggle = document.getElementById('menuToggle');
+const statsPanel = document.getElementById('statsPanel');
+if (menuToggle && statsPanel) {
+  menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    statsPanel.classList.toggle('show');
+  });
+  // 点击外部关闭
+  document.addEventListener('click', (e) => {
+    if (!statsPanel.contains(e.target) && e.target !== menuToggle) {
+      statsPanel.classList.remove('show');
+    }
+  });
+}
 </script>
 
 </body>
