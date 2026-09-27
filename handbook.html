@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#082d35" />
+  <link rel="icon" href="data:," />
+  <title>GMDSS 速查手册</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #eef4f2;
+      --paper: #ffffff;
+      --paper-2: #f7faf9;
+      --ink: #102a30;
+      --muted: #52686d;
+      --line: #c9d8d5;
+      --navy: #082d35;
+      --navy-2: #0d4550;
+      --teal: #087f83;
+      --teal-soft: #d9efed;
+      --orange: #d95f22;
+      --orange-soft: #fff0e6;
+      --yellow: #f3c44f;
+      --red: #ba2f34;
+      --red-soft: #fce9e8;
+      --green: #27745f;
+      --shadow: 0 14px 38px rgba(8, 45, 53, .10);
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #071b20;
+        --paper: #0c262c;
+        --paper-2: #113139;
+        --ink: #edf6f4;
+        --muted: #a5bdba;
+        --line: #29484d;
+        --navy: #031317;
+        --navy-2: #0a3942;
+        --teal: #49b9b7;
+        --teal-soft: #153c3f;
+        --orange: #ff8a4f;
+        --orange-soft: #46271d;
+        --yellow: #f3ca62;
+        --red: #ff777a;
+        --red-soft: #472326;
+        --green: #6fd1b0;
+        --shadow: 0 18px 46px rgba(0, 0, 0, .28);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, var(--navy) 0 330px, var(--bg) 330px 100%);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+    .skip-link { position: fixed; left: 12px; top: -60px; z-index: 100; background: var(--paper); color: var(--ink); padding: 8px 12px; border-radius: 6px; }
+    .skip-link:focus { top: 12px; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .masthead { color: #f4fbfa; padding: 44px 0 34px; }
+    .mast-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(250px, .75fr); gap: 38px; align-items: end; }
+    .kicker { display: flex; gap: 10px; align-items: center; margin: 0 0 12px; color: #a9d9d5; font-size: 14px; font-weight: 700; }
+    .signal-dot { width: 9px; height: 9px; background: var(--orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(217, 95, 34, .2); }
+    h1 { font-family: Georgia, "Songti SC", "SimSun", serif; font-size: clamp(34px, 5vw, 64px); line-height: 1.06; letter-spacing: -.035em; margin: 0 0 16px; max-width: 780px; }
+    .lede { max-width: 760px; margin: 0; color: #cce1de; font-size: clamp(16px, 2vw, 19px); }
+    .mast-note { border-top: 1px solid rgba(255,255,255,.22); padding-top: 16px; color: #cce1de; font-size: 13px; }
+    .mast-note strong { display: block; color: #fff; font-size: 15px; margin-bottom: 4px; }
+
+    .search-bar { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+    .search-inner { padding: 12px 0; display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 12px; align-items: center; }
+    .search-wrap { position: relative; }
+    .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--muted); }
+    #search { width: 100%; min-height: 46px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 10px 42px 10px 44px; outline: none; }
+    #search:focus { border-color: var(--teal); box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 20%, transparent); }
+    #clearSearch { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: none; }
+    #clearSearch:hover { background: var(--paper-2); }
+    .mode-toggle { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .switch { width: 44px; height: 24px; border: 0; border-radius: 999px; background: var(--line); padding: 3px; cursor: pointer; transition: background .2s ease; }
+    .switch::after { content: ""; display: block; width: 18px; height: 18px; border-radius: 50%; background: var(--paper); box-shadow: 0 2px 5px rgba(0,0,0,.25); transition: transform .2s ease; }
+    .switch[aria-pressed="true"] { background: var(--teal); }
+    .switch[aria-pressed="true"]::after { transform: translateX(20px); }
+
+    .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; padding: 28px 0 76px; }
+    .toc { align-self: start; position: sticky; top: 86px; }
+    .toc-title { margin: 0 0 10px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .toc nav { display: grid; gap: 4px; }
+    .toc a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 650; }
+    .toc a:hover, .toc a.active { color: var(--ink); background: var(--paper); }
+    .toc .num { font-family: var(--mono); font-size: 11px; color: var(--teal); }
+    .toc-meter { margin-top: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-size: 12px; color: var(--muted); }
+    .toc-meter b { color: var(--ink); }
+
+    main { min-width: 0; }
+    .decision { background: var(--paper); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 24px; }
+    .decision-head { padding: 24px 26px 8px; }
+    .section-kicker { color: var(--orange); font-weight: 800; font-size: 12px; letter-spacing: .08em; margin: 0 0 4px; }
+    h2 { font-family: Georgia, "Songti SC", serif; font-size: clamp(27px, 4vw, 40px); line-height: 1.2; margin: 0 0 8px; letter-spacing: -.02em; }
+    .section-intro { margin: 0; color: var(--muted); }
+    .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 20px; border-top: 1px solid var(--line); }
+    .priority { padding: 22px 20px; position: relative; min-width: 0; }
+    .priority + .priority { border-left: 1px solid var(--line); }
+    .priority .flag { width: 34px; height: 5px; border-radius: 4px; margin-bottom: 14px; }
+    .priority.distress .flag { background: var(--red); }
+    .priority.urgency .flag { background: var(--orange); }
+    .priority.safety .flag { background: var(--yellow); }
+    .priority h3 { margin: 0; font-family: var(--mono); font-size: 19px; letter-spacing: .02em; }
+    .priority p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .priority strong { color: var(--ink); }
+
+    .section { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); margin: 0 0 22px; overflow: hidden; }
+    .section > header { padding: 26px 26px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: flex-start; justify-content: space-between; gap: 22px; }
+    .section-count { font: 700 12px/1 var(--mono); color: var(--teal); background: var(--teal-soft); padding: 9px 10px; border-radius: 999px; white-space: nowrap; }
+    .section-body { padding: 24px 26px 28px; }
+    .quick-rule { display: grid; grid-template-columns: 130px 1fr; gap: 18px; align-items: start; padding: 16px 0; border-bottom: 1px dashed var(--line); }
+    .quick-rule:last-child { border-bottom: 0; }
+    .quick-rule dt { color: var(--muted); font-weight: 750; font-size: 13px; }
+    .quick-rule dd { margin: 0; }
+
+    .sequence { counter-reset: step; display: grid; gap: 10px; margin: 0 0 22px; padding: 0; list-style: none; }
+    .sequence li { counter-increment: step; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+    .sequence li::before { content: counter(step); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--navy-2); color: #fff; font: 800 13px/1 var(--mono); }
+    .sequence strong { display: block; }
+    .sequence span { color: var(--muted); font-size: 14px; }
+
+    .script-card { background: var(--navy); color: #eff9f7; border-radius: var(--radius-md); overflow: hidden; margin-top: 16px; }
+    .script-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 14px 12px 18px; border-bottom: 1px solid rgba(255,255,255,.14); }
+    .script-top span { color: #a9d9d5; font-size: 12px; font-weight: 750; }
+    .copy-btn { border: 1px solid rgba(255,255,255,.24); background: transparent; color: white; border-radius: 7px; padding: 7px 10px; cursor: pointer; font-size: 12px; font-weight: 750; }
+    .copy-btn:hover { background: rgba(255,255,255,.1); }
+    .script { padding: 18px; font-family: var(--mono); font-size: clamp(13px, 1.8vw, 15px); line-height: 1.8; white-space: pre-line; overflow-wrap: anywhere; }
+    .script b { color: #ffad7c; }
+    .cn-hint { color: #a9d9d5; font-family: var(--sans); font-size: .92em; }
+    body.hide-hints .cn-hint { display: none; }
+    .variable { color: var(--yellow); }
+
+    .callout { position: relative; background: var(--orange-soft); border-radius: 10px; padding: 14px 16px 14px 22px; margin: 16px 0; }
+    .callout::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: var(--orange); border-radius: 10px 0 0 10px; }
+    .callout strong { display: block; color: var(--orange); }
+    .callout p { margin: 3px 0 0; font-size: 14px; }
+    .callout.danger { background: var(--red-soft); }
+    .callout.danger::before { background: var(--red); }
+    .callout.danger strong { color: var(--red); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .mini-card { background: var(--paper-2); border-radius: var(--radius-md); padding: 18px; }
+    .mini-card h3 { margin: 0 0 8px; font-size: 17px; }
+    .mini-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .mini-card ul { margin: 10px 0 0; padding-left: 20px; color: var(--muted); font-size: 14px; }
+
+    .freq-list { display: grid; gap: 8px; }
+    .freq-row { display: grid; grid-template-columns: 80px 1.2fr 1fr; gap: 12px; align-items: center; padding: 12px 14px; background: var(--paper-2); border-radius: 9px; }
+    .freq-band { font: 800 12px/1 var(--mono); color: var(--teal); }
+    .freq-row b { font-family: var(--mono); font-size: 13px; }
+    .freq-row span { color: var(--muted); font-size: 13px; }
+
+    .alpha-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .alpha-item { display: grid; grid-template-columns: 28px 1fr; align-items: baseline; background: var(--paper-2); border-radius: 8px; padding: 9px 10px; }
+    .alpha-item b { color: var(--orange); font: 800 14px/1 var(--mono); }
+    .alpha-item span { font: 650 13px/1.25 var(--mono); }
+    .digits { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
+    .digit { text-align: center; background: var(--teal-soft); border-radius: 8px; padding: 9px 5px; }
+    .digit b { display: block; color: var(--teal); font: 800 15px/1.2 var(--mono); }
+    .digit span { color: var(--muted); font: 650 11px/1.2 var(--mono); }
+
+    .abbr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 14px; }
+    .abbr { display: grid; grid-template-columns: 78px 1fr; gap: 10px; padding: 12px; border-bottom: 1px dashed var(--line); }
+    .abbr b { font: 800 13px/1.5 var(--mono); color: var(--teal); }
+    .abbr p { margin: 0; color: var(--muted); font-size: 13px; }
+    .abbr strong { color: var(--ink); }
+
+    .area-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; border-radius: 12px; overflow: hidden; }
+    .area { background: var(--paper-2); padding: 16px; min-height: 144px; }
+    .area b { display: block; font: 900 25px/1 var(--mono); color: var(--teal); margin-bottom: 10px; }
+    .area p { margin: 0; font-size: 13px; color: var(--muted); }
+    .area strong { color: var(--ink); }
+
+    details { border-top: 1px solid var(--line); }
+    details:first-of-type { border-top: 0; }
+    summary { list-style: none; cursor: pointer; padding: 16px 2px; font-weight: 750; display: flex; justify-content: space-between; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--teal); font: 800 20px/1 var(--mono); }
+    details[open] summary::after { content: "−"; }
+    .detail-content { padding: 0 0 18px; color: var(--muted); font-size: 14px; }
+
+    .source-list { margin: 0; padding-left: 22px; }
+    .source-list li { margin: 10px 0; color: var(--muted); font-size: 13px; }
+    .source-list a { color: var(--teal); text-underline-offset: 3px; overflow-wrap: anywhere; }
+    .source-list strong { color: var(--ink); }
+    .fine-print { color: var(--muted); font-size: 12px; margin-top: 22px; border-top: 1px solid var(--line); padding-top: 16px; }
+    .no-results { display: none; text-align: center; background: var(--paper); border: 1px dashed var(--line); border-radius: var(--radius-md); padding: 34px; color: var(--muted); }
+    .no-results strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 20px); background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 9px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    mark { background: var(--yellow); color: #18292b; border-radius: 2px; padding: 0 2px; }
+
+    @media (max-width: 880px) {
+      .mast-grid { grid-template-columns: 1fr; gap: 24px; }
+      .mast-note { max-width: 600px; }
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: static; }
+      .toc-title, .toc-meter { display: none; }
+      .toc nav { display: flex; flex-wrap: wrap; gap: 7px; }
+      .toc a { background: var(--paper); border: 1px solid var(--line); padding: 7px 10px; }
+      .area-strip { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      body { background: linear-gradient(180deg, var(--navy) 0 390px, var(--bg) 390px 100%); }
+      .masthead { padding: 30px 0 24px; }
+      h1 { font-size: 38px; }
+      .search-inner { grid-template-columns: 1fr; gap: 8px; }
+      .mode-toggle { justify-self: end; }
+      .priority-grid { grid-template-columns: 1fr; }
+      .priority + .priority { border-left: 0; border-top: 1px solid var(--line); }
+      .section > header { padding: 22px 18px 16px; }
+      .section-body, .decision-head { padding-left: 18px; padding-right: 18px; }
+      .section-count { display: none; }
+      .quick-rule { grid-template-columns: 1fr; gap: 3px; }
+      .two-col, .abbr-grid { grid-template-columns: 1fr; }
+      .freq-row { grid-template-columns: 58px 1fr; }
+      .freq-row span { grid-column: 2; }
+      .alpha-grid { grid-template-columns: repeat(2, 1fr); }
+      .digits { grid-template-columns: repeat(5, 1fr); }
+      .area-strip { grid-template-columns: 1fr; }
+      .area { min-height: 0; }
+      .script-top { align-items: flex-start; }
+      .copy-btn { flex: 0 0 auto; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      body { background: white; color: #111; }
+      .search-bar, .toc, .copy-btn, .toast { display: none !important; }
+      .masthead { color: #111; padding: 10mm 0 6mm; }
+      .lede, .mast-note, .kicker { color: #333; }
+      .layout { display: block; padding: 0; }
+      .section, .decision { break-inside: avoid; box-shadow: none; border: 1px solid #bbb; }
+      .script-card { background: #f2f2f2; color: #111; border: 1px solid #aaa; }
+      .script b, .variable { color: #111; }
+      .cn-hint { color: #555; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<header class="masthead">
+  <div class="shell mast-grid">
+    <div>
+      <p class="kicker"><span class="signal-dot" aria-hidden="true"></span>课堂复习 · 口述训练 · 值班查阅</p>
+      <h1>先判断优先级，再开口。</h1>
+      <p class="lede">把遇险、紧急、安全与日常 VHF 通信的关键顺序压缩成一页；中英模板可直接复制，中文提示可一键隐藏用于口述训练。</p>
+    </div>
+    <div class="mast-note">
+      <strong>使用边界</strong>
+      教学与复习速查。实际操作须以船上设备说明书、公司 SMS、主管机关要求及当值驾驶员/船长指示为准。
+    </div>
+  </div>
+</header>
+
+<div class="search-bar">
+  <div class="shell search-inner">
+    <label class="search-wrap" aria-label="搜索手册">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <input id="search" type="search" placeholder="搜索：MAYDAY、DSC、2182、SART…" autocomplete="off" />
+      <button id="clearSearch" type="button" aria-label="清除搜索">×</button>
+    </label>
+    <div class="mode-toggle">
+      <span>口述训练：隐藏中文提示</span>
+      <button class="switch" id="hintToggle" type="button" role="switch" aria-pressed="false" aria-label="隐藏中文提示"></button>
+    </div>
+  </div>
+</div>
+
+<div class="shell layout">
+  <aside class="toc" aria-label="章节导航">
+    <p class="toc-title">快速定位</p>
+    <nav>
+      <a href="#priority"><span class="num">01</span>优先级判断</a>
+      <a href="#distress"><span class="num">02</span>遇险通信</a>
+      <a href="#urgency"><span class="num">03</span>紧急 / 安全</a>
+      <a href="#routine"><span class="num">04</span>日常 VHF</a>
+      <a href="#dsc"><span class="num">05</span>DSC 操作逻辑</a>
+      <a href="#frequencies"><span class="num">06</span>频率速查</a>
+      <a href="#alphabet"><span class="num">07</span>字母与数字</a>
+      <a href="#equipment"><span class="num">08</span>设备与海区</a>
+      <a href="#terms"><span class="num">09</span>常用缩写</a>
+    </nav>
+    <div class="toc-meter"><b id="visibleCount">9</b> 个章节可见<br>输入关键词即可筛选全文</div>
+  </aside>
+
+  <main id="content">
+    <section class="decision searchable" id="priority" data-title="优先级判断 MAYDAY PAN PAN SECURITE">
+      <div class="decision-head">
+        <p class="section-kicker">01 / FIRST DECISION</p>
+        <h2>先问：是否“严重且迫近”？</h2>
+        <p class="section-intro">优先级取决于危险程度，而不是事件听起来多严重。</p>
+      </div>
+      <div class="priority-grid">
+        <article class="priority distress">
+          <div class="flag"></div>
+          <h3>MAYDAY</h3>
+          <p><strong>遇险 DISTRESS</strong><br>船舶或人员处于严重且迫近的危险，需要立即援助。</p>
+        </article>
+        <article class="priority urgency">
+          <div class="flag"></div>
+          <h3>PAN PAN</h3>
+          <p><strong>紧急 URGENCY</strong><br>涉及船舶或人员安全的紧急信息，但尚非严重且迫近的危险。</p>
+        </article>
+        <article class="priority safety">
+          <div class="flag"></div>
+          <h3>SÉCURITÉ</h3>
+          <p><strong>安全 SAFETY</strong><br>重要的航行或气象安全信息，例如漂浮物、助航标志故障或强风警报。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section searchable" id="distress" data-title="遇险通信 MAYDAY distress message 九要素 position assistance persons on board">
+      <header>
+        <div>
+          <p class="section-kicker">02 / DISTRESS</p>
+          <h2>MAYDAY：先报警，再传话</h2>
+          <p class="section-intro">有 DSC 时先发送数字遇险报警；随后在关联话音频率上传送遇险通信。</p>
+        </div>
+        <span class="section-count">9 要素</span>
+      </header>
+      <div class="section-body">
+        <ol class="sequence">
+          <li><div><strong>准备并发送 DSC 遇险报警</strong><span>确认设备已接入正确的 MMSI 与船位/时间；按设备程序选择遇险性质，或发送未指定遇险。</span></div></li>
+          <li><div><strong>转到关联话音频率</strong><span>VHF 通常为 Ch 16；MF 为 2182 kHz。设备自动换频时不要随意中断流程。</span></div></li>
+          <li><div><strong>清楚、慢速、按固定顺序传送</strong><span>身份 → 船位 → 遇险性质 → 所需援助 → 其他救助信息。</span></div></li>
+          <li><div><strong>松开 PTT，守听并记录</strong><span>等待确认；保持该频率守听，按现场指挥台站要求继续通信。</span></div></li>
+        </ol>
+
+        <div class="script-card">
+          <div class="script-top"><span>标准遇险话音模板 · DISTRESS MESSAGE</span><button class="copy-btn" type="button" data-copy="maydayScript">复制英文模板</button></div>
+          <div class="script" id="maydayScript"><b>MAYDAY, MAYDAY, MAYDAY</b>
+THIS IS <span class="variable">[VESSEL NAME × 3]</span>
+CALL SIGN <span class="variable">[CALL SIGN]</span>, MMSI <span class="variable">[9 DIGITS]</span>
+<b>MAYDAY</b> <span class="variable">[VESSEL NAME]</span>
+MY POSITION IS <span class="variable">[LATITUDE / LONGITUDE OR BEARING &amp; DISTANCE]</span>
+<span class="cn-hint">（船位：纬度/经度，或相对已知物标的方位与距离）</span>
+I AM <span class="variable">[NATURE OF DISTRESS]</span>
+<span class="cn-hint">（遇险性质：on fire / sinking / collision…）</span>
+I REQUIRE <span class="variable">[ASSISTANCE REQUIRED]</span>
+<span class="cn-hint">（所需援助）</span>
+I HAVE <span class="variable">[NUMBER]</span> PERSONS ON BOARD
+<span class="variable">[OTHER INFORMATION THAT MAY FACILITATE RESCUE]</span>
+<b>OVER</b></div>
+        </div>
+
+        <dl>
+          <div class="quick-rule"><dt>船位 POSITION</dt><dd>尽量给出纬度、经度及 UTC 时间。数字逐位读；不要用含糊方位代替可用坐标。</dd></div>
+          <div class="quick-rule"><dt>遇险性质 NATURE</dt><dd><b>on fire / taking in water / sinking / aground / collision / not under command / abandoning vessel</b></dd></div>
+          <div class="quick-rule"><dt>援助 ASSISTANCE</dt><dd><b>I require immediate assistance / fire-fighting assistance / medical assistance / a tug.</b></dd></div>
+          <div class="quick-rule"><dt>补充 OTHER INFO</dt><dd>人员与伤员数量、危险货物、救生艇筏、EPIRB 状态、船体特征、拟采取行动。</dd></div>
+        </dl>
+
+        <div class="callout danger"><strong>误报警必须取消</strong><p>立即停止设备重复发射，并按该设备手册和适用程序，在同一频段关联话音频率广播取消信息；记录报警与取消经过。</p></div>
+        <div class="script-card">
+          <div class="script-top"><span>误遇险报警取消 · FALSE ALERT CANCELLATION</span><button class="copy-btn" type="button" data-copy="cancelScript">复制英文模板</button></div>
+          <div class="script" id="cancelScript"><b>ALL STATIONS, ALL STATIONS, ALL STATIONS</b>
+THIS IS <span class="variable">[VESSEL NAME × 3]</span>
+CALL SIGN <span class="variable">[CALL SIGN]</span>, MMSI <span class="variable">[9 DIGITS]</span>
+POSITION <span class="variable">[POSITION]</span> AT <span class="variable">[UTC]</span>
+<b>CANCEL MY DISTRESS ALERT OF <span class="variable">[DATE / TIME UTC]</span></b>
+OVER</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="urgency" data-title="紧急 安全 PAN PAN SECURITE urgency safety medical navigational warning">
+      <header>
+        <div>
+          <p class="section-kicker">03 / URGENCY &amp; SAFETY</p>
+          <h2>PAN PAN 与 SÉCURITÉ</h2>
+          <p class="section-intro">先用优先级信号抓住注意力，再说明收件对象、身份、船位与正文。</p>
+        </div>
+        <span class="section-count">2 类消息</span>
+      </header>
+      <div class="section-body">
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>PAN PAN · 紧急</h3>
+            <p>适用于紧急医疗、失去推进但暂不构成迫近危险、人员失踪等安全相关信息。</p>
+            <ul><li>情况恶化为严重且迫近危险时，升级为 MAYDAY。</li><li>需要医疗建议可明确说：<b>Request medical advice.</b></li></ul>
+          </article>
+          <article class="mini-card">
+            <h3>SÉCURITÉ · 安全</h3>
+            <p>用于重要航行或气象警告。呼叫后按台站/当地程序转到指定工作频道传送正文。</p>
+            <ul><li>例如：漂浮物、灯浮故障、能见度、风暴警报。</li><li>给出精确位置、时间、运动趋势。</li></ul>
+          </article>
+        </div>
+        <div class="script-card">
+          <div class="script-top"><span>紧急消息 · URGENCY MESSAGE</span><button class="copy-btn" type="button" data-copy="panScript">复制英文模板</button></div>
+          <div class="script" id="panScript"><b>PAN PAN, PAN PAN, PAN PAN</b>
+ALL STATIONS, ALL STATIONS, ALL STATIONS
+THIS IS <span class="variable">[VESSEL NAME × 3]</span>
+CALL SIGN <span class="variable">[CALL SIGN]</span>, MMSI <span class="variable">[9 DIGITS]</span>
+MY POSITION IS <span class="variable">[POSITION]</span>
+<span class="variable">[TEXT OF THE URGENCY MESSAGE]</span>
+<span class="cn-hint">（说明情况、需要什么、人员状态及行动意图）</span>
+OVER</div>
+        </div>
+        <div class="script-card">
+          <div class="script-top"><span>安全呼叫 · SAFETY CALL</span><button class="copy-btn" type="button" data-copy="secScript">复制英文模板</button></div>
+          <div class="script" id="secScript"><b>SÉCURITÉ, SÉCURITÉ, SÉCURITÉ</b>
+ALL STATIONS, ALL STATIONS, ALL STATIONS
+THIS IS <span class="variable">[VESSEL NAME / COAST STATION × 3]</span>
+FOR MY NAVIGATIONAL WARNING, SWITCH TO CHANNEL <span class="variable">[WORKING CHANNEL]</span>
+OUT</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="routine" data-title="日常 VHF 呼叫 应答 换频道 结束 over out say again spell read back routine">
+      <header>
+        <div>
+          <p class="section-kicker">04 / ROUTINE VHF</p>
+          <h2>日常通信：短、准、可复诵</h2>
+          <p class="section-intro">先监听，后呼叫；建立联系后尽快转到合适工作频道。</p>
+        </div>
+        <span class="section-count">4 步</span>
+      </header>
+      <div class="section-body">
+        <div class="script-card">
+          <div class="script-top"><span>建立联系 · INITIAL CALL</span><button class="copy-btn" type="button" data-copy="routineScript">复制英文模板</button></div>
+          <div class="script" id="routineScript"><span class="variable">[STATION CALLED × 3]</span>
+THIS IS <span class="variable">[YOUR VESSEL NAME × 3]</span>
+CALL SIGN <span class="variable">[CALL SIGN]</span>
+ON CHANNEL <span class="variable">[CHANNEL]</span>
+OVER</div>
+        </div>
+        <dl>
+          <div class="quick-rule"><dt>应答</dt><dd><b>[Calling station], THIS IS [your vessel]. OVER.</b></dd></div>
+          <div class="quick-rule"><dt>换频道</dt><dd><b>CHANGE TO CHANNEL SIX EIGHT. / CHANNEL SIX EIGHT. OVER.</b></dd></div>
+          <div class="quick-rule"><dt>请求重复</dt><dd><b>SAY AGAIN. / SAY AGAIN ALL AFTER… / SAY AGAIN FIGURES.</b></dd></div>
+          <div class="quick-rule"><dt>拼写</dt><dd><b>I SPELL…</b> 后使用国际无线电通话拼写字母。</dd></div>
+          <div class="quick-rule"><dt>复诵</dt><dd><b>READ BACK. / I READ BACK… / CORRECT. / WRONG. CORRECTION…</b></dd></div>
+          <div class="quick-rule"><dt>结束</dt><dd><b>OVER</b>＝请回复；<b>OUT</b>＝通信结束。不要说“OVER AND OUT”。</dd></div>
+        </dl>
+        <div class="callout"><strong>话筒纪律</strong><p>按下 PTT 后稍停再说；话筒与嘴保持合适距离；正常语速、分组表达、避免长句；说完松开 PTT。</p></div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="dsc" data-title="DSC 数字选择性呼叫 VHF Channel 70 MMSI acknowledgement watch false alert">
+      <header>
+        <div>
+          <p class="section-kicker">05 / DSC</p>
+          <h2>DSC 操作逻辑</h2>
+          <p class="section-intro">DSC 用于建立联系与传送报警信息；后续通信转到关联话音或窄带直接印字频率。</p>
+        </div>
+        <span class="section-count">流程图</span>
+      </header>
+      <div class="section-body">
+        <div class="two-col">
+          <article class="mini-card">
+            <h3>发射前确认</h3>
+            <ul><li>MMSI 编程正确</li><li>定位源与 UTC 时间有效</li><li>优先级和呼叫对象正确</li><li>通信方式与建议频道正确</li></ul>
+          </article>
+          <article class="mini-card">
+            <h3>收到后处理</h3>
+            <ul><li>阅读屏幕全部字段并记录</li><li>转到关联话音频率守听</li><li>船舶台不要抢先用 DSC 确认岸台应确认的遇险报警</li><li>按船长、RCC 与适用程序行动</li></ul>
+          </article>
+        </div>
+        <div class="callout"><strong>VHF 的分工</strong><p><b>Channel 70</b> 只用于 DSC 数字呼叫；<b>Channel 16</b> 用于遇险、安全与呼叫话音。不要在 Ch 70 上进行话音通信。</p></div>
+        <details open>
+          <summary>收到遇险报警时，为什么先守听关联话音频率？</summary>
+          <div class="detail-content">遇险船将在关联话音频率上传送 MAYDAY 信息；岸台/RCC 通常负责确认并组织救助。船舶台记录报警、通知船长、守听并准备提供援助。</div>
+        </details>
+        <details>
+          <summary>没有时间选择遇险性质怎么办？</summary>
+          <div class="detail-content">按设备的未指定遇险（undesignated distress）程序先发出报警，再在话音中补充性质、船位和所需援助。设备按键时长与菜单逻辑以本船型号说明书为准。</div>
+        </details>
+        <details>
+          <summary>误触发以后只关机可以吗？</summary>
+          <div class="detail-content">不可以只关机了事。应停止重复发射，重新开机保持守听，并在关联频率明确广播取消；按程序通知有关岸台/RCC并做好记录。</div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section searchable" id="frequencies" data-title="频率 VHF MF HF DSC radiotelephony NAVTEX 518 490 Channel 70 16 2187.5 2182">
+      <header>
+        <div>
+          <p class="section-kicker">06 / FREQUENCIES</p>
+          <h2>遇险与安全频率速查</h2>
+          <p class="section-intro">DSC 频率负责数字呼叫；R/T 频率负责后续话音通信。</p>
+        </div>
+        <span class="section-count">国际常用</span>
+      </header>
+      <div class="section-body">
+        <div class="freq-list" aria-label="频率表">
+          <div class="freq-row"><span class="freq-band">VHF</span><b>DSC Ch 70 · 156.525 MHz</b><span>数字选择性呼叫</span></div>
+          <div class="freq-row"><span class="freq-band">VHF</span><b>R/T Ch 16 · 156.800 MHz</b><span>遇险、安全与呼叫话音</span></div>
+          <div class="freq-row"><span class="freq-band">MF</span><b>DSC 2187.5 kHz</b><span>数字遇险与安全呼叫</span></div>
+          <div class="freq-row"><span class="freq-band">MF</span><b>R/T 2182 kHz</b><span>遇险与安全话音</span></div>
+          <div class="freq-row"><span class="freq-band">HF 4</span><b>DSC 4207.5 / R/T 4125 kHz</b><span>4 MHz 频段</span></div>
+          <div class="freq-row"><span class="freq-band">HF 6</span><b>DSC 6312 / R/T 6215 kHz</b><span>6 MHz 频段</span></div>
+          <div class="freq-row"><span class="freq-band">HF 8</span><b>DSC 8414.5 / R/T 8291 kHz</b><span>8 MHz 频段</span></div>
+          <div class="freq-row"><span class="freq-band">HF 12</span><b>DSC 12577 / R/T 12290 kHz</b><span>12 MHz 频段</span></div>
+          <div class="freq-row"><span class="freq-band">HF 16</span><b>DSC 16804.5 / R/T 16420 kHz</b><span>16 MHz 频段</span></div>
+          <div class="freq-row"><span class="freq-band">NAVTEX</span><b>518 kHz</b><span>国际服务，英语 MSI</span></div>
+          <div class="freq-row"><span class="freq-band">NAVTEX</span><b>490 kHz</b><span>国内服务，可使用本国语言</span></div>
+        </div>
+        <p class="fine-print">传播条件、区域安排与设备自动选频会影响实际使用。任何发射均须按适用的无线电规则、设备配置和当地程序进行。</p>
+      </div>
+    </section>
+
+    <section class="section searchable" id="alphabet" data-title="国际无线电通话拼写字母 数字 Alpha Bravo Charlie Alfa phonetic alphabet pronunciation">
+      <header>
+        <div>
+          <p class="section-kicker">07 / SPELLING</p>
+          <h2>字母与数字读法</h2>
+          <p class="section-intro">呼号、船名、MMSI、坐标与频道需要逐字清楚表达。</p>
+        </div>
+        <span class="section-count">A–Z · 0–9</span>
+      </header>
+      <div class="section-body">
+        <div class="alpha-grid">
+          <div class="alpha-item"><b>A</b><span>Alfa</span></div><div class="alpha-item"><b>B</b><span>Bravo</span></div><div class="alpha-item"><b>C</b><span>Charlie</span></div><div class="alpha-item"><b>D</b><span>Delta</span></div>
+          <div class="alpha-item"><b>E</b><span>Echo</span></div><div class="alpha-item"><b>F</b><span>Foxtrot</span></div><div class="alpha-item"><b>G</b><span>Golf</span></div><div class="alpha-item"><b>H</b><span>Hotel</span></div>
+          <div class="alpha-item"><b>I</b><span>India</span></div><div class="alpha-item"><b>J</b><span>Juliett</span></div><div class="alpha-item"><b>K</b><span>Kilo</span></div><div class="alpha-item"><b>L</b><span>Lima</span></div>
+          <div class="alpha-item"><b>M</b><span>Mike</span></div><div class="alpha-item"><b>N</b><span>November</span></div><div class="alpha-item"><b>O</b><span>Oscar</span></div><div class="alpha-item"><b>P</b><span>Papa</span></div>
+          <div class="alpha-item"><b>Q</b><span>Quebec</span></div><div class="alpha-item"><b>R</b><span>Romeo</span></div><div class="alpha-item"><b>S</b><span>Sierra</span></div><div class="alpha-item"><b>T</b><span>Tango</span></div>
+          <div class="alpha-item"><b>U</b><span>Uniform</span></div><div class="alpha-item"><b>V</b><span>Victor</span></div><div class="alpha-item"><b>W</b><span>Whiskey</span></div><div class="alpha-item"><b>X</b><span>X-ray</span></div>
+          <div class="alpha-item"><b>Y</b><span>Yankee</span></div><div class="alpha-item"><b>Z</b><span>Zulu</span></div>
+        </div>
+        <div class="digits" aria-label="数字读法">
+          <div class="digit"><b>0</b><span>ZERO</span></div><div class="digit"><b>1</b><span>WUN</span></div><div class="digit"><b>2</b><span>TOO</span></div><div class="digit"><b>3</b><span>TREE</span></div><div class="digit"><b>4</b><span>FOWER</span></div>
+          <div class="digit"><b>5</b><span>FIFE</span></div><div class="digit"><b>6</b><span>SIX</span></div><div class="digit"><b>7</b><span>SEVEN</span></div><div class="digit"><b>8</b><span>AIT</span></div><div class="digit"><b>9</b><span>NINER</span></div>
+        </div>
+        <div class="callout"><strong>容易读错</strong><p>标准写法是 <b>Alfa</b>（不是 Alpha）、<b>Juliett</b>（双 t）。数字按海事标准发音：TREE、FOWER、FIFE、AIT、NINER。</p></div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="equipment" data-title="GMDSS 设备 海区 A1 A2 A3 A4 EPIRB SART AIS-SART NAVTEX Inmarsat satellite">
+      <header>
+        <div>
+          <p class="section-kicker">08 / EQUIPMENT &amp; SEA AREAS</p>
+          <h2>设备分工与海区</h2>
+          <p class="section-intro">GMDSS 的核心不是某一台设备，而是报警、通信、定位与 MSI 接收能力的组合。</p>
+        </div>
+        <span class="section-count">A1–A4</span>
+      </header>
+      <div class="section-body">
+        <div class="area-strip">
+          <article class="area"><b>A1</b><p>至少一个 <strong>VHF DSC 海岸电台</strong>持续覆盖、可进行 DSC 报警的区域。</p></article>
+          <article class="area"><b>A2</b><p>除 A1 外，至少一个 <strong>MF DSC 海岸电台</strong>持续覆盖的区域。</p></article>
+          <article class="area"><b>A3</b><p>除 A1/A2 外，由认可的<strong>移动卫星业务</strong>持续覆盖的区域。</p></article>
+          <article class="area"><b>A4</b><p>不属于 A1、A2 或 A3 的海域，典型为部分<strong>高纬度海域</strong>。</p></article>
+        </div>
+        <div class="abbr-grid" style="margin-top:20px">
+          <div class="abbr"><b>VHF/MF/HF</b><p><strong>地面通信</strong><br>DSC 报警与后续话音/NBDP 通信。</p></div>
+          <div class="abbr"><b>EPIRB</b><p><strong>卫星遇险示位标</strong><br>发出遇险报警与识别/定位信息；应正确登记并按期测试。</p></div>
+          <div class="abbr"><b>SART</b><p><strong>搜救定位装置</strong><br>雷达 SART 或 AIS-SART 帮助现场搜救单元定位救生艇筏/遇险者。</p></div>
+          <div class="abbr"><b>NAVTEX</b><p><strong>近岸 MSI</strong><br>自动接收航行警告、气象警告与预报、搜救信息等。</p></div>
+          <div class="abbr"><b>Sat-C / EGC</b><p><strong>卫星数据与 MSI</strong><br>用于远距离遇险通信、SafetyNET 等增强群呼信息接收。</p></div>
+          <div class="abbr"><b>Portable VHF</b><p><strong>救生艇筏现场通信</strong><br>平时按规定维护、充电/封存与测试。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="terms" data-title="缩写 GMDSS DSC MMSI MSI RCC MRCC SAR EPIRB SART AIS NAVTEX NBDP UTC POB">
+      <header>
+        <div>
+          <p class="section-kicker">09 / ABBREVIATIONS</p>
+          <h2>常用缩写</h2>
+          <p class="section-intro">先记功能，再记全称；口述时优先保证信息准确。</p>
+        </div>
+        <span class="section-count">16 个</span>
+      </header>
+      <div class="section-body">
+        <div class="abbr-grid">
+          <div class="abbr"><b>GMDSS</b><p><strong>Global Maritime Distress and Safety System</strong><br>全球海上遇险与安全系统</p></div>
+          <div class="abbr"><b>DSC</b><p><strong>Digital Selective Calling</strong><br>数字选择性呼叫</p></div>
+          <div class="abbr"><b>MMSI</b><p><strong>Maritime Mobile Service Identity</strong><br>海上移动业务识别码</p></div>
+          <div class="abbr"><b>MSI</b><p><strong>Maritime Safety Information</strong><br>海上安全信息</p></div>
+          <div class="abbr"><b>RCC / MRCC</b><p><strong>Rescue Coordination Centre</strong><br>（海上）救助协调中心</p></div>
+          <div class="abbr"><b>SAR</b><p><strong>Search and Rescue</strong><br>搜寻与救助</p></div>
+          <div class="abbr"><b>EPIRB</b><p><strong>Emergency Position-Indicating Radio Beacon</strong><br>应急无线电示位标</p></div>
+          <div class="abbr"><b>SART</b><p><strong>Search and Rescue Transmitter</strong><br>搜救定位装置</p></div>
+          <div class="abbr"><b>AIS</b><p><strong>Automatic Identification System</strong><br>船舶自动识别系统</p></div>
+          <div class="abbr"><b>NAVTEX</b><p><strong>Navigational Telex</strong><br>航行警告电传</p></div>
+          <div class="abbr"><b>NBDP</b><p><strong>Narrow-Band Direct Printing</strong><br>窄带直接印字电报</p></div>
+          <div class="abbr"><b>EGC</b><p><strong>Enhanced Group Call</strong><br>增强群呼</p></div>
+          <div class="abbr"><b>R/T</b><p><strong>Radiotelephony</strong><br>无线电话</p></div>
+          <div class="abbr"><b>UTC</b><p><strong>Coordinated Universal Time</strong><br>协调世界时</p></div>
+          <div class="abbr"><b>POB</b><p><strong>Persons on Board</strong><br>船上人数</p></div>
+          <div class="abbr"><b>PTT</b><p><strong>Push to Talk</strong><br>按键通话</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section searchable" id="sources" data-title="来源 依据 IMO SMCP ITU USCG gov.ie">
+      <header>
+        <div>
+          <p class="section-kicker">REFERENCE</p>
+          <h2>依据与延伸阅读</h2>
+          <p class="section-intro">模板与频率按公开的 IMO/ITU 体系和主管机关资料整理；不同设备和区域程序可能存在差异。</p>
+        </div>
+      </header>
+      <div class="section-body">
+        <ol class="source-list">
+          <li><strong>IMO Resolution A.918(22), Standard Marine Communication Phrases</strong> — 标准遇险/紧急消息结构与 SMCP 用语。<br><a href="https://data.ntsb.gov/Docket/Document/docBLOB?ID=40300695&amp;FileExtension=.PDF&amp;FileName=Operations%202,%20Addendum%2080%20-%202002%20Jan%2025%20-%20NTSB%20-%20IMO%20Resolution%20A.918(22)%20Standard%20Marine%20Communication%20Phrases-Master.PDF" target="_blank" rel="noopener noreferrer">查看 PDF</a></li>
+          <li><strong>Ireland Department of Transport — Maritime Radio Operating Procedures</strong> — VHF Ch 16 遇险呼叫实例与处理。<br><a href="https://www.gov.ie/en/department-of-transport/publications/maritime-radio-operating-procedures-for-small-craft/" target="_blank" rel="noopener noreferrer">查看网页</a></li>
+          <li><strong>U.S. Coast Guard NAVCEN — GMDSS Question Pool</strong> — VHF/DSC 频道与频率。<br><a href="https://navcen.uscg.gov/sites/default/files/pdf/GMDSS_QPool_Maintainer_EL_9Sept_2012.pdf" target="_blank" rel="noopener noreferrer">查看 PDF</a></li>
+          <li><strong>U.S. Code of Federal Regulations, 47 CFR §80.1125</strong> — 遇险信号与 GMDSS 守听/通信规则摘录。<br><a href="https://www.govinfo.gov/content/pkg/CFR-2023-title47-vol5/pdf/CFR-2023-title47-vol5-sec80-1125.pdf" target="_blank" rel="noopener noreferrer">查看 PDF</a></li>
+          <li><strong>Plovput — NAVTEX System</strong> — NAVTEX 518/490 kHz 服务说明。<br><a href="https://www.plovput.hr/en/radio-service/navtex-system" target="_blank" rel="noopener noreferrer">查看网页</a></li>
+        </ol>
+        <p class="fine-print">本页最后整理：2026 年 9 月。为避免误用，未给出任何具体设备的按键时长或菜单路径；请以本船设备说明书和法定程序为准。</p>
+      </div>
+    </section>
+
+    <div class="no-results" id="noResults"><strong>没有找到相关内容</strong>试试 MAYDAY、DSC、频率、拼写或设备名称。</div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">已复制</div>
+
+<script>
+(function () {
+  var search = document.getElementById('search');
+  var clear = document.getElementById('clearSearch');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.searchable'));
+  var noResults = document.getElementById('noResults');
+  var visibleCount = document.getElementById('visibleCount');
+  var hintToggle = document.getElementById('hintToggle');
+  var toast = document.getElementById('toast');
+  var toastTimer;
+
+  function normalize(text) {
+    return (text || '').toLowerCase().replace(/[\s\-–—/·.,，。:：;；()（）\[\]]+/g, ' ');
+  }
+
+  function filterSections() {
+    var q = normalize(search.value).trim();
+    var count = 0;
+    sections.forEach(function (section) {
+      var haystack = normalize(section.getAttribute('data-title') + ' ' + section.textContent);
+      var show = !q || q.split(' ').every(function (token) { return haystack.indexOf(token) !== -1; });
+      section.style.display = show ? '' : 'none';
+      if (show && section.id !== 'sources') count++;
+    });
+    clear.style.display = q ? 'block' : 'none';
+    noResults.style.display = count ? 'none' : 'block';
+    visibleCount.textContent = count;
+  }
+
+  search.addEventListener('input', filterSections);
+  clear.addEventListener('click', function () {
+    search.value = '';
+    filterSections();
+    search.focus();
+  });
+
+  hintToggle.addEventListener('click', function () {
+    var pressed = hintToggle.getAttribute('aria-pressed') !== 'true';
+    hintToggle.setAttribute('aria-pressed', String(pressed));
+    document.body.classList.toggle('hide-hints', pressed);
+  });
+
+  function showToast(message) {
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.classList.add('show');
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+  }
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-copy]');
+    if (!button) return;
+    var target = document.getElementById(button.getAttribute('data-copy'));
+    if (!target) return;
+    var clone = target.cloneNode(true);
+    Array.prototype.forEach.call(clone.querySelectorAll('.cn-hint'), function (el) { el.remove(); });
+    var text = clone.textContent.replace(/\n{3,}/g, '\n\n').trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { showToast('英文模板已复制'); }, function () { showToast('复制失败，请手动选择'); });
+    } else {
+      var area = document.createElement('textarea');
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      try { document.execCommand('copy'); showToast('英文模板已复制'); }
+      catch (e) { showToast('复制失败，请手动选择'); }
+      area.remove();
+    }
+  });
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (link) { link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id); });
+        }
+      });
+    }, { rootMargin: '-18% 0px -72% 0px' });
+    sections.forEach(function (section) { observer.observe(section); });
+  }
+})();
+</script>
+</body>
+</html>

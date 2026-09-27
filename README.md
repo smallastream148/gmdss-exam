@@ -10,6 +10,7 @@
 | 听力与会话 | `app.html` | 47 口述 + 84 问答 |
 | 信号题 | (在 app.html 内) | 200 题 |
 | 码语读法 | (在 app.html 内) | 38 个 |
+| 速查手册 | `handbook.html` | MAYDAY/PAN PAN/SÉCURITÉ、DSC、VHF 话术、拼读、缩写 |
 
 ## 📁 目录结构
 
@@ -18,6 +19,7 @@
 ├── index.html                整合入口页(tab 切换)
 ├── app.html                  听力与会话讲评
 ├── GMDSS英语阅读_知识点题库.html   知识题库
+├── handbook.html             遇险通信英语速查手册
 ├── audio/                    所有音频文件(449 个 mp3)
 └── data/                     题目数据 json(5 个)
 ```
