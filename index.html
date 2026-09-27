@@ -253,6 +253,7 @@ footer {
 <div id="tabs">
   <button data-tab="kb" class="active">📚 知识题库<small>827题</small></button>
   <button data-tab="oral">🎙 听力与会话<small>47+84</small></button>
+  <button data-tab="handbook">📖 速查手册<small>6章</small></button>
 </div>
 
 <div id="hint" class="collapsed">
@@ -263,6 +264,7 @@ footer {
 <div id="stage">
   <iframe id="frame-kb"   src="GMDSS英语阅读_知识点题库.html"   class="active"></iframe>
   <iframe id="frame-oral" src="app.html"></iframe>
+  <iframe id="frame-handbook" src="handbook.html"></iframe>
 </div>
 
 <footer>
@@ -274,6 +276,7 @@ const tabs = document.querySelectorAll('#tabs button');
 const frames = {
   kb:   document.getElementById('frame-kb'),
   oral: document.getElementById('frame-oral'),
+  handbook: document.getElementById('frame-handbook'),
 };
 
 tabs.forEach(btn => {
