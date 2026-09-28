@@ -222,7 +222,7 @@
   {
     "id": 29,
     "question": "Please describe the main operational procedures and cautions should be taken when you call a coast radio station in radio telephony service.",
-    "answer": "Please refer to question 20 for the answer.",
+    "answer": "First, I should know the position of the ship. Then choose the appropriate working band. If I use VHF, I will use G3E mode. If I use MF or HF, I will use J3E mode.",
     "audio_q": "audio/oral_q/29.mp3",
     "audio_a": "audio/oral_a/29.mp3",
     "category": "oral"
@@ -350,7 +350,7 @@
   {
     "id": 45,
     "question": "Give an example of a radiotelephone Safety call.",
-    "answer": "Please refer to question 13 for the answer.",
+    "answer": "SECURITE SECURITE SECURITE, All ships. This is MV DONGTINGHU DONGTINGHU DONGTINGHU. My call sign is Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu Bravo X-ray Yankee Zulu. My main engine is broken down. My position is one mile south of buoy No.10. I am anchoring in the northbound traffic lane. Vessels in vicinity please navigate with caution and keep clear of me. Over.",
     "audio_q": "audio/oral_q/45.mp3",
     "audio_a": "audio/oral_a/45.mp3",
     "category": "oral"
@@ -358,7 +358,7 @@
   {
     "id": 46,
     "question": "What information is sent in an Inmarsat-C distress alert?",
-    "answer": "Please refer to question 43 for the answer.",
+    "answer": "Category, MMSI of the ship in distress, Nature of distress, Position of distress, The valid time of the position in UTC, Method of subsequent communication.",
     "audio_q": "audio/oral_q/46.mp3",
     "audio_a": "audio/oral_a/46.mp3",
     "category": "oral"
