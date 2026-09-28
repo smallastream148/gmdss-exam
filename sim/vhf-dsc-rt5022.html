@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAILOR RT5022 VHF DSC 模拟训练器</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:#14161a;color:#e8e8e8;min-height:100vh}
+header{background:#1d2126;border-bottom:1px solid #333;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:17px;font-weight:600}
+header h1 small{color:#8a93a0;font-weight:400;font-size:12px;margin-left:8px}
+header .spacer{flex:1}
+.hbtn{background:#2a3138;border:1px solid #3d454e;color:#dfe5ec;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.hbtn:hover{background:#333c45}
+.hbtn.active{background:#0d5c2e;border-color:#149a4c;color:#fff}
+main{max-width:1180px;margin:0 auto;padding:14px;display:grid;grid-template-columns:1fr 320px;gap:14px}
+@media(max-width:960px){main{grid-template-columns:1fr}}
+/* ===== 设备面板 ===== */
+.unit{background:linear-gradient(180deg,#2b2f35,#22262b);border:1px solid #3a4047;border-radius:14px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.5);user-select:none}
+.brand{font-size:13px;letter-spacing:2px;color:#9aa3ad;margin-bottom:10px}
+.brand b{color:#d7dde3;letter-spacing:1px}
+.top-row{display:grid;grid-template-columns:150px 1fr 150px;gap:12px;align-items:stretch;margin-bottom:12px}
+.speaker{background:repeating-linear-gradient(180deg,#17191c 0 5px,#23262b 5px 9px);border-radius:8px;border:1px solid #101215;min-height:86px}
+.telbox{background:#050505;border:2px solid #101215;border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:14px}
+.tel-ch{font-family:"Courier New",monospace;font-size:52px;font-weight:700;color:#ff2d1e;text-shadow:0 0 12px rgba(255,45,30,.75);line-height:1;min-width:110px}
+.tel-meta{display:flex;flex-direction:column;gap:6px}
+.lamp-row{display:flex;gap:8px;flex-wrap:wrap}
+.lamp{font-size:10px;letter-spacing:1px;padding:4px 8px;border-radius:4px;background:#1a0f0e;color:#4a2c28;border:1px solid #2c1d1b;min-width:44px;text-align:center}
+.lamp.on{color:#ff2d1e;border-color:#ff2d1e;background:#2a0f0d;box-shadow:0 0 10px rgba(255,45,30,.6)}
+.lamp.on.green{color:#37e06b;border-color:#37e06b;background:#0d2413;box-shadow:0 0 10px rgba(55,224,107,.5)}
+.lamp.blink{animation:blink .7s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.ind-row{display:flex;gap:6px;font-size:10px;color:#5a636d}
+.ind-row span{padding:2px 7px;border:1px solid #2c333b;border-radius:3px}
+.ind-row span.on{color:#ffb02e;border-color:#ffb02e}
+.knob-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.knob{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a5158,#24282d 70%);border:2px solid #111;position:relative;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.5)}
+.knob::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:16px;background:#ff2d1e;border-radius:2px;transform:translateX(-50%);transform-origin:50% 26px}
+.knob-label{font-size:10px;color:#9aa3ad;letter-spacing:1px}
+.mid-row{display:grid;grid-template-columns:1fr 210px 150px;gap:12px}
+@media(max-width:640px){.mid-row{grid-template-columns:1fr 1fr}.distress-wrap{grid-column:1/-1}}
+.msgbox{background:#060606;border:2px solid #101215;border-radius:8px;padding:10px 12px;font-family:"Courier New",monospace;min-height:172px;display:flex;flex-direction:column}
+.msg-title{color:#ff2d1e;font-size:13px;border-bottom:1px solid #3a1512;padding-bottom:6px;margin-bottom:6px;letter-spacing:1px}
+.msg-lines{color:#ff6a5c;font-size:14px;line-height:1.65;white-space:pre-wrap;flex:1}
+.msg-lines .sel{color:#fff;background:#5a130d}
+.msg-lines .dim{color:#8a4a44}
+.msg-hint{color:#6b5654;font-size:11px;margin-top:6px}
+.msgbox.dim1{filter:brightness(.75)}.msgbox.dim2{filter:brightness(.5)}
+.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;align-content:start}
+.key{background:linear-gradient(180deg,#3a4047,#262b31);border:1px solid #14171a;border-radius:8px;color:#eef2f6;font-size:16px;font-weight:600;padding:11px 0;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.key:active{transform:translateY(1px);background:#1c2025}
+.key.fn{font-size:11px;color:#9fd0ff}
+.key.ent{background:linear-gradient(180deg,#0f6a33,#0a4d24);border-color:#0d5c2e}
+.key.clr{background:linear-gradient(180deg,#7a2a1e,#521a12);border-color:#6e2318;font-size:11px}
+.sidebtns{display:flex;flex-direction:column;gap:7px}
+.sbtn{background:linear-gradient(180deg,#333941,#23272d);border:1px solid #14171a;border-radius:8px;color:#cfd6dd;font-size:12px;padding:10px 4px;cursor:pointer;letter-spacing:1px}
+.sbtn:active{transform:translateY(1px)}
+.sbtn.warn{color:#ffb02e}
+.distress-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:center;background:#1b1d20;border:1px dashed #4a3a36;border-radius:10px;padding:12px;position:relative}
+.lid{background:linear-gradient(180deg,#c96a1e,#a34f0e);border:2px solid #7a3a08;border-radius:8px;color:#fff;font-weight:700;font-size:13px;letter-spacing:1px;padding:14px 10px;cursor:pointer;width:100%;text-align:center;transition:transform .25s;transform-origin:top center;box-shadow:0 3px 6px rgba(0,0,0,.4)}
+.lid.open{transform:rotateX(115deg);opacity:.85}
+.dbtn{background:radial-gradient(circle at 40% 35%,#e0342c,#8f130d);border:3px solid #5c0d09;border-radius:10px;color:#fff;font-weight:800;font-size:15px;letter-spacing:2px;padding:20px 8px;width:100%;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.dbtn:active{transform:scale(.97)}
+.dprog{height:8px;background:#0c0e10;border-radius:4px;width:100%;overflow:hidden;display:none}
+.dprog i{display:block;height:100%;width:0;background:#ff2d1e}
+.dlabel{font-size:11px;color:#c98a7a;letter-spacing:1px}
+/* ===== 右侧栏 ===== */
+.card{background:#1d2126;border:1px solid #2e353d;border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.card h3{font-size:14px;margin-bottom:10px;color:#ffd9a0}
+.card p.desc{font-size:12px;color:#9aa3ad;line-height:1.7;margin-bottom:8px}
+.exlist{display:flex;flex-direction:column;gap:8px}
+.exitem{border:1px solid #333b43;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:13px}
+.exitem:hover{border-color:#4a5560}
+.exitem.active{border-color:#149a4c;background:#10251a}
+.exitem .t{font-weight:600;margin-bottom:3px}
+.exitem .d{font-size:11px;color:#8a93a0}
+.steps{list-style:none;margin-top:10px;font-size:12.5px;display:flex;flex-direction:column;gap:6px}
+.steps li{padding:7px 9px;background:#14171b;border-radius:6px;border:1px solid #2a3138;color:#9aa3ad}
+.steps li.done{color:#37e06b;border-color:#149a4c;text-decoration:line-through}
+.steps li.cur{color:#fff;border-color:#ffb02e}
+.score{font-size:15px;font-weight:700;color:#37e06b;margin-top:10px}
+.inj{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.inj button{background:#2a3138;border:1px solid #3d454e;color:#dfe5ec;border-radius:8px;padding:9px 6px;font-size:12px;cursor:pointer}
+.inj button:hover{background:#333c45}
+.logbox{max-height:220px;overflow-y:auto;font-size:11.5px;font-family:"Courier New",monospace;color:#8a93a0;line-height:1.7}
+.logbox .tx{color:#6db7ff}.logbox .rx{color:#ffb02e}.logbox .ok{color:#37e06b}.logbox .al{color:#ff5a4e}
+/* ===== 弹窗 ===== */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.show{display:flex}
+.mbox{background:#1d2126;border:1px solid #3d454e;border-radius:12px;max-width:520px;width:100%;padding:18px}
+.mbox h3{font-size:15px;margin-bottom:10px;color:#ffd9a0}
+.mbox .script{background:#0d0f12;border-radius:8px;padding:12px;font-size:13px;line-height:2;color:#e8e8e8;font-family:"Courier New",monospace}
+.mbox .btns{margin-top:14px;display:flex;gap:10px;justify-content:flex-end}
+.note{font-size:11px;color:#6b7480;margin-top:14px;line-height:1.7}
+footer{text-align:center;color:#5a636d;font-size:11px;padding:18px}
+</style>
+</head>
+<body>
+<header>
+  <h1>SAILOR RT5022 <small>VHF DSC 模拟训练器 · 单机练习版</small></h1>
+  <div class="spacer"></div>
+  <button class="hbtn active" id="tabFree">自由练习</button>
+  <button class="hbtn" id="tabExam">考核练习</button>
+</header>
+<main>
+  <div>
+    <div class="unit">
+      <div class="brand"><b>SAILOR</b> RT5022 VHF DSC &nbsp;·&nbsp; CLASS A</div>
+      <div class="top-row">
+        <div class="speaker" title="扬声器"></div>
+        <div class="telbox">
+          <div class="tel-ch" id="chDisplay">16</div>
+          <div class="tel-meta">
+            <div class="lamp-row">
+              <div class="lamp" id="lampAlarm">ALARM</div>
+              <div class="lamp" id="lampCall">CALL</div>
+              <div class="lamp" id="lampDW">DW</div>
+              <div class="lamp" id="lamp1W">1W</div>
+            </div>
+            <div class="ind-row">
+              <span id="indTx">TX</span><span id="indInt" class="on">INT</span><span id="indUS">US</span><span id="indBI">BI</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;justify-content:center">
+          <div class="knob-col"><div class="knob" id="knobVol" title="音量 / 开关：点击旋转"></div><div class="knob-label">VOL / OFF</div></div>
+          <div class="knob-col"><div class="knob" id="knobSql" title="静噪：点击旋转"></div><div class="knob-label">SQL</div></div>
+        </div>
+      </div>
+      <div class="mid-row">
+        <div class="msgbox" id="msgBox">
+          <div class="msg-title" id="msgTitle">SAILOR RT5022</div>
+          <div class="msg-lines" id="msgLines"></div>
+          <div class="msg-hint" id="msgHint"></div>
+        </div>
+        <div class="keypad" id="keypad"></div>
+        <div class="sidebtns">
+          <button class="sbtn" id="btnDim">DIM 调光</button>
+          <button class="sbtn" id="btnMenu">MENU 菜单</button>
+          <button class="sbtn warn" id="btnMute">MUTE 静音</button>
+          <button class="sbtn" id="btnReplay">REPLAY 重放</button>
+          <button class="sbtn" id="btn16">16 遇险信道</button>
+          <button class="sbtn" id="btnDW">DW 双值守</button>
+          <button class="sbtn" id="btn1W">1W/25W 功率</button>
+          <button class="sbtn" id="btnPower" style="color:#ff8a80">⏻ 电源</button>
+        </div>
+        <div class="distress-wrap">
+          <div class="lid" id="distressLid">DISTRESS<br><span style="font-size:10px;font-weight:400">点击掀开保护盖</span></div>
+          <button class="dbtn" id="distressBtn" style="display:none">DISTRESS<br><span style="font-size:10px;font-weight:400;letter-spacing:1px">按住5秒发送</span></button>
+          <div class="dprog" id="dProg"><i></i></div>
+          <div class="dlabel">遇险报警按钮（弹簧盖保护）</div>
+        </div>
+      </div>
+      <div class="note">训练说明：本模拟器复刻 SAILOR RT5022 前面板与 DSC 菜单流程（依据原厂操作手册）。DSC 呼叫从 MENU → DSC Call 进入；紧急呼叫从 Emergency 菜单编写；红色 DISTRESS 键掀盖后按住 5 秒发送未指定性质的遇险报警。所有"发射"均为模拟，不产生真实无线电信号。</div>
+    </div>
+  </div>
+  <div>
+    <div class="card" id="examCard" style="display:none">
+      <h3>考核练习</h3>
+      <p class="desc">选择一个科目，按步骤完成操作。系统按正确步骤给分，顺序错了会有提示。</p>
+      <div class="exlist" id="exList"></div>
+      <ul class="steps" id="exSteps"></ul>
+      <div class="score" id="exScore"></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="hbtn" id="btnFinishEx">交卷评分</button>
+        <button class="hbtn" id="btnResetEx">重新开始</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>模拟来电注入（扮演对方/海岸电台）</h3>
+      <p class="desc">单机练习时，用这里模拟"对方"给你发 DSC 呼叫，练习接收与应答。</p>
+      <div class="inj">
+        <button id="injInd">个呼：船 412345678<br><span style="color:#8a93a0">Routine · CH06</span></button>
+        <button id="injDistress">遇险报警：船 413111222<br><span style="color:#8a93a0">Undesignated</span></button>
+        <button id="injCoast">海岸电台：0041222333<br><span style="color:#8a93a0">Safety · CH16</span></button>
+        <button id="injUrgency">紧急呼叫：全船<br><span style="color:#8a93a0">Urgency · CH16</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>本船设置</h3>
+      <p class="desc" id="ownInfo"></p>
+      <div class="inj">
+        <button id="btnPos">更新船位时间</button>
+        <button id="btnLogs">查看 DSC 日志</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>操作日志</h3>
+      <div class="logbox" id="logBox"></div>
+    </div>
+  </div>
+</main>
+<div class="modal" id="modal">
+  <div class="mbox">
+    <h3 id="mTitle"></h3>
+    <div class="script" id="mScript"></div>
+    <div class="btns"><button class="hbtn" id="mOk">完成</button></div>
+  </div>
+</div>
+<footer>SAILOR RT5022 VHF DSC 模拟训练器 · 教学训练用途 · 所有发射均为模拟</footer>
+<script>
+"use strict";
+/* ============ 音频引擎（Web Audio 合成） ============ */
+let AC=null, alarmTimer=null, alarmNodes=[];
+function ac(){ if(!AC){ AC=new (window.AudioContext||window.webkitAudioContext)(); } if(AC.state==="suspended")AC.resume(); return AC; }
+function tone(freq,dur,vol,type){ try{ const a=ac(),o=a.createOscillator(),g=a.createGain(); o.type=type||"sine"; o.frequency.value=freq; g.gain.setValueAtTime(vol||0.15,a.currentTime); g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+dur); o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime+dur);}catch(e){} }
+function keyClick(){ tone(880,0.06,0.08,"square"); }
+function dscBurst(){ // CH70 DSC 数据突发：FSK 式 warble
+  try{ const a=ac(),o=a.createOscillator(),g=a.createGain(); o.type="square"; o.frequency.value=1300;
+    const t=a.currentTime; for(let i=0;i<14;i++){ o.frequency.setValueAtTime(i%2?2100:1300,t+i*0.045); }
+    g.gain.setValueAtTime(0.06,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.7);
+    o.connect(g).connect(a.destination); o.start(t); o.stop(t+0.75);}catch(e){}
+  setLastTone(dscBurst);
+}
+function alarmStart(kind){ // kind: distress=急促双音, routine=柔和双音
+  alarmStop();
+  const seq = kind==="distress" ? [[950,0.28],[1400,0.28]] : [[700,0.4],[950,0.4]];
+  let i=0;
+  const play=()=>{ tone(seq[i%2][0],seq[i%2][1],0.16,"sine"); i++; };
+  play(); alarmTimer=setInterval(play, kind==="distress"?300:850);
+  setLastTone(()=>alarmStart(kind));
+}
+function alarmStop(){ if(alarmTimer){clearInterval(alarmTimer);alarmTimer=null;} }
+let lastToneFn=null; function setLastTone(fn){ lastToneFn=fn; }
+/* ============ 状态 ============ */
+const S={
+  power:true, ch:16, pwr:"HI", vol:5, sql:4, dw:false, dim:0,
+  own:{mmsi:"412888666", call:"BOAB", lat:"31°14.0'N", lon:"121°29.0'E"},
+  menuStack:[], input:null, waiting:null, distressMode:false, distressRepeatT:null, distressCount:0,
+  incoming:null, alarmKind:null, examMode:false, ex:null, exStepIdx:0,
+  txLog:[], rxLog:[], dLog:[],
+  utcTimer:null
+};
+function pad(n){return (n<10?"0":"")+n;}
+function utcNow(){const d=new Date();return pad(d.getUTCHours())+":"+pad(d.getUTCMinutes())+" UTC";}
+/* ============ 日志 ============ */
+function log(msg,cls){ const box=document.getElementById("logBox"); const d=document.createElement("div"); if(cls)d.className=cls; d.textContent="["+utcNow()+"] "+msg; box.prepend(d); while(box.children.length>60)box.lastChild.remove(); }
+/* ============ 显示 ============ */
+const $=id=>document.getElementById(id);
+function renderTel(){
+  $("chDisplay").textContent=S.power?S.ch:"";
+  $("lamp1W").className="lamp"+(S.power&&S.pwr==="LO"?" on":"");
+  $("lampDW").className="lamp"+(S.power&&S.dw?" on":"");
+  $("lampAlarm").className="lamp"+(S.power&&S.alarmKind==="distress"?" on blink":(S.power&&S.alarmKind?" on":""));
+  $("lampCall").className="lamp"+(S.power&&S.incoming&&S.incoming.type==="individual"?" on blink":"");
+}
+function idleLines(){
+  return ["MMSI: "+S.own.mmsi+"  "+S.own.call,
+          "POS "+S.own.lat+" "+S.own.lon,
+          utcNow()+"   DSC READY",
+          S.distressMode?">> DISTRESS MODE <<":"CH"+pad(S.ch)+"  "+S.pwr+"  INT"];
+}
+function renderMsg(){
+  const box=$("msgBox");
+  if(!S.power){ $("msgTitle").textContent=""; $("msgLines").textContent=""; $("msgHint").textContent=""; box.style.filter="brightness(.25)"; return; }
+  box.style.filter="";
+  if(S.input){ // 数字输入态
+    $("msgTitle").textContent=S.input.title;
+    $("msgLines").textContent=S.input.label+"\n> "+(S.input.buf||"_").split("").join(" ")+"\n"+("·".repeat(Math.max(0,S.input.len-S.input.buf.length)));
+    $("msgHint").textContent="数字键输入 · ENT 确认 · CLR 清除";
+    return;
+  }
+  if(S.waiting){
+    $("msgTitle").textContent=S.waiting.title;
+    $("msgLines").textContent=S.waiting.lines.join("\n");
+    $("msgHint").textContent=S.waiting.hint||"";
+    return;
+  }
+  const top=S.menuStack[S.menuStack.length-1];
+  if(!top){ $("msgTitle").textContent="SAILOR RT5022"; $("msgLines").textContent=idleLines().join("\n"); $("msgHint").textContent="按 MENU 进入 DSC 呼叫菜单"; return; }
+  $("msgTitle").textContent=top.title;
+  let t="";
+  top.items.forEach((it,i)=>{ t+=(i===top.sel?"> ":"  ")+(i+1)+". "+it.label+"\n"; });
+  $("msgLines").textContent=t;
+  $("msgHint").textContent="▲▼ 选择 · ENT 进入 · CLR 返回";
+}
+/* ============ 菜单引擎 ============ */
+function openMenu(def){ S.menuStack=[Object.assign({sel:0},def)]; renderMsg(); }
+function pushMenu(def){ S.menuStack.push(Object.assign({sel:0},def)); renderMsg(); }
+function popMenu(){ S.menuStack.pop(); renderMsg(); }
+function closeMenu(){ S.menuStack=[]; S.input=null; S.waiting=null; renderMsg(); }
+function menuMove(d){ const top=S.menuStack[S.menuStack.length-1]; if(!top)return; top.sel=(top.sel+d+top.items.length)%top.items.length; keyClick(); renderMsg(); }
+function menuEnter(){ const top=S.menuStack[S.menuStack.length-1]; if(!top)return; keyClick(); top.items[top.sel].action(); }
+function startInput(cfg){ S.input=Object.assign({buf:""},cfg); renderMsg(); }
+function inputKey(k){
+  const inp=S.input; if(!inp)return;
+  if(k==="CLR"){ inp.buf=""; }
+  else if(inp.buf.length<inp.len && /[0-9]/.test(k)){ inp.buf+=k; keyClick(); }
+  renderMsg();
+}
+function inputEnter(){
+  const inp=S.input; if(!inp)return;
+  if(inp.buf.length<inp.len){ log("输入不完整，需要 "+inp.len+" 位","al"); tone(300,0.2,0.12); return; }
+  if(inp.check && !inp.check(inp.buf)){ log("输入无效："+inp.buf,"al"); tone(300,0.2,0.12); return; }
+  const cb=inp.onDone; S.input=null; keyClick(); cb(inp.buf);
+}
+function setWaiting(w){ S.waiting=w; renderMsg(); }
+/* ============ 按键盘 ============ */
+const KEYS=[["1","2","3","▲"],["4","5","6","▼"],["7","8","9","CLR"],["*","0","#","ENT"]];
+function buildKeypad(){
+  const kp=$("keypad");
+  KEYS.flat().forEach(k=>{
+    const b=document.createElement("button"); b.className="key"; b.textContent=k;
+    if(k==="ENT")b.classList.add("ent"); if(k==="CLR"||k==="▲"||k==="▼")b.classList.add("fn"); if(k==="CLR")b.classList.add("clr");
+    b.onclick=()=>pressKey(k); kp.appendChild(b);
+  });
+  const m=document.createElement("button"); m.className="key fn"; m.textContent="MENU"; m.style.gridColumn="1/3"; m.onclick=()=>pressMenu(); kp.appendChild(m);
+  const c=document.createElement("button"); c.className="key fn"; c.textContent="取消"; c.style.gridColumn="3/5"; c.onclick=()=>{closeMenu();log("已退出菜单");}; kp.appendChild(c);
+}
+function pressKey(k){
+  if(!S.power)return;
+  if(S.input){ if(k==="ENT")inputEnter(); else inputKey(k); return; }
+  if(S.waiting && !S.menuStack.length){
+    if(k==="ENT"&&S.waiting.onEnt){ keyClick(); S.waiting.onEnt(); return; }
+    if(k==="CLR"&&S.waiting.onClr){ keyClick(); S.waiting.onClr(); return; }
+  }
+  if(S.menuStack.length){ if(k==="▲")menuMove(-1); else if(k==="▼")menuMove(1); else if(k==="ENT")menuEnter(); else if(k==="CLR")popMenu(); return; }
+  // 待机态：数字键选频道
+  if(/^[0-9]$/.test(k)){ chDigit(k); }
+  else if(k==="ENT"&&S.incoming){ acceptIncoming(); }
+}
+let chBuf="";
+function chDigit(k){
+  chBuf+=k;
+  if(chBuf.length===2){ const c=parseInt(chBuf,10); chBuf="";
+    if(c>=1&&c<=88){ S.ch=c; keyClick(); log("切换到 CH"+pad(c)); if(S.ex)exNote("switch-ch"+c); renderTel(); renderMsg();
+      if(S.waiting&&(S.waiting.title==="ACK Received"||S.waiting.title==="Call Accepted")){ S.waiting=null; closeMenu(); log("开始在 CH"+pad(c)+" 通话（模拟）","ok"); } }
+    else { tone(300,0.2,0.12); log("无效频道","al"); }
+  } else { renderMsg(); $("msgLines").textContent="输入频道: "+chBuf+"_"; }
+}
+function pressMenu(){
+  if(!S.power)return; keyClick();
+  if(S.incoming){ acceptIncoming(); return; }
+  openMenu(DSC_CALL_MENU);
+  if(S.ex)exNote("open-menu");
+}
+/* ============ 旋钮 / 按钮 ============ */
+function knob(id,fn){ const el=$(id); let deg=0; el.onclick=()=>{ deg=(deg+30)%360; el.style.setProperty("--r",deg+"deg"); el.style.transform="rotate("+deg+"deg)"; fn(); }; }
+/* ============ DSC 菜单（依据 RT5022 手册） ============ */
+const NATURES=["Undesignated distress","Fire, explosion","Flooding","Collision","Grounding","Listing, in danger of capsizing","Sinking","Disabled and adrift","Abandoning ship","Piracy/armed robbery attack","Man overboard"];
+const DSC_CALL_MENU={ title:"DSC Call  1", items:[
+  {label:"Station Call",action:()=>flowStationCall()},
+  {label:"PSTN Call",action:()=>{ setWaiting({title:"PSTN Call  1.2",lines:["需海岸电台自动/半自动支持，","本区域未开通此业务。","请使用 Station Call 呼叫海岸电台","再通过话音申请转接。"],hint:"按 CLR 返回"}); }},
+  {label:"Group Call",action:()=>flowGroupCall()},
+  {label:"Emergency",action:()=>pushMenu(EMERG_MENU)},
+  {label:"DSC Logs",action:()=>pushMenu(LOGS_MENU)}
+]};
+const EMERG_MENU={ title:"Emergency  1.4", items:[
+  {label:"Compose Distress",action:()=>flowComposeDistress()},
+  {label:"Compose Urgency",action:()=>flowUrgencySafety("Urgency")},
+  {label:"Compose Safety",action:()=>flowUrgencySafety("Safety")},
+  {label:"Compose Relays",action:()=>flowRelay()},
+  {label:"Compose Distress Ack",action:()=>flowDistressAck()}
+]};
+const LOGS_MENU={ title:"DSC Logs  1.5", items:[
+  {label:"DSC Distress Log",action:()=>showLog("d")},
+  {label:"DSC Receive Log",action:()=>showLog("r")},
+  {label:"DSC Transmit Log",action:()=>showLog("t")}
+]};
+function showLog(kind){
+  const arr=kind==="d"?S.dLog:kind==="r"?S.rxLog:S.txLog;
+  const lines=arr.length?arr.slice(-6).map((e,i)=>(i+1)+". "+e):["(空)"];
+  setWaiting({title:kind==="d"?"Distress Log":kind==="r"?"Receive Log":"Transmit Log",lines,hint:"按 CLR 返回"});
+}
+/* ============ 发射模拟 ============ */
+function txBurst(ch,desc){
+  $("indTx").classList.add("on"); renderTel();
+  dscBurst(); log("TX CH"+pad(ch)+" → "+desc,"tx");
+  setTimeout(()=>{ $("indTx").classList.remove("on"); },900);
+}
+/* ============ Station Call 流程 1.1 ============ */
+function flowStationCall(){
+  pushMenu({title:"Station Call  1.1",items:[
+    {label:"Routine",action:()=>scEnterMmsi("Routine")},
+    {label:"Safety",action:()=>scEnterMmsi("Safety")},
+    {label:"Urgency",action:()=>scEnterMmsi("Urgency")}
+  ]});
+  if(S.ex)exNote("sel-station");
+}
+function scEnterMmsi(cat){
+  if(S.ex)exNote("sel-cat-"+cat);
+  startInput({title:"Station Call",label:"输入对方 MMSI（9位）:",len:9,
+    check:b=>/^[1-9][0-9]{8}$/.test(b),
+    onDone:mmsi=>scEnterCh(cat,mmsi)});
+}
+function scEnterCh(cat,mmsi){
+  if(S.ex)exNote("enter-mmsi");
+  startInput({title:"Station Call",label:"建议工作信道（默认06）:",len:2,
+    check:b=>{const c=+b;return c>=1&&c<=88;},
+    onDone:ch=>scVerify(cat,mmsi,+ch)});
+}
+function scVerify(cat,mmsi,wch){
+  if(S.ex)exNote("enter-ch");
+  S.menuStack=[];
+  setWaiting({title:"Verify Call",lines:["类别: "+cat,"对方: "+mmsi,"工作信道: CH"+pad(wch),"本船: "+S.own.mmsi,"","按 ENT 发送 · CLR 取消"],hint:"发送前请核对"});
+  S.waiting.onEnt=()=>{ S.waiting=null; scTransmit(cat,mmsi,wch); };
+  S.waiting.onClr=()=>{ S.waiting=null; closeMenu(); };
+}
+function scTransmit(cat,mmsi,wch){
+  closeMenu(); txBurst(70,"DSC "+cat+"呼叫 → "+mmsi);
+  S.txLog.push(cat+" call → "+mmsi+" CH"+pad(wch));
+  if(S.ex)exNote("tx-call");
+  setWaiting({title:"Calling...",lines:["DSC "+cat+" 已在 CH70 发送","对方: "+mmsi,"等待确认 (ACK)...",""],"hint":""});
+  // 虚拟对方 6 秒后回 ACK
+  setTimeout(()=>{
+    if(S.waiting&&S.waiting.title==="Calling..."){
+      alarmStop(); S.alarmKind=null;
+      log("RX CH70 ← ACK 来自 "+mmsi+"：同意，CH"+pad(wch),"rx");
+      S.rxLog.push("ACK ← "+mmsi);
+      tone(700,0.15,0.12); setTimeout(()=>tone(950,0.15,0.12),200);
+      if(S.ex)exNote("rx-ack");
+      setWaiting({title:"ACK Received",lines:["收到确认 (BQ)","对方 "+mmsi+" 同意","请转到 CH"+pad(wch)+" 通话","按数字键切换频道",""],hint:"切换频道后呼叫完成"});
+      S.waiting.onClr=()=>{S.waiting=null;closeMenu();};
+    }
+  },6000);
+  S.waiting.onClr=()=>{S.waiting=null;closeMenu();};
+}
+/* ============ Group Call 1.3 ============ */
+function flowGroupCall(){
+  startInput({title:"Group Call  1.3",label:"输入群 MMSI（0开头的9位）:",len:9,
+    check:b=>/^0[0-9]{8}$/.test(b),
+    onDone:mmsi=>{
+      startInput({title:"Group Call",label:"工作信道:",len:2,check:b=>+b>=1&&+b<=88,
+        onDone:ch=>{ closeMenu(); txBurst(70,"DSC Group呼叫 → "+mmsi); S.txLog.push("Group call → "+mmsi);
+          log("群呼已发送（群呼无需确认）","ok"); setWaiting({title:"Group Call Sent",lines:["群呼已在 CH70 发送","组: "+mmsi,"转到 CH"+pad(+ch)+" 开始通话"],hint:"按 CLR 返回"});
+          S.waiting.onClr=()=>{S.waiting=null;closeMenu();}; }});
+    }});
+}
+/* ============ Emergency 菜单 ============ */
+function flowComposeDistress(){
+  const items=NATURES.map(n=>({label:n,action:()=>{ if(S.ex)exNote("sel-nature"); composeDistressTx(n); }}));
+  pushMenu({title:"Nature of Distress",items});
+}
+function composeDistressTx(nature){
+  S.menuStack=[];
+  setWaiting({title:"Verify Distress",lines:["性质: "+nature,"MMSI: "+S.own.mmsi,"船位: "+S.own.lat+" "+S.own.lon,"时间: "+utcNow(),"","按 ENT 发送 · CLR 取消"],hint:"⚠ 训练模式：不会产生真实发射"});
+  S.waiting.onEnt=()=>{ S.waiting=null; sendDistress(nature); };
+  S.waiting.onClr=()=>{ S.waiting=null; closeMenu(); };
+}
+function flowUrgencySafety(cat){
+  const toAll = cat==="Urgency";
+  S.menuStack=[];
+  setWaiting({title:"Compose "+cat,lines:["类别: "+cat,"发往: "+(toAll?"All Ships":"All Ships"),"工作信道: CH16","","按 ENT 发送 · CLR 取消"],hint:""});
+  S.waiting.onEnt=()=>{ S.waiting=null; closeMenu(); txBurst(70,"DSC "+cat+" → All Ships"); S.txLog.push(cat+" → All Ships"); log("DSC "+cat+" 已发送","ok"); if(S.ex)exNote("tx-urg-saf"); };
+  S.waiting.onClr=()=>{ S.waiting=null; closeMenu(); };
+}
+function flowRelay(){
+  startInput({title:"Compose Relays",label:"输入遇险船 MMSI（9位）:",len:9,check:b=>/^[1-9][0-9]{8}$/.test(b),
+    onDone:mmsi=>{ closeMenu(); txBurst(70,"DSC Distress Relay → All Ships（代转 "+mmsi+"）"); S.txLog.push("Relay "+mmsi); log("遇险转播已发送","ok"); }});
+}
+function flowDistressAck(){
+  startInput({title:"Distress Ack",label:"输入对方 MMSI（9位）:",len:9,check:b=>/^[1-9][0-9]{8}$/.test(b),
+    onDone:mmsi=>{ closeMenu(); txBurst(70,"DSC Distress ACK → "+mmsi); S.txLog.push("Distress ACK → "+mmsi); log("已发送遇险确认","ok"); }});
+}
+/* ============ DISTRESS 按钮：掀盖 + 按住5秒 ============ */
+let dHoldT=null,dHoldStart=0;
+function bindDistress(){
+  const lid=$("distressLid"),btn=$("distressBtn"),prog=$("dProg"),bar=prog.querySelector("i");
+  lid.onclick=()=>{ keyClick(); const open=lid.classList.toggle("open");
+    btn.style.display=open?"block":"none"; prog.style.display="none";
+    log(open?"DISTRESS 保护盖已掀开":"保护盖已盖回"); };
+  const start=e=>{ e.preventDefault(); if(!S.power)return; dHoldStart=Date.now(); prog.style.display="block";
+    dHoldT=setInterval(()=>{ const p=(Date.now()-dHoldStart)/5000; bar.style.width=Math.min(100,p*100)+"%";
+      if(p>=1){ clearInterval(dHoldT); dHoldT=null; prog.style.display="none"; bar.style.width="0";
+        if(S.distressMode){ exitDistress("手动取消"); } else { sendDistress("Undesignated distress"); } }
+    },50); };
+  const cancel=()=>{ if(dHoldT){clearInterval(dHoldT);dHoldT=null;prog.style.display="none";bar.style.width="0";log("DISTRESS 按压未满5秒，已取消");} };
+  btn.addEventListener("mousedown",start); btn.addEventListener("touchstart",start,{passive:false});
+  btn.addEventListener("mouseup",cancel); btn.addEventListener("mouseleave",cancel); btn.addEventListener("touchend",cancel);
+}
+function sendDistress(nature){
+  closeMenu(); alarmStop();
+  txBurst(70,"DSC DISTRESS ("+nature+")");
+  S.txLog.push("DISTRESS ("+nature+")"); S.dLog.push("TX DISTRESS "+nature+" "+utcNow());
+  S.distressMode=true; S.distressCount=1;
+  S.alarmKind="distress"; alarmStart("distress"); renderTel();
+  log("⚠ 遇险报警已发送："+nature+"（模拟）","al");
+  if(S.ex)exNote("tx-distress");
+  setWaiting({title:">> DISTRESS MODE <<",lines:["遇险报警已发送","性质: "+nature,"自动重发：每 60 秒（训练压缩）","等待遇险确认...","","再按住 DISTRESS 5秒 可手动取消"],hint:""});
+  S.waiting.onClr=()=>{};
+  // 自动重发
+  let remain=60;
+  S.distressRepeatT=setInterval(()=>{ remain--;
+    if(S.waiting&&S.waiting.title.indexOf("DISTRESS MODE")===0){ S.waiting.lines[2]="自动重发："+remain+" 秒后（第"+(S.distressCount+1)+"次）"; renderMsg(); }
+    if(remain<=0){ remain=60; S.distressCount++; txBurst(70,"DSC DISTRESS 重发 #"+S.distressCount); log("遇险报警自动重发 #"+S.distressCount,"al"); }
+  },1000);
+  // 虚拟海岸电台 25 秒后发遇险确认
+  setTimeout(()=>{ if(S.distressMode){ rxDistressAck(); } },25000);
+}
+function rxDistressAck(){
+  alarmStop(); S.alarmKind=null;
+  log("RX CH70 ← 海岸电台遇险确认（DSC Distress ACK）","rx");
+  S.rxLog.push("Distress ACK ← COAST");
+  S.dLog.push("RX Distress ACK "+utcNow());
+  tone(700,0.15,0.12); setTimeout(()=>tone(950,0.2,0.12),200);
+  exitDistress("收到确认",true);
+  if(S.ex)exNote("rx-d-ack");
+  // 提示 MAYDAY 话音程序
+  showMayday();
+}
+function exitDistress(why,silent){
+  S.distressMode=false; alarmStop(); S.alarmKind=null;
+  if(S.distressRepeatT){clearInterval(S.distressRepeatT);S.distressRepeatT=null;}
+  renderTel();
+  if(!silent){ log("已退出遇险模式（"+why+"）","ok"); }
+  if(S.waiting&&S.waiting.title.indexOf("DISTRESS")>=0){ S.waiting=null; }
+  closeMenu();
+}
+function showMayday(){
+  showModal("MAYDAY 话音程序（CH16）",
+    "MAYDAY ×3\nTHIS IS\n"+S.own.mmsi+" "+S.own.call+" ×3\n位置："+S.own.lat+" "+S.own.lon+"\n遇险性质与所需救助\n其他有助于救援的信息",
+    ()=>{ log("MAYDAY 话音程序完成","ok"); if(S.ex)exNote("mayday-done"); });
+}
+/* ============ 弹窗 ============ */
+let modalCb=null;
+function showModal(title,script,cb){ $("mTitle").textContent=title; $("mScript").textContent=script; $("modal").classList.add("show"); modalCb=cb||null; }
+$("mOk").onclick=()=>{ $("modal").classList.remove("show"); if(modalCb){const f=modalCb;modalCb=null;f();} };
+/* ============ 模拟来电注入 ============ */
+function injectIncoming(cfg){
+  if(!S.power){log("请先开机","al");return;}
+  if(S.incoming){log("已有未处理的来电","al");return;}
+  S.incoming=cfg; S.alarmKind=cfg.type==="distress"?"distress":"routine";
+  alarmStart(S.alarmKind); renderTel();
+  const desc={individual:"个呼",distress:"遇险报警",coast:"海岸电台",urgency:"紧急呼叫"}[cfg.type];
+  log("RX CH70 ← "+desc+" 来自 "+cfg.mmsi+"（模拟）","rx");
+  S.rxLog.push(desc+" ← "+cfg.mmsi);
+  setWaiting({title:"<< INCOMING "+cfg.type.toUpperCase()+" >>",
+    lines:["类别: "+cfg.cat,"来自: "+cfg.mmsi,"工作信道: CH"+pad(cfg.ch),"","MUTE 静音 · ENT 应答"],hint:""});
+  S.waiting.onEnt=()=>acceptIncoming();
+  S.waiting.onClr=()=>{ alarmStop(); S.alarmKind=null; log("来电告警已静音，稍后处理"); S.waiting=null; renderMsg(); renderTel(); };
+}
+function acceptIncoming(){
+  const inc=S.incoming; if(!inc)return;
+  alarmStop(); S.alarmKind=null; S.waiting=null;
+  if(inc.type==="distress"){
+    // 他船遇险：按手册应在 CH16 用话音确认
+    log("收到他船遇险报警，按程序应在 CH16 话音确认","rx");
+    S.ch=16; renderTel();
+    showModal("他船遇险 · CH16 话音确认",
+      "MAYDAY\n"+inc.mmsi+" ×3\nTHIS IS\n"+S.own.mmsi+" "+S.own.call+" ×3\nRECEIVED MAYDAY",
+      ()=>{ log("已在 CH16 话音确认收到 MAYDAY","ok"); S.incoming=null; if(S.ex)exNote("ack-voice"); closeMenu(); });
+    return;
+  }
+  txBurst(70,"DSC ACK → "+inc.mmsi);
+  S.txLog.push("ACK → "+inc.mmsi);
+  log("已自动发送确认（BQ），请转 CH"+pad(inc.ch),"ok");
+  if(S.ex)exNote("accept-call");
+  S.incoming=null; renderTel();
+  setWaiting({title:"Call Accepted",lines:["已向 "+inc.mmsi+" 发送确认","请转到 CH"+pad(inc.ch)+" 通话",""],hint:"按数字键切换频道"});
+  S.waiting.onClr=()=>{S.waiting=null;closeMenu();};
+}
+/* ============ 考核练习 ============ */
+const EXAMS=[
+ {id:"ex1",t:"科目一：DSC 个呼",d:"向 412345678 发 Routine 个呼，工作信道 06",
+  steps:[["open-menu","按 MENU 进入 DSC 菜单"],["sel-station","选择 Station Call"],["sel-cat-Routine","选择 Routine 类别"],["enter-mmsi","输入 MMSI 412345678"],["enter-ch","输入工作信道 06"],["tx-call","核对后发送"],["rx-ack","收到对方确认"],["switch-ch6","转到 CH06"]]},
+ {id:"ex2",t:"科目二：遇险报警",d:"用 DISTRESS 键发送遇险报警并完成 MAYDAY 程序",
+  steps:[["tx-distress","掀盖并按住 DISTRESS 5 秒"],["rx-d-ack","收到海岸电台遇险确认"],["mayday-done","完成 CH16 MAYDAY 程序"]]},
+ {id:"ex3",t:"科目三：来电应答",d:"应答模拟个呼（先点右侧“个呼”注入来电）",
+  steps:[["accept-call","按 ENT 应答并自动发送确认"],["switch-ch6","转到对方指定的 CH06"]]}
+];
+function exNote(id){
+  if(!S.examMode||!S.ex)return;
+  const steps=S.ex.steps; let idx=steps.findIndex(s=>s[0]===id&&!s[2]);
+  if(idx<0){ // 顺序外或重复
+    const expected=steps.find(s=>!s[2]);
+    if(expected)log("提示：当前应做「"+expected[1]+"」","al");
+    return;
+  }
+  const expectedIdx=steps.findIndex(s=>!s[2]);
+  if(idx!==expectedIdx){ log("提示：请按顺序完成，先做「"+steps[expectedIdx][1]+"」","al"); return; }
+  steps[idx][2]=true; log("✓ "+steps[idx][1],"ok"); renderExSteps();
+  if(steps.every(s=>s[2])){ finishExam(true); }
+}
+function renderExSteps(){
+  const ul=$("exSteps"); ul.innerHTML="";
+  const firstOpen=S.ex.steps.findIndex(s=>!s[2]);
+  S.ex.steps.forEach((s,i)=>{ const li=document.createElement("li"); li.textContent=(i+1)+". "+s[1];
+    if(s[2])li.className="done"; else if(i===firstOpen)li.className="cur"; ul.appendChild(li); });
+}
+function startExam(id){
+  S.ex=JSON.parse(JSON.stringify(EXAMS.find(e=>e.id===id)));
+  $("exScore").textContent=""; renderExSteps(); closeMenu();
+  log("开始考核："+S.ex.t,"ok");
+}
+function finishExam(auto){
+  if(!S.ex)return;
+  const done=S.ex.steps.filter(s=>s[2]).length, total=S.ex.steps.length;
+  const score=Math.round(done/total*100);
+  $("exScore").textContent=(auto?"全部完成！":"交卷")+" 得分："+score+" 分（"+done+"/"+total+" 步）";
+  log("考核结束，得分 "+score,"ok");
+  if(score===100)tone(880,0.15,0.12),setTimeout(()=>tone(1174,0.25,0.12),180);
+}
+/* ============ 按钮绑定 ============ */
+function bindUI(){
+  buildKeypad(); bindDistress();
+  $("btnMenu").onclick=pressMenu;
+  $("btnDim").onclick=()=>{ if(!S.power)return; S.dim=(S.dim+1)%3; keyClick();
+    $("msgBox").className="msgbox"+(S.dim?" dim"+S.dim:""); };
+  $("btnMute").onclick=()=>{ keyClick(); alarmStop(); S.alarmKind=null; renderTel(); log("告警音已静音"); };
+  $("btnReplay").onclick=()=>{ if(!S.power)return; keyClick(); if(lastToneFn){log("重放上一段音频");lastToneFn();} else log("暂无可重放内容"); };
+  $("btn16").onclick=()=>{ if(!S.power)return; keyClick(); S.ch=16; chBuf=""; renderTel(); renderMsg(); log("切换到 CH16"); if(S.ex)exNote("switch-ch16"); };
+  $("btnDW").onclick=()=>{ if(!S.power)return; keyClick(); S.dw=!S.dw; renderTel(); log("双值守 "+(S.dw?"开":"关")); };
+  $("btn1W").onclick=()=>{ if(!S.power)return; keyClick(); S.pwr=S.pwr==="HI"?"LO":"HI"; renderTel(); log("发射功率："+(S.pwr==="HI"?"25W":"1W")); };
+  $("btnPower").onclick=()=>{ S.power=!S.power; keyClick();
+    if(!S.power){ alarmStop(); if(S.distressRepeatT){clearInterval(S.distressRepeatT);S.distressRepeatT=null;} S.distressMode=false; S.alarmKind=null; S.incoming=null; }
+    renderTel(); renderMsg(); log(S.power?"开机":"关机"); };
+  knob("knobVol",()=>{ S.vol=Math.min(10,S.vol+1); if(S.vol>10)S.vol=0; log("音量 "+S.vol); });
+  knob("knobSql",()=>{ S.sql=Math.min(10,S.sql+1); if(S.sql>10)S.sql=0; log("静噪 "+S.sql); });
+  // 来电注入
+  $("injInd").onclick=()=>injectIncoming({type:"individual",cat:"Routine",mmsi:"412345678",ch:6});
+  $("injDistress").onclick=()=>injectIncoming({type:"distress",cat:"Distress",mmsi:"413111222",ch:16});
+  $("injCoast").onclick=()=>injectIncoming({type:"coast",cat:"Safety",mmsi:"0041222333",ch:16});
+  $("injUrgency").onclick=()=>injectIncoming({type:"urgency",cat:"Urgency",mmsi:"All Ships",ch:16});
+  $("btnPos").onclick=()=>{ keyClick(); log("船位时间已更新："+S.own.lat+" "+S.own.lon+" "+utcNow()); renderMsg(); };
+  $("btnLogs").onclick=()=>{ pressMenu(); pushMenu(LOGS_MENU); };
+  // 选项卡
+  $("tabFree").onclick=()=>{ S.examMode=false; S.ex=null; $("tabFree").classList.add("active"); $("tabExam").classList.remove("active"); $("examCard").style.display="none"; log("切换到自由练习"); };
+  $("tabExam").onclick=()=>{ S.examMode=true; $("tabExam").classList.add("active"); $("tabFree").classList.remove("active"); $("examCard").style.display="block"; log("切换到考核练习"); };
+  $("btnFinishEx").onclick=()=>finishExam(false);
+  $("btnResetEx").onclick=()=>{ if(S.ex)startExam(S.ex.id); };
+  // 考核列表
+  const list=$("exList");
+  EXAMS.forEach(e=>{ const d=document.createElement("div"); d.className="exitem"; d.innerHTML='<div class="t">'+e.t+'</div><div class="d">'+e.d+'</div>';
+    d.onclick=()=>{ list.querySelectorAll(".exitem").forEach(x=>x.classList.remove("active")); d.classList.add("active"); startExam(e.id); };
+    list.appendChild(d); });
+  $("ownInfo").textContent="MMSI "+S.own.mmsi+" · 呼号 "+S.own.call+" · "+S.own.lat+" "+S.own.lon;
+  // waiting 界面的 ENT/CLR
+  document.addEventListener("keydown",e=>{
+    if($("modal").classList.contains("show")&&(e.key==="Enter"||e.key==="Escape")){ $("mOk").click(); return; }
+    if(!S.power)return;
+    if(S.waiting&&!S.input&&!S.menuStack.length){
+      if(e.key==="Enter"&&S.waiting.onEnt){S.waiting.onEnt();}
+      else if(e.key==="Escape"&&S.waiting.onClr){S.waiting.onClr();}
+    }
+  });
+}
+/* ============ 初始化 ============ */
+bindUI(); renderTel(); renderMsg();
+log("RT5022 模拟器就绪（训练模式）","ok");
+S.utcTimer=setInterval(()=>{ if(S.power&&!S.menuStack.length&&!S.input&&!S.waiting)renderMsg(); },30000);
+</script>
+</body>
+</html>
