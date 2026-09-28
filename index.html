@@ -205,7 +205,6 @@ footer {
     <button data-tab="kb" class="active">📚 知识题库<span class="cnt">827题</span></button>
     <button data-tab="oral">🎙 听力与会话<span class="cnt">47+84</span></button>
     <button data-tab="handbook">📖 速查手册<span class="cnt">6章</span></button>
-    <button data-tab="sim">🖥 VHF模拟器<span class="cnt">RT5022</span></button>
   </nav>
   <div class="spacer"></div>
   <button id="menuToggle" aria-label="统计信息">📊</button>
@@ -230,7 +229,6 @@ footer {
   <iframe id="frame-kb"   src="GMDSS英语阅读_知识点题库.html"   class="active"></iframe>
   <iframe id="frame-oral" src="app.html"></iframe>
   <iframe id="frame-handbook" src="handbook.html"></iframe>
-  <iframe id="frame-sim" src="sim/vhf-dsc-rt5022.html"></iframe>
 </div>
 
 <footer>
@@ -243,7 +241,6 @@ const frames = {
   kb:   document.getElementById('frame-kb'),
   oral: document.getElementById('frame-oral'),
   handbook: document.getElementById('frame-handbook'),
-  sim: document.getElementById('frame-sim'),
 };
 
 tabs.forEach(btn => {
