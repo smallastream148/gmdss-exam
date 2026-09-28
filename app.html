@@ -588,8 +588,13 @@ function renderSignal() {
   const setNum = STATE.signalSet;
   const cur = sets.find(s => s.set === setNum) || sets[0];
   const totalGroups = cur.groups.length;  // 20
-  const fullAudio = `reference/2.码语/code/${setNum}/pic1.mp3`;
   const dir = String(setNum).padStart(2, '0');
+  // 整套播放列表:20 组音频依次播放
+  // (旧的 reference/2.码语/code/.../pic1.mp3 整套文件已不存在,故改走列表播放)
+  const fullList = [];
+  for (let i = 0; i < totalGroups; i++) {
+    fullList.push(`audio/signal/set${dir}/g${String(i+1).padStart(2,'0')}.mp3`);
+  }
 
   // 顶部控制
   let html = `
@@ -604,7 +609,7 @@ function renderSignal() {
   html += `
       </div>
       <span style="flex:1"></span>
-      <button class="audio-btn" data-audio="${fullAudio}" title="播放整套 20 组">
+      <button class="audio-btn" data-playlist="${fullList.join(',')}" title="播放整套 20 组">
         <span class="ic">▶</span> 整套
       </button>
       <button id="reveal-ans" style="background:var(--accent);color:var(--primary);border:none;border-radius:5px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer">显示答案</button>
@@ -798,8 +803,69 @@ const PLAYER = {
     this._newPlay(path, btn, label);
   },
 
+  // 列表播放/暂停切换(整套 20 组依次播放)
+  toggleList(paths, btn, label) {
+    if (!paths || !paths.length) return;
+    const key = paths.join('|');
+    // 同列表,正在播 → 暂停
+    if (this.playlist && this.playlist.key === key && this.audio && !this.audio.paused) {
+      this.audio.pause();
+      this._setBtn(btn, 'paused');
+      this._showCtrl(true);
+      return;
+    }
+    // 同列表,已暂停 → 继续
+    if (this.playlist && this.playlist.key === key && this.audio && this.audio.paused) {
+      this.audio.play().catch(e => console.error(e));
+      this._setBtn(btn, 'playing');
+      this._showCtrl(true);
+      return;
+    }
+    // 不同列表,或首次播放 → 停掉旧的,开始新列表
+    this._resetCurrentBtn();
+    if (this.audio) this.audio.pause();
+    this._newListPlay(paths, key, btn, label);
+  },
+
+  // 全新列表播放
+  _newListPlay(paths, key, btn, label) {
+    this.playlist = { paths, key, index: 0, label: label || '' };
+    this.currentBtn = btn;
+    this._setBtn(btn, 'playing');
+    this._showCtrl(true);
+    this._playListIndex(0);
+  },
+
+  // 播放列表中第 i 个
+  _playListIndex(i) {
+    const pl = this.playlist;
+    if (!pl) return;
+    if (i >= pl.paths.length) { this._endList(); return; }
+    pl.index = i;
+    const path = pl.paths[i];
+    this.currentLabel = `${pl.label} (${i + 1}/${pl.paths.length})`;
+    this.audio = new Audio(path);
+    this.currentPath = path;
+    this.audio.play().catch(e => {
+      console.error('播放失败:', path, e);
+      showStatus('播放失败: ' + path);
+      this._playListIndex(i + 1); // 失败自动跳下一组
+    });
+    this._updateCtrl();
+    this.audio.onended = () => this._playListIndex(i + 1);
+    this.audio.ontimeupdate = () => this._updateCtrl();
+  },
+
+  // 列表播完
+  _endList() {
+    this.playlist = null;
+    this._setBtn(this.currentBtn, 'idle');
+    this._showCtrl(false);
+  },
+
   // 全新播放
   _newPlay(path, btn, label) {
+    this.playlist = null; // 单文件播放时清掉列表状态
     this.audio = new Audio(path);
     this.currentBtn = btn;
     this.currentPath = path;
@@ -835,6 +901,7 @@ const PLAYER = {
   },
 
   stop() {
+    this.playlist = null;
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
@@ -975,9 +1042,12 @@ function bindEvents() {
     const audioBtn = e.target.closest('.audio-btn');
     if (audioBtn) {
       e.stopPropagation();
-      const path = audioBtn.dataset.audio;
       const label = audioBtn.textContent.replace(/[\s▶⏸]/g, '').trim();
-      PLAYER.toggle(path, audioBtn, label);
+      if (audioBtn.dataset.playlist) {
+        PLAYER.toggleList(audioBtn.dataset.playlist.split(','), audioBtn, label);
+      } else {
+        PLAYER.toggle(audioBtn.dataset.audio, audioBtn, label);
+      }
       return;
     }
     // 答案展开/收起
