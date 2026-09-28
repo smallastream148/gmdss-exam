@@ -11,7 +11,7 @@
     "id": 2,
     "category": "oral",
     "question": "Give an example of a MAYDAY call.",
-    "answer": "MAYDAY MAYDAY MAYDAY, This is MV TAI SHAN TAI SHAN TAI SHAN, call sign Bravo Oscar Sierra Yankee, Bravo Oscar Sierra Kilo, Bravo Oscar Sierra Kilo. I am aground. My position is 12°12′N, 123°12′E. I require tug assistance. OVER.",
+    "answer": "MAYDAY MAYDAY MAYDAY, This is MV TAI SHAN TAI SHAN TAI SHAN, call sign Bravo Oscar Sierra Kilo, Bravo Oscar Sierra Kilo, Bravo Oscar Sierra Kilo. I am aground. My position is 12°12′N, 123°12′E. I require tug assistance. OVER.",
     "audio_q": "audio/oral_q/02.mp3",
     "audio_a": "audio/oral_a/02.mp3"
   },
